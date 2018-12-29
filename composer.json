@@ -6,7 +6,8 @@
     "require": {
         "php": ">=7.0.0",
         "vlucas/phpdotenv": "^2.2",
-        "monolog/monolog": "^1.19"
+        "monolog/monolog": "^1.19",
+        "illuminate/support": "~5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "5.1.*"
@@ -19,9 +20,22 @@
         }
     ],
     "autoload": {
+        "files": [
+            "src/forecasta/Common/YCombinator.php"
+        ],
         "psr-4": {
             "Forecasta\\": "src/forecasta/",
             "ForecastaTest\\": "tests/forecasta/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Forecasta\\Laravel\\ForecastaServiceProvider"
+            ],
+            "aliases": {
+                "ForeCasta": "Forecasta\\Laravel\\ForecastaServiceFacade"
+            }
         }
     }
 }
