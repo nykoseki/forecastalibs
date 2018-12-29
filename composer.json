@@ -1,0 +1,25 @@
+{
+    "name": "nykoseki/forecastalibs",
+    "description": "PHP Forecasta Library",
+    "type": "library",
+    "minimum-stability": "dev",
+    "require": {
+
+    },
+    "require-dev": {
+        "phpunit/phpunit": "5.1.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "N Koseki",
+            "email": "nkoseki.lancer@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Forecasta\\": "src/forecasta/",
+            "ForecastaTest\\": "tests/forecasta/"
+        }
+    }
+}
