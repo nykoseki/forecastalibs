@@ -14,7 +14,7 @@ use Forecasta\Parser\Impl\SequenceParser as Seq;
 use Forecasta\Parser\Impl\TokenParser as Token;
 use Forecasta\Parser\Impl\TrueParser as T;
 
-require_once dirname(__FILE__). '/../Common/YCombinator.php';
+//require_once dirname(__FILE__). '/../Common/YCombinator.php';
 
 /**
  * 各種パーサを生成・組み立てするためのユーティリティクラスです
