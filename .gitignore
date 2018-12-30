@@ -2,3 +2,6 @@
 .env
 composer.lock
 reflesh.sh
+run.php
+run.sh
+
