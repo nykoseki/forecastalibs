@@ -6,11 +6,10 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false"
-         syntaxCheck="false">
+         stopOnFailure="false">
     <testsuites>
         <testsuite name="Collection Test Suite">
-            <directory suffix="Test.php">./tests/</directory>
+            <directory suffix="Test001.php">./tests/forecasta/</directory>
         </testsuite>
     </testsuites>
 

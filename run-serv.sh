@@ -1,3 +1,4 @@
 #!/bin/sh
 
-php run.php
+php exc.php
+vendor/bin/phpunit

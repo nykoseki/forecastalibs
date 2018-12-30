@@ -4,4 +4,6 @@ composer.lock
 reflesh.sh
 run.php
 run.sh
-
+run-serv.sh
+exc.php
+/tmp
