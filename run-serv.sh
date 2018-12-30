@@ -1,3 +1,3 @@
 #!/bin/sh
 
-php run.php
+php ./run.php
