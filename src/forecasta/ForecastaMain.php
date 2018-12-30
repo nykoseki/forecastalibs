@@ -16,10 +16,10 @@ class ForecastaMain
 
     public function parse001()
     {
-        $token = ParserFactory::Token("abc");
+        $token = ParserFactory::Token("abcabc");
 
         $result = $token->parse(CTX::create("abcabc"));
-        
+
         return $result;
     }
 }
