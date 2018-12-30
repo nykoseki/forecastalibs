@@ -8,6 +8,7 @@ use Forecasta\Parser\Impl\ChoiceParser as Choice;
 use Forecasta\Parser\Impl\FalseParser as F;
 use Forecasta\Parser\Impl\ForwardParser as Forward;
 use Forecasta\Parser\Impl\ManyParser as Many;
+use Forecasta\Parser\Impl\AnyParser as Any;
 use Forecasta\Parser\Impl\OptionParser as Option;
 use Forecasta\Parser\Impl\RegexParser as Regex;
 use Forecasta\Parser\Impl\SequenceParser as Seq;
@@ -81,6 +82,14 @@ class ParserFactory
     public static function Many(/*Psr $parser*/)
     {
         return (new Many);
+    }
+
+    /**
+     * AnyParserを生成します
+     * @return Any
+     */
+    public static function Any(/*Psr $parser*/) {
+        return (new Any);
     }
 
     /**
@@ -158,6 +167,8 @@ class ParserFactory
             return self::Token($param);
         } else if ($type === 'true') {
             return self::T();
+        } else if ($type === 'any') {
+            return self::Any();
         }
     }
 
@@ -173,6 +184,7 @@ class ParserFactory
                 ->add(self::Token('choice')->setName("isChoice"))
                 ->add(self::Token('forward')->setName("isForward"))
                 ->add(self::Token('many')->setName("isMany"))
+                ->add(self::Token('any')->setName("isAny"))
                 ->add(self::Token('option')->setName("isOption"))
                 ->add(self::Token('sequence')->setName("isSequence"));
         }

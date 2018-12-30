@@ -3,7 +3,7 @@
 namespace Forecasta\Parser\Impl;
 
 use Forecasta\Parser as P;
-use Forecasta\Parser\ParserTrait as PST;
+use Forecasta\Parser\Impl\ParserTrait as PST;
 
 /**
  * 登録されたパーサのうち，いづれかのパーサがパース成功した場合にパースが成功するパーサコンビネータです

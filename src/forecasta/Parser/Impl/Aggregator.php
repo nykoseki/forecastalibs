@@ -6,11 +6,11 @@ use Forecasta\Parser as P;
 use Forecasta\Parser\ParserContext as CTX;
 
 /**
- * パーサに関する共通機能を集約したトレイトです
+ * パース結果集約用トレイトです
  * @author nkoseki
  *
  */
-trait ParserTrait
+trait Aggregator
 {
 
     private $name;
@@ -21,17 +21,7 @@ trait ParserTrait
 
     private $debugMode = false;
 
-    private $skipFlg = false;
-
-    public function isSkip() {
-        return $this->skipFlg;
-    }
-
-    public function skip($skipFlg) {
-        $this->skipFlg = $skipFlg;
-
-        return $this;
-    }
+    private $relation = null;
 
     /**
      * 引数に指定した文字列を，このパーサで解析します
@@ -101,7 +91,7 @@ trait ParserTrait
             $nm = $this->getName();
             $clsName = get_class($this);
 
-            return "<{$nm}@\"{$parsed}\">";
+            return "<{$nm}> => \"{$parsed}\"";
         } else {
             return $parsed;
         }

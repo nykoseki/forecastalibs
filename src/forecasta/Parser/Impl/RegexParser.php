@@ -46,7 +46,16 @@ class RegexParser implements P\Parser
 
             //applLog("RegexParser", $matches);
             $this->onSuccess();
-            return new P\ParserContext($context->target(), $position, $match, true);
+
+            //$this->setName("Regex-0");
+
+            $match = $this->decolateParsed($match);
+
+            $ctx = new P\ParserContext($context->target(), $position, $match, true);
+
+
+            //return new P\ParserContext($context->target(), $position, $match, true);
+            return $ctx;
         } else {
             $this->onError();
             return (new P\impl\FalseParser())->parse($context);
@@ -81,7 +90,7 @@ class RegexParser implements P\Parser
     public function __construct($regex)
     {
         $this->regexStr = $regex;
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
     }
 
     public function isResolved()

@@ -37,10 +37,13 @@ class CharParser implements P\Parser
         //applLog("CharParser", $target0);
         if (array_key_exists($target0, $targetArray)) {
             $this->onSuccess();
+
+            $target0 = $this->decolateParsed($target0);
+
             return new P\ParserContext($context->target(), $context->current() + 1, $target0, true);
         } else {
             $this->onError();
-            return (new P\impl\FalseParser())->parse($context);
+            return (new P\Impl\FalseParser())->parse($context);
         }
     }
 
@@ -48,7 +51,7 @@ class CharParser implements P\Parser
     {
         $this->chars = $chars;
 
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
     }
 
     public function isResolved()

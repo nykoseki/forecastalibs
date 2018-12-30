@@ -10,10 +10,55 @@ namespace Forecasta\Parser;
 class ParserContext
 {
 
+    /**
+     * 解析対象文字列です
+     * @var string
+     */
     private $target = "";
+
+    /**
+     * 現在の解析位置です
+     * @var int
+     */
     private $currentPosition = 0;
+
+    /**
+     * 解析後文字列です
+     * @var null
+     */
     private $parsed = null;
+
+    /**
+     * true:解析成功/false:解析失敗
+     * @var null
+     */
     private $ctx = null;
+
+    /**
+     * 現在の解析を意味するタグです
+     * @var string
+     */
+    private $name = "";
+
+    private $skipFlg = false;
+
+    /**
+     * 解析に使用されたパーサです
+     * @var null
+     */
+    private $parser = null;
+
+    /**
+     * 親コンテキストです
+     * @var null
+     */
+    private $parent = null;
+
+    /**
+     * 子コンテキストです
+     * @var array
+     */
+    private $children = array();
 
     public function __construct($target, $position, $parsed, $ctx)
     {
@@ -21,6 +66,26 @@ class ParserContext
         $this->currentPosition = $position;
         $this->parsed = $parsed;
         $this->ctx = $ctx;
+    }
+
+    public function setSkip($skipFlg)
+    {
+        $this->skipFlg = $skipFlg;
+    }
+
+    public function isSkip()
+    {
+        return $this->skipFlg;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
     }
 
     public static function create($target)
@@ -65,7 +130,7 @@ class ParserContext
 
     public function __toString()
     {
-
+        //echo "toString\n";
         $parsed0 = $this->parsed;
 
 // 		if(is_array($parsed0)) {
@@ -93,20 +158,81 @@ class ParserContext
         // Y-Combinatorで再帰処理を行う
         // 配列->[...]
         // 文字列->"..."
-        $parsed0 = Y(function ($callback) {
-            return function ($x) use (&$callback) {
+
+        $currentName = $this->getName();
+
+        $parsed0 = Y(function ($callback) use (&$currentName) {
+            return function ($x) use (&$callback, &$currentName) {
                 if (is_array($x)) {
                     if (count($x) == 0) {
                         return '"<Null>"';
                     } else {
+
                         $parsed0 = array_map(function ($item) use (&$callback) {
                             if (is_array($item)) {
                                 return $callback($item);
                             } else {
-                                return '"' . $item . '"';
+                                //return $item;
+                                $tmpItem = $item;
+                                if ($tmpItem === "\"") {
+                                    //$tmpItem = "<Dq>";
+                                    $tmpItem = "";
+                                } else if ($tmpItem === " ") {
+                                    //$tmpItem = "<Sp>";
+                                    $tmpItem = "";
+                                } else if ($tmpItem === "(") {
+                                    $tmpItem = "<Lb>";
+                                } else if ($tmpItem === ")") {
+                                    $tmpItem = "<Rb>";
+                                } else if ($tmpItem === "'") {
+                                    $tmpItem = "<Sq>";
+                                } else if ($tmpItem === ",") {
+                                    //$tmpItem = "<Camma>";
+                                    $tmpItem = "";
+                                } else if (preg_match('/^\s+$/', $tmpItem) > 0) {
+                                    //$tmpItem = "<Ws>";
+                                    $tmpItem = "";
+                                } else if ($tmpItem === "") {
+                                    $tmpItem = "<Empty>";
+                                } else if ($tmpItem === "\t") {
+                                    $tmpItem = "<Tab>";
+                                } else if ($tmpItem === "{") {
+                                    $tmpItem = "<wLb>";
+                                } else if ($tmpItem === "}") {
+                                    $tmpItem = "<wRb>";
+                                } else if($tmpItem === null) {
+                                    $tmpItem = "";
+                                } else if($tmpItem === "[") {
+                                    $tmpItem = "<Al>";
+                                } else if($tmpItem === "]") {
+                                    $tmpItem = "<Ar>";
+                                }
+
+                                if(mb_strlen($tmpItem) === 0) {
+                                    //echo "Empty!!\n";
+                                }
+                                //return '"' . $tmpItem . '"';
+                                return $tmpItem;
                             }
 
                         }, $x);
+
+
+
+                        $immidiate = array();
+                        foreach($parsed0 as $v) {
+                            if(mb_strlen($v) > 0) {
+                                array_push($immidiate, $v);
+                            }
+                        }
+                        $parsed0 = $immidiate;
+
+                        if(count($parsed0) == 0) {
+                            return "";
+                        }
+                        if(count($parsed0) == 1) {
+                            return implode(', ', $parsed0);
+                        }
 
                         $parsed0 = implode(', ', $parsed0);
                         $parsed0 = '[' . $parsed0 . ']';
@@ -124,6 +250,8 @@ class ParserContext
 
         $finish = (mb_strlen($this->target) == $this->currentPosition) ? '"OK"' : '"NG"';
 
-        return "{\"Target\":\"{$this->target}\", \"Current\":{$this->currentPosition}, \"Result\":{$res}, \"Finish\":{$finish}, \"Parsed\":{$parsed0}}";
+        $targetLen = mb_strlen($this->target);
+
+        return "{\"Target\":<{$this->target}>, \"Length\":\"{$targetLen}\", \"Current\":{$this->currentPosition}, \"Result\":{$res}, \"Finish\":{$finish}, \"Parsed\":{$parsed0}}";
     }
 }

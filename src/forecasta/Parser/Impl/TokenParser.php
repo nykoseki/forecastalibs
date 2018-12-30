@@ -31,7 +31,11 @@ class TokenParser implements P\Parser
 
         if (mb_substr($context->target(), $context->current(), $len) === $this->str) {
             $this->onSuccess();
-            return new P\ParserContext($context->target(), $context->current() + $len, $this->str, true);
+
+            $parsed = $this->str;
+            $parsed = $this->decolateParsed($parsed);
+
+            return new P\ParserContext($context->target(), $context->current() + $len, $parsed, true);
         } else {
             $this->onError();
             return new P\ParserContext($context->target(), $context->current(), null, false);
@@ -41,7 +45,7 @@ class TokenParser implements P\Parser
     public function __construct($str)
     {
         $this->str = $str;
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
     }
 
     public function isResolved()
