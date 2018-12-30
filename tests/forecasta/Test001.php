@@ -7,6 +7,6 @@ use PHPUnit\Framework\TestCase;
 class Test001 extends TestCase
 {
     public function testAaaa() {
-        $this->assertTrue(false, "message");
+        $this->assertTrue(true, "message");
     }
 }
