@@ -11,7 +11,7 @@ class ForecastaMain
 {
     public function test0001()
     {
-        return "test00001-00001";
+        return "test00001-00001テスト";
     }
 
     public function parse001()
