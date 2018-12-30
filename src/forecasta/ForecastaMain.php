@@ -7,6 +7,7 @@ use Forecasta\Parser\ParserContext as CTX;
 use Forecasta\Parser\Impl as PImpl;
 use Forecasta\Parser\ParserFactory;
 use Forecasta\Comment\Processor\CommentParser;
+use Forecasta\Parser\Impl\JsonParser;
 
 class ForecastaMain
 {
@@ -370,7 +371,10 @@ EOF;
                          "fff" ->
                             "gggg"
                     },
-"ddd" -> "ee",
+"ddd" 
+                -> 
+                            "ee"
+                                    ,
                     "xyz" -> [
                         "xxa", 
                         "xxb", 
@@ -382,6 +386,64 @@ EOF;
                             "c" -> 
                                         "d"
                         },
+                        {
+                            "c" -> [
+                                "e", 
+                                "f"
+                            ]
+                        }
+                    ]
+                }
+EOF;
+
+
+        $ctx = CTX::create($tgt);
+
+        $result = $element->parse($ctx);
+
+        echo print_r($result . "", true) . "\n";
+    }
+
+    public function parse005_5()
+    {
+        echo "=========================================================================\n";
+        echo "parse005_5\n";
+
+
+        // Element := "{" + Entries + "}"
+        $element = (new JsonParser);
+        $tgt = <<<EOF
+{  "aaa"  ->  {  "_bbb" ->   "c_12_cc", "hhhhh" ->{"i"                 ->                 "j"                 }  ,    "fff" -> "gggg"    }  , "ddd" -> "ee" }
+EOF;
+        $tgt = <<<EOF
+                {
+                    "aaa" -> 
+                           {
+                        "_bbb" -> "c_12_cc",
+                         "hhhhh" -> {
+                            "i" -> "j"
+                         },
+                         "fff" ->
+                            "gggg"
+                    },
+"ddd" 
+                -> 
+                            "ee"
+                                    ,
+                    "xyz" -> [
+                        "xxa", 
+                        "xxb", 
+                        [
+                            "a", 
+                            "b"
+                        ], 
+                        {
+                            "c" -> 
+                                        "d"
+                        },
+
+
+
                         {
                             "c" -> [
                                 "e", 
