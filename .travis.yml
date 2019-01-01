@@ -7,5 +7,5 @@ before_script:
     - composer install
 
 script:
-    - vendor/bin/phpunit
+    - vendor/bin/phpunit --printer=Codedungeon\\PHPUnitPrettyResultPrinter\\Printer
 
