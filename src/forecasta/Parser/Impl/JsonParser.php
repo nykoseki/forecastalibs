@@ -8,6 +8,27 @@ use Forecasta\Parser\ParserFactory;
 
 /**
  * JSONパーサです
+ * [Overview]
+ * ======================================================
+ * <LBrace> := "{"
+ * <RBrace> := "}"
+ * <LBracket> := "["
+ * <RBracket> := "]"
+ * <Primitive> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
+ * <Null> := null
+ * <Camma> := ,
+ * <Empty> := ""
+ * <Number> := /^[0-9]+/
+ * <Boolean> := /^true|^false|^TRUE|^FALSE/
+ * <Value> := <Primitive> | <Element> | <Array> | <Null> | <Number>
+ * <Joint> := "=>"
+ * <Key> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
+ * <Entry> := <Key> + <Joint> + <Value>
+ * <Entries> := <Entry> | (<Entry> + <Camma> ) + <Entry>
+ * <Element> := <LBrace> + <Entries> + <RBrace>
+ * <Array> := <LBracket> + (<Value> | (<Value> + <Camma> ) + <Value>) + <RBracket>
+ * ======================================================
+ *
  * @author nkoseki
  *
  */
@@ -31,25 +52,58 @@ class JsonParser implements P\Parser
 
     public function __construct()
     {
+        /*
         $whiteSpace = ParserFactory::Option()->add(ParserFactory::Regex("/^\s+/"));
         $lineBreak = ParserFactory::Option()->add(ParserFactory::Token("\n"));
 
         $whiteSpace = ParserFactory::Seq()->add($whiteSpace)->add($lineBreak)->add($whiteSpace);
+        */
 
+
+        /*
+         * [Parser Overview]
+         * <LBrace> := "{"
+         * <RBrace> := "}"
+         * <LBracket> := "["
+         * <RBracket> := "]"
+         * <Primitive> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
+         * <Null> := null
+         * <Camma> := ,
+         * <Empty> := ""
+         * <Number> := /^[0-9]+/
+         * <Value> := <Primitive> | <Element> | <Array> | <Null> | <Number>
+         * <Joint> := "=>"
+         * <Key> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
+         * <Entry> := <Key> + <Joint> + <Value>
+         * <Entries> := <Entry> | (<Entry> + <Camma> ) + <Entry>
+         * <Element> := <LBrace> + <Entries> + <RBrace>
+         * <Array> := <LBracket> + (<Value> | (<Value> + <Camma> ) + <Value>) + <RBracket>
+         *
+         */
+
+        // 改行・ホワイトスペース
+        $whiteSpace = new LbWsParser;
+
+        // Bool値(true, false, TRUE, FALSE)
+        $boolean = new BoolParser;
 
         // Joint := "=>"
-        $joint = ParserFactory::Token("->")/*->setName("Joint")*/
+        $joint = ParserFactory::Token(":")/*->setName("Jo")*/;
         ;
 
+        // ダブルクォート
         $quote = ParserFactory::Token("\"");
 
         // Primitive := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$primitive = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Pr");
-        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_]+/")->setName("Pr"))->add($quote);
+        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:     '';\/\+\*=]+/")->setName("Pr"))->add($quote);
+
+        // Number
+        $number = ParserFactory::Regex("/^[0-9]+/")->setName("Nm");
 
         // Key := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$key = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Key");
-        $key = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z_]+/")->setName("Key"))->add($quote);
+        $key = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z_][A-Za-z_0-9\-]*/")->setName("Key"))->add($quote);
 
         // Value
         $value = ParserFactory::Forward();
@@ -60,6 +114,12 @@ class JsonParser implements P\Parser
         // Array
         $array = ParserFactory::Forward();
 
+        // Null
+        $null = ParserFactory::Token("null");
+
+        // Empty
+        //$empty = ParserFactory::Seq()->add($quote)->add($quote)->setName("Empty");
+        $empty = new EmptyParser;
 
         // Entry := Key + Joint + Value
         $entry = ParserFactory::Seq()
@@ -118,16 +178,34 @@ class JsonParser implements P\Parser
                 ->add($whiteSpace)
         );
 
-        // Value := Primitive | Element | Array
+        // Value := Primitive | Element | Array | Null | Empty | Bool
         $value->forward(
             ParserFactory::Choice()
+                ->add($null)
                 ->add($primitive)
                 ->add($element)
                 ->add($array)
+                ->add($empty)
+                ->add($number)
+                ->add($boolean)
         );
 
+
+
         // Element := "{" + Entries + "}"
+        /*
         $element->forward(
+            ParserFactory::Seq()
+                ->add($whiteSpace)
+                ->add(ParserFactory::Token("{"))
+                ->add($whiteSpace)
+                ->add($entries)
+                ->add($whiteSpace)
+                ->add(ParserFactory::Token("}"))
+                ->add($whiteSpace)
+        );
+        */
+        $element(
             ParserFactory::Seq()
                 ->add($whiteSpace)
                 ->add(ParserFactory::Token("{"))
@@ -154,17 +232,6 @@ class JsonParser implements P\Parser
 
     public function outputRecursive($searched)
     {
-        /*
-        $className = get_class($this);
-        applLog("outputRecursive", $searched);
-        $searched[] = $this->name;
-
-        $className = str_replace("\\", "/", $className);
-
-        $name = $this->name;
-        $param = $this->chars;
-        $message = "{\"Type\":\"$className\", \"Name\":\"$name\", \"Param\":\"$param\"}";
-        */
 
         return $this->parser->outputRecursive($searched). "";
     }

@@ -366,13 +366,16 @@ EOF;
                            {
                         "_bbb" -> "c_12_cc",
                          "hhhhh" -> {
-                            "i" -> "j"
+                            "i" -> "j",
+                            "i2" -> true,
+                            "i3" -> false,
+                            "i4" -> TRUE,
+                            "i5" -> FALSE
                          },
                          "fff" ->
                             "gggg"
                     },
-"ddd" 
-                -> 
+                    "ddd"-> 
                             "ee"
                                     ,
                     "xyz" -> [
@@ -412,25 +415,35 @@ EOF;
 
         // Element := "{" + Entries + "}"
         $element = (new JsonParser);
-        $tgt = <<<EOF
-{  "aaa"  ->  {  "_bbb" ->   "c_12_cc", "hhhhh" ->{"i"                 ->                 "j"                 }  ,    "fff" -> "gggg"    }  , "ddd" -> "ee" }
+        $tgt0 = <<<EOF
+{  "aaa"  :  {  "_bbb" :   "c_12_cc", "hhhhh" :{"i"                 :                 "j"                 }  ,    "fff" : "gggg"    }  , "ddd" : "ee" }
 EOF;
         $tgt = <<<EOF
                 {
-                    "aaa" -> 
+                    "aaa" : 
                            {
-                        "_bbb" -> "c_12_cc",
-                         "hhhhh" -> {
-                            "i" -> "j"
+                        "_bbb" : "c_12_cc",
+                        "_ccc" : null,
+                        "Empty" : "",
+                        "Empty_" : '',
+                        "number" : 1234,
+                        "number_" : 101234,
+                         "hhhhh" : {
+                            "i_1-1" : "j",
+                            "i_1-2" : true,
+                            "i_1-3" : false,
+                            "i_1-4" : TRUE,
+                            "i_1-5" : FALSE,
+                            "i_1-6" : "abc ABC  AbC 999,:';/+*==="
                          },
-                         "fff" ->
+                         "fff" :
                             "gggg"
                     },
 "ddd" 
-                -> 
-                            "ee"
+                : 
+                            "ee"    
                                     ,
-                    "xyz" -> [
+                    "xyz" : [
                         "xxa", 
                         "xxb", 
                         [
@@ -438,27 +451,34 @@ EOF;
                             "b"
                         ], 
                         {
-                            "c" -> 
+                            "c" : 
                                         "d"
                         },
 
-
-
                         {
-                            "c" -> [
+                            "c" : [
                                 "e", 
-                                "f"
+                                "f",
+                                [111,222,333,444,5555,{"Key":"Value"}],
+                                [111,222,333,444,5555,{"Key":"a b c A B C ''--++*///,,,,:::;;;"}]
                             ]
                         }
                     ]
                 }
 EOF;
 
-
+        //$tgt0 = '{"aa":{"bb":["cc","dd",{"ee":"ff"},123]}}';
         $ctx = CTX::create($tgt);
 
+        $time_start = microtime(true);
         $result = $element->parse($ctx);
+        $time = microtime(true) - $time_start;
 
         echo print_r($result . "", true) . "\n";
+        echo "{$time} 秒". PHP_EOL;
+
+        (function(){
+            echo "Test". PHP_EOL;
+        })();
     }
 }

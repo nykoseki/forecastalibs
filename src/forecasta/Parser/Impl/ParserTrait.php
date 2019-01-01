@@ -4,6 +4,7 @@ namespace Forecasta\Parser\Impl;
 
 use Forecasta\Parser as P;
 use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\Impl\Util\Cacheable;
 
 /**
  * パーサに関する共通機能を集約したトレイトです
@@ -12,6 +13,8 @@ use Forecasta\Parser\ParserContext as CTX;
  */
 trait ParserTrait
 {
+    use Cacheable;
+
     /**
      * パーサ名です
      * @var

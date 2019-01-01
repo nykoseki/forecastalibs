@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Parser xmlns="https://github.com/nykoseki/forecastalibs">
+    <!--
+        * <LBrace> := "{"
+        * <RBrace> := "}"
+        * <LBracket> := "["
+        * <RBracket> := "]"
+        * <Primitive> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
+        * <Null> := null
+        * <Camma> := ,
+        * <Empty> := ""
+        * <Number> := /^[0-9]+/
+        * <Value> := <Primitive> | <Element> | <Array> | <Null> | <Number>
+        * <Joint> := "=>"
+        * <Key> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
+        * <Entry> := <Key> + <Joint> + <Value>
+        * <Entries> := <Entry> | (<Entry> + <Camma> ) + <Entry>
+        * <Element> := <LBrace> + <Entries> + <RBrace>
+        * <Array> := <LBracket> + (<Value> | (<Value> + <Camma> ) + <Value>) + <RBracket>
+    -->
+
+    <Definitions>
+        <!-- { -->
+        <Token id="LBrace">
+            <Param><![CDATA[{]]></Param>
+        </Token>
+
+        <!-- } -->
+        <Token id="RBrace">
+            <Param><![CDATA[}]]></Param>
+        </Token>
+
+        <!-- [ -->
+        <Token id="LBracket">
+            <Param><![CDATA[[]]></Param>
+        </Token>
+
+        <!-- ] -->
+        <Token id="RBracket">
+            <Param><![CDATA[[]]></Param>
+        </Token>
+
+        <!-- プリミティブ値(英数文字列) -->
+        <Regex id="Primitive">
+            <Param><![CDATA[/^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/]]></Param>
+        </Regex>
+
+        <!-- NULL値 -->
+        <Null id="Null"></Null>
+        <Token id="Camma">
+            <Param><![CDATA[,]]></Param>
+        </Token>
+
+        <!-- 空値 -->
+        <Empty id="Empty"></Empty>
+
+        <!-- 数値 -->
+        <Regex id="Number">
+            <Param><![CDATA[/^[0-9]+/]]></Param>
+        </Regex>
+
+        <!-- キー -->
+        <Regex id="Key">
+            <Param><![CDATA[/^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/]]></Param>
+        </Regex>
+
+        <!-- 結合子 -->
+        <Token id="Joint">
+            <Param><![CDATA[:]]></Param>
+        </Token>
+
+        <!-- ホワイトスペース(空白の連続＋改行＋空白の連続) -->
+        <Whitespace id="Ws"></Whitespace>
+
+        <!-- 結合子の第二オペランドになりえる値 -->
+        <Deffered id="Value"></Deffered>
+
+        <!-- キー：値　のペア -->
+        <Sequence id="Entry"></Sequence>
+
+        <!-- 複数Entry(カンマ区切り) -->
+        <Choice id="Entries"></Choice>
+
+        <!-- {(Entries)} -->
+        <Deffered id="Element"></Deffered>
+
+        <!-- [(Value)+] -->
+        <Deffered id="Array"></Deffered>
+
+    </Definitions>
+
+    <Struct>
+
+        <!-- Valueは「プリミティブ値」「キー：値　のペア」「配列([*])」「NULL値」「数値」「Bool」のいずれかである -->
+        <Ref id="Value">
+            <Ref id="Primitive"></Ref>
+            <Ref id="Element"></Ref>
+            <Ref id="Array"></Ref>
+            <Ref id="Null"></Ref>
+            <Ref id="Number"></Ref>
+        </Ref>
+
+        <!-- (Entry)は<WS><キー><WS><結合子><WS><値>の連続である -->
+        <Ref id="Entry">
+            <Ref id="Ws"></Ref>
+            <Ref id="Key"></Ref>
+            <Ref id="Ws"></Ref>
+            <Ref id="Joint"></Ref>
+            <Ref id="Ws"></Ref>
+            <Ref id="Value"></Ref>
+        </Ref>
+
+        <!-- 複数エントリとは( (<Entry><Camma>)+<Entry> )か、または単一のEntryである -->
+        <Ref id="Entries">
+            <Sequence>
+                <Any>
+                    <Sequence>
+                        <Ref id="Entry"></Ref>
+                        <Ref id="Camma"></Ref>
+                    </Sequence>
+                </Any>
+                <Ref id="Entry"></Ref>
+            </Sequence>
+            <Ref id="Entry"></Ref>
+        </Ref>
+
+        <!-- エレメントとは<Ws><{><Ws><Entries><Ws><}>Ws>の連続である -->
+        <Ref id="Element" root="true">
+            <Ref id="Ws"></Ref>
+            <Ref id="LBrace"></Ref>
+            <Ref id="Ws"></Ref>
+            <Ref id="Entries"></Ref>
+            <Ref id="Ws"></Ref>
+            <Ref id="RBrace"></Ref>
+            <Ref id="Ws"></Ref>
+        </Ref>
+
+        <!-- Array(配列)とは<Ws><[><Ws>(((<Value><Ws><Camma><Ws>)+Value)、または単一のValue)<Ws><]><Ws>である -->
+        <Ref id="Array">
+            <Ref id="Ws"></Ref>
+            <Ref id="LBracket"></Ref>
+            <Ref id="Ws"></Ref>
+            <Choice>
+                <Sequence>
+                    <Any>
+                        <Sequence>
+                            <Ref id="Value"></Ref>
+                            <Ref id="Ws"></Ref>
+                            <Ref id="Camma"></Ref>
+                            <Ref id="Ws"></Ref>
+                        </Sequence>
+                    </Any>
+                    <Ref id="Value"></Ref>
+                </Sequence>
+
+                <Ref id="Value"></Ref>
+            </Choice>
+            <Ref id="Ws"></Ref>
+            <Ref id="RBracket"></Ref>
+            <Ref id="Ws"></Ref>
+        </Ref>
+    </Struct>
+
+</Parser>
+

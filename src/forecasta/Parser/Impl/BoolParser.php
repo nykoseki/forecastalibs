@@ -7,11 +7,11 @@ use Forecasta\Parser\Impl\ParserTrait as PST;
 use Forecasta\Parser\ParserFactory;
 
 /**
- * 改行およびホワイトスペースを表すパーサです
+ * Boolean(trueまたはfalse)を表すパーサです
  * @author nkoseki
  *
  */
-class LbWsParser implements P\Parser
+class BoolParser implements P\Parser
 {
     use PST;
 
@@ -35,11 +35,16 @@ class LbWsParser implements P\Parser
     public function __construct()
     {
         //$this->name = 'Anonymous_' . md5(rand());
-        $whiteSpace = ParserFactory::Option()->add(ParserFactory::Regex("/^\s+/"));
-        $lineBreak = ParserFactory::Option()->add(ParserFactory::Token("\n"));
 
-        $whiteSpace = ParserFactory::Seq()->add($whiteSpace)->add($lineBreak)->add($whiteSpace);
-        $this->parser = $whiteSpace;
+        $bool = ParserFactory::Choice()
+            ->add(ParserFactory::Token("true"))
+            ->add(ParserFactory::Token("false"))
+            ->add(ParserFactory::Token("TRUE"))
+            ->add(ParserFactory::Token("FALSE"));
+
+        //$bool = ParserFactory::Option()->add(ParserFactory::Regex("/^true|^false|^TRUE|^FALSE/"));
+
+        $this->parser = $bool;
     }
 
     public function __toString()
@@ -61,6 +66,15 @@ class LbWsParser implements P\Parser
         $param = '';
         $message = "{\"Type\":\"$className\", \"Name\":\"$name\", \"Param\":\"$param\"}";
         */
+        if($searched === "true") {
+            $searched = "<TRUE($searched)>";
+        } else if($searched === "false") {
+            $searched = "<FALSE($searched)>";
+        } else if($searched === "TRUE") {
+            $searched = "<TRUE($searched)>";
+        } else if($searched === "FALSE") {
+            $searched = "<FALSE($searched)>";
+        }
 
         return $this->parser->outputRecursive($searched). "";
     }

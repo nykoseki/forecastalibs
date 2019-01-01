@@ -31,6 +31,15 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
         return $parser->parse($context);
     }
 
+    /**
+     * $parser->forwardのシンタックスシュガー
+     * @param P\Parser $parser
+     * @return ForwardParser
+     */
+    public function __invoke(P\Parser $parser) {
+        return $this->forward($parser);
+    }
+
     public function forward(P\Parser $parser)
     {
         $this->forwarder = function () use (&$parser) {

@@ -206,6 +206,8 @@ class ParserContext
                                     $tmpItem = "<Al>";
                                 } else if($tmpItem === "]") {
                                     $tmpItem = "<Ar>";
+                                } else if($tmpItem === ":") {
+                                    $tmpItem = "<Cl>";
                                 }
 
                                 if(mb_strlen($tmpItem) === 0) {
@@ -216,8 +218,6 @@ class ParserContext
                             }
 
                         }, $x);
-
-
 
                         $immidiate = array();
                         foreach($parsed0 as $v) {
