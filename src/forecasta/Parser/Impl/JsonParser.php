@@ -47,7 +47,21 @@ class JsonParser implements P\Parser
      */
     public function parse($context)
     {
-        return $this->parser->parse($context);
+        $this->onTry();
+
+        $ctx = $this->parser->parse($context);
+
+
+
+        $ctx->setParsedBy($this);
+
+        if($ctx->result()) {
+            $this->onSuccess($ctx);
+        } else {
+            $this->onError($ctx);
+        }
+
+        return $ctx;
     }
 
     public function __construct()
@@ -88,41 +102,42 @@ class JsonParser implements P\Parser
         $boolean = new BoolParser;
 
         // Joint := "=>"
-        $joint = ParserFactory::Token(":")/*->setName("Jo")*/;
+        $joint = ParserFactory::Token(":")->setName("Joint");
         ;
 
         // ダブルクォート
-        $quote = ParserFactory::Token("\"");
+        $quote = ParserFactory::Token("\"")/*->setName("Quote")*/;
 
         // Primitive := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$primitive = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Pr");
-        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:     '';\/\+\*=]+/")->setName("Pr"))->add($quote);
+        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:     '';\/\+\*=]+/")->setName("Primitive"))->add($quote);
 
         // Number
-        $number = ParserFactory::Regex("/^[0-9]+/")->setName("Nm");
+        $number = ParserFactory::Regex("/^[0-9]+/")->setName("Number");
 
         // Key := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$key = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Key");
         $key = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z_][A-Za-z_0-9\-]*/")->setName("Key"))->add($quote);
 
         // Value
-        $value = ParserFactory::Forward();
+        $value = ParserFactory::Forward()/*->setName("Value")*/;
 
         // Element
-        $element = ParserFactory::Forward();
+        $element = ParserFactory::Forward()/*->setName("Element")*/;
 
         // Array
-        $array = ParserFactory::Forward();
+        $array = ParserFactory::Forward()/*->setName("Array")*/;
 
         // Null
-        $null = ParserFactory::Token("null");
+        $null = ParserFactory::Token("null")/*->setName("NULL")*/;
 
         // Empty
         //$empty = ParserFactory::Seq()->add($quote)->add($quote)->setName("Empty");
         $empty = new EmptyParser;
+        //$empty->setName("Empty");
 
         // Entry := Key + Joint + Value
-        $entry = ParserFactory::Seq()
+        $entry = ParserFactory::Seq()/*->setName("Entry")*/
             ->add($whiteSpace)
             ->add($key)
             ->add($whiteSpace)
@@ -132,7 +147,7 @@ class JsonParser implements P\Parser
             ->add($whiteSpace);
 
         // Entries := (Entry , ) + Entry | Entry
-        $entries = ParserFactory::Choice()
+        $entries = ParserFactory::Choice()/*->setName("Entries")*/
             ->add(
                 ParserFactory::Seq()->add(
                     ParserFactory::Any()->add(
@@ -140,9 +155,12 @@ class JsonParser implements P\Parser
                             ->add($entry)
                             //->add(ParserFactory::Option()->add($whiteSpace))
                             ->add($whiteSpace)
-                            ->add(ParserFactory::Token(","))
+                            ->add(ParserFactory::Token(",")/*->setName("Comma")*/)
                             //->add(ParserFactory::Option()->add($whiteSpace))
                             ->add($whiteSpace)
+                            ->add(
+                                ParserFactory::Option()->add(ParserFactory::Token(",")/*->setName("Comma")*/)
+                            )
                     )
                 )->add(
                     $entry
@@ -153,7 +171,7 @@ class JsonParser implements P\Parser
         $array->forward(
             ParserFactory::Seq()
                 ->add($whiteSpace)
-                ->add(ParserFactory::Token("["))
+                ->add(ParserFactory::Token("[")/*->setName("ArOpen")*/)
                 ->add($whiteSpace)
                 ->add(
                     ParserFactory::Choice()
@@ -164,7 +182,7 @@ class JsonParser implements P\Parser
                                         ->add($value)
                                         //->add(ParserFactory::Option()->add($whiteSpace))
                                         ->add($whiteSpace)
-                                        ->add(ParserFactory::Token(","))
+                                        ->add(ParserFactory::Token(",")/*->setName("Comma")*/)
                                         //->add(ParserFactory::Option()->add($whiteSpace))
                                         ->add($whiteSpace)
                                 )
@@ -174,13 +192,13 @@ class JsonParser implements P\Parser
                         )->add($value)
                 )
                 ->add($whiteSpace)
-                ->add(ParserFactory::Token("]"))
+                ->add(ParserFactory::Token("]")/*->setName("ArClose")*/)
                 ->add($whiteSpace)
         );
 
         // Value := Primitive | Element | Array | Null | Empty | Bool
         $value->forward(
-            ParserFactory::Choice()
+            ParserFactory::Choice()/*->setName("ValueInner")*/
                 ->add($null)
                 ->add($primitive)
                 ->add($element)
@@ -205,18 +223,22 @@ class JsonParser implements P\Parser
                 ->add($whiteSpace)
         );
         */
-        $element(
+        $element->forward(
             ParserFactory::Seq()
                 ->add($whiteSpace)
-                ->add(ParserFactory::Token("{"))
+                ->add(ParserFactory::Token("{")/*->setName("ElOpen")*/)
                 ->add($whiteSpace)
                 ->add($entries)
                 ->add($whiteSpace)
-                ->add(ParserFactory::Token("}"))
+                ->add(ParserFactory::Token("}")/*->setName("ElClose")*/)
                 ->add($whiteSpace)
         );
 
         $this->parser = $element;
+
+        $this->parserHistoryEntry = new P\HistoryEntry;
+
+        $this->name = "Json";
     }
 
     public function isResolved()
@@ -232,7 +254,6 @@ class JsonParser implements P\Parser
 
     public function outputRecursive($searched)
     {
-
         return $this->parser->outputRecursive($searched). "";
     }
 }

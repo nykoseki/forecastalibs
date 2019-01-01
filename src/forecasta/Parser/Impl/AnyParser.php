@@ -44,11 +44,25 @@ class AnyParser implements P\Parser, P\HasMoreChildren
         }
 
         if($isSuccess) {
-            $this->onSuccess();
-            return new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
+
+
+            $ctx = new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
+
+            $ctx->setParsedBy($this);
+
+            $this->onSuccess($ctx);
+
+            return $ctx;
         } else {
-            $this->onError();
-            return new P\ParserContext($context->target(), $context->current(), null, false);
+
+
+            $ctx = new P\ParserContext($context->target(), $context->current(), null, false);
+
+            $ctx->setParsedBy($this);
+
+            $this->onError($ctx);
+
+            return $ctx;
         }
 
         /*
@@ -67,7 +81,10 @@ class AnyParser implements P\Parser, P\HasMoreChildren
     public function __construct(/*P\Parser $parser*/)
     {
         /*$this->parser = $parser;*/
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
+        $this->name = "Any";
+
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function isResolved()

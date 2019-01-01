@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="" tests="3" assertions="3" errors="0" failures="0" skipped="0" time="0.125183">
+    <testsuite name="TestSuite(Root)" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.003009">
+      <testsuite name="ForecastaTest\Test001" file="/usr/appl/nykoseki/tests/forecasta/Test001.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="0.003009">
+        <testcase name="testAaaa" class="ForecastaTest\Test001" classname="ForecastaTest.Test001" file="/usr/appl/nykoseki/tests/forecasta/Test001.php" line="9" assertions="1" time="0.003009"/>
+      </testsuite>
+    </testsuite>
+    <testsuite name="TestSuite(Parser)" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.122174">
+      <testsuite name="ForecastaTest\Parser\ParserTestCase" file="/usr/appl/nykoseki/tests/forecasta/Parser/ParserTestCase.php" tests="2" assertions="2" errors="0" failures="0" skipped="0" time="0.122174">
+        <testcase name="testJsonParser" class="ForecastaTest\Parser\ParserTestCase" classname="ForecastaTest.Parser.ParserTestCase" file="/usr/appl/nykoseki/tests/forecasta/Parser/ParserTestCase.php" line="21" assertions="1" time="0.121454"/>
+        <testcase name="testCompositeParser" class="ForecastaTest\Parser\ParserTestCase" classname="ForecastaTest.Parser.ParserTestCase" file="/usr/appl/nykoseki/tests/forecasta/Parser/ParserTestCase.php" line="83" assertions="1" time="0.000720"/>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>

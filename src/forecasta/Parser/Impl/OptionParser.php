@@ -29,11 +29,26 @@ class OptionParser implements P\Parser, P\HasMoreChildren
         $currentParsed = $this->parser->parse($context);
 
         if ($currentParsed->result()) {
-            $this->onSuccess();
+            $context->add($currentParsed);
+            $currentParsed->setParent($context);
+
+            $currentParsed->setParsedBy($this);
+
+            $this->onSuccess($currentParsed);
+
             return $currentParsed;
         } else {
-            $this->onSuccess();
-            return (new P\Impl\TrueParser())->parse($context);
+            
+            $ctx = (new P\Impl\TrueParser())->parse($context);
+
+            $this->onSuccess($ctx);
+
+            $ctx->setParsedBy($this);
+
+            $context->add($ctx);
+            $ctx->setParent($context);
+
+            return $ctx;
         }
     }
 
@@ -47,7 +62,9 @@ class OptionParser implements P\Parser, P\HasMoreChildren
     public function __construct(/*P\Parser $parser*/)
     {
         /*$this->parser = $parser;*/
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
+        $this->name = "Option";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function isResolved()

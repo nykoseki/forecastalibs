@@ -25,20 +25,31 @@ class TokenParser implements P\Parser
     {
         $this->onTry();
         $len = mb_strlen($this->str);
-
-
+        
         //applLog("CharParser", $context);
 
         if (mb_substr($context->target(), $context->current(), $len) === $this->str) {
-            $this->onSuccess();
+
 
             $parsed = $this->str;
             $parsed = $this->decolateParsed($parsed);
 
-            return new P\ParserContext($context->target(), $context->current() + $len, $parsed, true);
+            $ctx = new P\ParserContext($context->target(), $context->current() + $len, $parsed, true);
+
+            $this->onSuccess($ctx);
+
+            $ctx->setParsedBy($this);
+
+            return $ctx;
         } else {
-            $this->onError();
-            return new P\ParserContext($context->target(), $context->current(), null, false);
+
+            $ctx = new P\ParserContext($context->target(), $context->current(), null, false);
+
+            $this->onError($ctx);
+
+            $ctx->setParsedBy($this);
+
+            return $ctx;
         }
     }
 
@@ -46,6 +57,8 @@ class TokenParser implements P\Parser
     {
         $this->str = $str;
         //$this->name = 'Anonymous_' . md5(rand());
+        $this->name = "Token";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function isResolved()

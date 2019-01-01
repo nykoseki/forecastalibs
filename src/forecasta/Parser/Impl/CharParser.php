@@ -36,22 +36,35 @@ class CharParser implements P\Parser
 
         //applLog("CharParser", $target0);
         if (array_key_exists($target0, $targetArray)) {
-            $this->onSuccess();
+
 
             $target0 = $this->decolateParsed($target0);
 
-            return new P\ParserContext($context->target(), $context->current() + 1, $target0, true);
+            $ctx = new P\ParserContext($context->target(), $context->current() + 1, $target0, true);
+
+            $ctx->setParsedBy($this);
+
+            $this->onSuccess($ctx);
+
+            return $ctx;
         } else {
-            $this->onError();
-            return (new P\Impl\FalseParser())->parse($context);
+            $ctx = (new P\Impl\FalseParser())->parse($context);
+
+            $ctx->setParsedBy($this);
+
+            $this->onError($ctx);
+
+            return $ctx;
         }
     }
 
     public function __construct($chars)
     {
         $this->chars = $chars;
-
+        $this->parserHistoryEntry = new P\HistoryEntry;
         //$this->name = 'Anonymous_' . md5(rand());
+
+        $this->name = "Char";
     }
 
     public function isResolved()

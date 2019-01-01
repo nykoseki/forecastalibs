@@ -24,7 +24,19 @@ class BoolParser implements P\Parser
      */
     public function parse($context)
     {
-        return $this->parser->parse($context);
+        $this->onTry();
+
+        $ctx = $this->parser->parse($context);
+
+        $ctx->setParsedBy($this);
+
+        if($ctx->result()) {
+            $this->onSuccess($ctx);
+        } else {
+            $this->onError($ctx);
+        }
+
+        return $ctx;
     }
 
     public function isResolved()
@@ -45,6 +57,9 @@ class BoolParser implements P\Parser
         //$bool = ParserFactory::Option()->add(ParserFactory::Regex("/^true|^false|^TRUE|^FALSE/"));
 
         $this->parser = $bool;
+        $this->name = "Bool";
+
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function __toString()

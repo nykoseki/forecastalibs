@@ -22,8 +22,15 @@ class FalseParser implements P\Parser
     public function parse($context)
     {
         $this->onTry();
-        $this->onError();
-        return new P\ParserContext($context->target(), $context->current(), null, false);
+
+
+        $ctx = new P\ParserContext($context->target(), $context->current(), null, false);
+
+        $ctx->setParsedBy($this);
+
+        $this->onError($ctx);
+
+        return $ctx;
     }
 
     public function isResolved()
@@ -34,6 +41,8 @@ class FalseParser implements P\Parser
     public function __construct()
     {
         $this->name = 'Anonymous_' . md5(rand());
+        $this->name = "False";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function __toString()

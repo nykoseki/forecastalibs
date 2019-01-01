@@ -8,6 +8,8 @@ use Forecasta\Parser\Impl as PImpl;
 use Forecasta\Parser\ParserFactory;
 use Forecasta\Comment\Processor\CommentParser;
 use Forecasta\Parser\Impl\JsonParser;
+use Forecasta\Common\ProxyTrait;
+use PhpParser\Comment;
 
 class ForecastaMain
 {
@@ -139,7 +141,6 @@ class ForecastaMain
     {
         echo "=========================================================================\n";
         echo "parse005_2\n";
-
 
         //$open = ParserFactory::Token("{");
         // 数値
@@ -474,11 +475,135 @@ EOF;
         $result = $element->parse($ctx);
         $time = microtime(true) - $time_start;
 
-        echo print_r($result . "", true) . "\n";
-        echo "{$time} 秒". PHP_EOL;
+        $history = $element->getHistory();
 
-        (function(){
-            echo "Test". PHP_EOL;
-        })();
+        echo print_r($result . "", true) . "\n";
+        echo print_r($history->isRoot() . "", true) . "\n";
+
+        //echo var_dump($history, true) . "\n";
+        echo "{$time} 秒" . PHP_EOL;
+    }
+
+    public function parse006()
+    {
+        $context = <<<EOF
+    /**
+     * @aaa "aaaaa"
+     * @Test(
+     *     "aaa"=>"bbb",
+     *     "ccc"=>"ddd"
+     * )
+     * @bbb("aaaaa" => "bbbbb", "ccccc" => "dddddd")
+     * @xyz(
+     *     "aaa" => "bbb",
+     *     "ccc" => (
+     *          "ddd" => "eee",
+     *          "fff" => "gggg"
+     *      )
+     * )
+     * @test true
+     * @return string
+     */
+EOF;
+        // 解析対象
+        $context = (new CommentParser())->normalizeComment($context);
+
+        // プリミティブ := クォート文字列, 数値, True, False, Empty, Null, string
+        $primitive = ParserFactory::Choice()->setName("Primitive");
+        {// プリミティブ値定義
+            // クォート文字列
+            $quoted = ParserFactory::Seq()->setName("Quoted")->addAt($primitive);
+
+            // 数値
+            $number = ParserFactory::Regex("/^[0-9]+/")->setName("Number")->addAt($primitive);
+
+            // Bool
+            $bool = (new PImpl\BoolParser())->setName("Bool")->addAt($primitive);
+        }
+
+        $space = ParserFactory::Regex("/^\s+/");
+        $whiteSpace = new PImpl\LbWsParser;
+
+        // サブジェクト(@xxx)
+        $subject = ParserFactory::Seq()
+            ->add(ParserFactory::Token("@"))
+            ->add(ParserFactory::Regex("/^[A-Za-z_][A-Za-z0-9]+/")->setName("Subject"));
+
+        // 単一行設定エントリ(@xxx "yyy")
+        $singleConf = ParserFactory::Choice()->add(
+            ParserFactory::Seq()->setName("Single")
+                ->add($subject)
+                ->add($space)
+                ->add($primitive)
+        )
+        ->add(
+            // 標準ドキュメントタグなど(指定された設定エントリは読み飛ばし)
+            ParserFactory::Seq()->setName("DefaultTag")->skip(true)
+        );
+
+        // KeyValueEntry | KeyValueEntries
+        $compositeElement = ParserFactory::Forward();
+
+
+        $compositeConfigurationDelim = ParserFactory::Seq()
+            ->add(ParserFactory::Token("=>"));
+
+        // (compositeElement, compositeElement) + compositeElement | compositeElement
+        $compositeElements = ParserFactory::Choice()
+            ->add(
+                ParserFactory::Seq()
+                    ->add(
+                        ParserFactory::Any()
+                            ->add($compositeElement)
+                            ->add($whiteSpace)
+                            ->add(ParserFactory::Token(","))
+                            ->add($whiteSpace)
+                    )
+                    ->add($compositeElement)
+            )
+            ->add($compositeElement)
+            ->setName("Configurations");
+
+        // 複数行設定エントリ
+        // @xxx(
+        //  $compositeConfItem
+        // )
+        $multiConf = ParserFactory::Seq()
+            ->add(ParserFactory::Token("("))
+            ->add($whiteSpace)
+            ->add($compositeElement)
+            ->add($whiteSpace)
+            ->add(ParserFactory::Token(")"));
+
+        // 設定(述語)エントリ(単一行設定(述語)エントリ or 複数行設定(述語)エントリ or 述語無し設定エントリ)
+        $configuration = ParserFactory::Choice()->setName("Configuration")
+            ->add($multiConf)
+            ->add($singleConf)
+            //->add($subject)
+        ;
+
+        // 設定エントリデリミタ
+        $configurationDelim = ParserFactory::Seq()
+            ->add(ParserFactory::Regex("/^\n/"))
+            ->add(new PImpl\LbWsParser);
+
+        // 設定エントリ群
+        $configurations = ParserFactory::Choice()
+            ->add(
+                ParserFactory::Seq()
+                    ->add(
+                        ParserFactory::Any()
+                            ->add($configuration)
+                            ->add($configurationDelim)
+                    )
+                    ->add($configuration)
+            )
+            ->add($configuration)
+            ->setName("Configurations");
+
+        /*
+        $result = $configurations->parse(CTX::create($context));
+        echo print_r($result . "", true) . "\n";
+        */
     }
 }

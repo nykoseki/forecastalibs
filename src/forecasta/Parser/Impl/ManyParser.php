@@ -30,19 +30,30 @@ class ManyParser implements P\Parser, P\HasMoreChildren
 
         $currentParsed = $context;
 
+        $ctxArray = array();
+
         for (; ;) {
             $currentParsed = $this->parser->parse($currentParsed);
             if ($currentParsed->result() === true) {
                 array_push($result, $currentParsed->parsed());
-
-                //$position = $currentParsed->current();
+                $currentParsed->setParent($context);
+                array_push($ctxArray, $currentParsed);
             } else {
                 break;
             }
         }
 
-        $this->onSuccess();
-        return new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
+        $ctx = new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
+
+        $ctx->setParsedBy($this);
+
+        $this->onSuccess($ctx);
+
+        foreach($ctxArray as $v) {
+            $ctx->add($v);
+        }
+
+        return $ctx;
     }
 
     public function add(P\Parser $parser)
@@ -55,7 +66,9 @@ class ManyParser implements P\Parser, P\HasMoreChildren
     public function __construct(/*P\Parser $parser*/)
     {
         /*$this->parser = $parser;*/
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
+        $this->name = "Many";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function isResolved()

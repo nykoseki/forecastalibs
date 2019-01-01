@@ -14,6 +14,7 @@ use Forecasta\Parser\Impl\RegexParser as Regex;
 use Forecasta\Parser\Impl\SequenceParser as Seq;
 use Forecasta\Parser\Impl\TokenParser as Token;
 use Forecasta\Parser\Impl\TrueParser as T;
+use Forecasta\Parser\Impl\LbWsParser as LbWs;
 
 //require_once dirname(__FILE__). '/../Common/YCombinator.php';
 
@@ -24,7 +25,6 @@ use Forecasta\Parser\Impl\TrueParser as T;
  */
 class ParserFactory
 {
-
     /**
      *
      * @var unknown
@@ -88,7 +88,8 @@ class ParserFactory
      * AnyParserを生成します
      * @return Any
      */
-    public static function Any(/*Psr $parser*/) {
+    public static function Any(/*Psr $parser*/)
+    {
         return (new Any);
     }
 
@@ -138,6 +139,15 @@ class ParserFactory
     public static function T()
     {
         return new T();
+    }
+
+    /**
+     * LbWsParserを生成します
+     * @return LbWs
+     */
+    public static function LbWs()
+    {
+        return new LbWs;
     }
 
     /**

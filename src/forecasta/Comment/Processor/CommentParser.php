@@ -9,16 +9,28 @@ use Forecasta\Parser\ParserFactory;
 
 class CommentParser
 {
-    public function parse($classInstance, $methodName) {
+    public function parse($classInstance, $methodName)
+    {
         $rc = new \ReflectionClass(get_class($classInstance));
         $m = $rc->getMethod($methodName);
 
         $comment = $m->getDocComment();
+        $comment = $this->normalizeComment($comment);
 
+        //echo print_r(join("\n", $newAry), true). "\n";
+    }
+
+    /**
+     * コメント先頭の不要な文字列を削除して、きれいなコメント文字列として返す。
+     * @param $comment
+     * @return string
+     */
+    public function normalizeComment($comment)
+    {
         $ary = explode("\n", $comment);
 
         $newAry = array();
-        foreach($ary as $value) {
+        foreach ($ary as $value) {
             $ptn01 = '/\s*?\\/\\*\\*/i';
             $rep01 = '';
             $tmp = preg_replace($ptn01, $rep01, $value);
@@ -31,7 +43,7 @@ class CommentParser
             $rep03 = '${1}';
             $tmp = preg_replace($ptn03, $rep03, $tmp);
 
-            if(empty($tmp)) {
+            if (empty($tmp)) {
                 continue;
             }
 
@@ -40,10 +52,10 @@ class CommentParser
         }
 
         return join("\n", $newAry);
-        //echo print_r(join("\n", $newAry), true). "\n";
     }
 
-    public function toArray($classInstance, $methodName) {
+    public function toArray($classInstance, $methodName)
+    {
         $str = $this->parse($classInstance, $methodName);
 
         $parser = $this->getParser();
@@ -51,7 +63,8 @@ class CommentParser
         return $str;
     }
 
-    private function getParser() {
+    private function getParser()
+    {
         $element = ParserFactory::Many();
 
         $choice = ParserFactory::Choice();
@@ -100,7 +113,8 @@ class CommentParser
 
     }
 
-    public function getTest() {
+    public function getTest()
+    {
         // 全体
         $seq = ParserFactory::Seq();
 
@@ -141,7 +155,8 @@ class CommentParser
         return $seq;
     }
 
-    private function getCompositeSingleLineParser($choice) {
+    private function getCompositeSingleLineParser($choice)
+    {
         $choice0 = $choice;
         $seq = ParserFactory::Seq();
 
@@ -175,12 +190,14 @@ class CommentParser
         return $choice;
     }
 
-    private function getCompositeMultiLineParser($choice) {
+    private function getCompositeMultiLineParser($choice)
+    {
 
         return $choice;
     }
 
-    private function getQuotedParser($choice) {
+    private function getQuotedParser($choice)
+    {
 
         $seq = ParserFactory::Seq();
         $seq->add(ParserFactory::Regex('/\s+/'));
@@ -202,7 +219,8 @@ class CommentParser
         return $choice;
     }
 
-    private function getSingleQuotedParser($choice) {
+    private function getSingleQuotedParser($choice)
+    {
 
         $seq = ParserFactory::Seq();
         $seq->add(ParserFactory::Regex('/\s+/'));
@@ -224,7 +242,8 @@ class CommentParser
         return $choice;
     }
 
-    private function getNotQuotedParser($choice) {
+    private function getNotQuotedParser($choice)
+    {
         $seq = ParserFactory::Seq();
         $seq->add(ParserFactory::Regex('/\s+/'));
         $v0 = ParserFactory::Regex('/[^"]+/i');
@@ -235,5 +254,35 @@ class CommentParser
         $choice->add($seq);
 
         return $choice;
+    }
+
+    private static $NUMBER = null;
+
+    public static function getNumberParser()
+    {
+        if (self::$NUMBER === null) {
+            self::$NUMBER = ParserFactory::Regex("/^[0-9]+/");
+        }
+        return self::$NUMBER;
+    }
+
+    private static $EMPTY = null;
+
+    public static function getEmptyParser()
+    {
+        if (self::$EMPTY === null) {
+            self::$EMPTY = new PImpl\EmptyParser;
+        }
+        return self::$EMPTY;
+    }
+
+    private static $CAMMA = null;
+    public static function getCammaParser()
+    {
+
+        if (self::$CAMMA === null) {
+            self::$CAMMA = ParserFactory::Token(",");
+        }
+        return self::$CAMMA;
     }
 }

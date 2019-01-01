@@ -25,26 +25,36 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
     {
         $this->onTry();
 
-        $parser = $this->forwarder->__invoke();
+        //$parser = $this->forwarder->__invoke();
 
+        $ctx = $this->forwarder->parse($context);
 
-        return $parser->parse($context);
+        $ctx->setParsedBy($this->forwarder);
+
+        if($ctx->result()) {
+            $this->onSuccess($ctx);
+        } else {
+            $this->onError($ctx);
+        }
+
+        //return $parser->parse($context);
+        return $ctx;
     }
 
     /**
-     * $parser->forwardのシンタックスシュガー
+     * このパーサのparseメソッドがコールされた際に移譲されるパーサを設定します
      * @param P\Parser $parser
-     * @return ForwardParser
+     * @return $this
      */
-    public function __invoke(P\Parser $parser) {
-        return $this->forward($parser);
-    }
-
     public function forward(P\Parser $parser)
     {
+        /*
         $this->forwarder = function () use (&$parser) {
             return $parser;
         };
+        */
+
+        $this->forwarder = $parser;
 
         return $this;
     }
@@ -52,6 +62,8 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
     public function __construct()
     {
         $this->name = 'Anonymous_' . md5(rand());
+        $this->name = "Forward";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function isResolved()
@@ -76,8 +88,8 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
 
         $name = $this->name;
         $param = '';
-        if (!is_null($this->forwarder) && $this->forwarder->__invoke() instanceof P\Parser) {
-            $forwardedFor = $this->forwarder->__invoke();
+        if (!is_null($this->forwarder) && $this->forwarder/*->__invoke()*/ instanceof P\Parser) {
+            $forwardedFor = $this->forwarder/*->__invoke()*/;
 
             $cls = get_class($forwardedFor);
 

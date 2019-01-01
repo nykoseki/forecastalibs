@@ -22,8 +22,15 @@ class TrueParser implements P\Parser
     public function parse($context)
     {
         $this->onTry();
-        $this->onError();
-        return new P\ParserContext($context->target(), $context->current(), null, true);
+
+
+        $ctx = new P\ParserContext($context->target(), $context->current(), null, true);
+
+        $this->onSuccess($ctx);
+
+        $ctx->setParsedBy($this);
+
+        return $ctx;
     }
 
     public function isResolved()
@@ -33,7 +40,9 @@ class TrueParser implements P\Parser
 
     public function __construct()
     {
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
+        $this->name = "True";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function __toString()

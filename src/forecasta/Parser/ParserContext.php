@@ -68,6 +68,30 @@ class ParserContext
         $this->ctx = $ctx;
     }
 
+    public function getParent() {
+        return $this->parent;
+    }
+
+    public function setParent(ParserContext $context) {
+        return $this->parent;
+    }
+
+    public function add(ParserContext $context) {
+        array_push($this->children, $context);
+    }
+
+    public function children() {
+        return $this->children();
+    }
+
+    public function parsedBy() {
+        return $this->parser;
+    }
+
+    public function setParsedBy($parser) {
+        $this->parser = $parser;
+    }
+
     public function setSkip($skipFlg)
     {
         $this->skipFlg = $skipFlg;
@@ -93,9 +117,16 @@ class ParserContext
         return new ParserContext($target, 0, null, false);
     }
 
+    public static function getBlank() {
+        return new ParserContext("", 0, null, false);
+    }
+
     public function target()
     {
         return $this->target;
+    }
+    public function updateTarget($target) {
+        $this->target = $target;
     }
 
     public function current()
@@ -103,14 +134,26 @@ class ParserContext
         return $this->currentPosition;
     }
 
+    public function updateCurrent($currentPosition) {
+        $this->currentPosition = $currentPosition;
+    }
+
     public function parsed()
     {
         return $this->parsed;
     }
 
+    public function updateParsed($parsed) {
+        $this->parsed = $parsed;
+    }
+
     public function result()
     {
         return $this->ctx;
+    }
+
+    public function updateResult($result) {
+        $this->ctx = $result;
     }
 
     public function currentTarget()
@@ -130,30 +173,12 @@ class ParserContext
 
     public function __toString()
     {
+        return $this->output();
+    }
+
+    private function output() {
         //echo "toString\n";
         $parsed0 = $this->parsed;
-
-// 		if(is_array($parsed0)) {
-// 			if(count($parsed0) == 0) {
-// 				$parsed0 = '[Null]';
-// 			} else {
-// 				$parsed0 = array_map(function($item){
-// 					return '"'. $item. '"';
-// 				}, $parsed0);
-// 				$parsed0 = implode(', ', $parsed0);
-// 				$parsed0 = '['. $parsed0. ']';
-// 			}
-// 		} else if(is_null($parsed0)) {
-// 			$parsed0 = '[Null]';
-// 		}
-
-// 		$Y = function($F) use(&$Y){
-// 			return $F(
-// 					function() use (&$F, &$Y){
-// 						return call_user_func_array($Y($F), func_get_args());
-// 					}
-// 			);
-// 		};
 
         // Y-Combinatorで再帰処理を行う
         // 配列->[...]
@@ -194,6 +219,7 @@ class ParserContext
                                     $tmpItem = "";
                                 } else if ($tmpItem === "") {
                                     $tmpItem = "<Empty>";
+                                    $tmpItem = "";
                                 } else if ($tmpItem === "\t") {
                                     $tmpItem = "<Tab>";
                                 } else if ($tmpItem === "{") {
@@ -208,6 +234,8 @@ class ParserContext
                                     $tmpItem = "<Ar>";
                                 } else if($tmpItem === ":") {
                                     $tmpItem = "<Cl>";
+                                } else if($tmpItem === "<WhiteSpace>") {
+                                    $tmpItem = "";
                                 }
 
                                 if(mb_strlen($tmpItem) === 0) {

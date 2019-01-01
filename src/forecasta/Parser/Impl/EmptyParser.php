@@ -30,10 +30,24 @@ class EmptyParser implements P\Parser
             /*
              * $target, $position, $parsed, $ctx
              */
-            return new P\ParserContext($resultCtx->target(), $resultCtx->current(), "<Empty>", $resultCtx->result());
+
+            $this->onTry();
+
+            $ctx = new P\ParserContext($resultCtx->target(), $resultCtx->current(), "<Empty>", $resultCtx->result());
+
+            $ctx->setParsedBy($this);
+
+            if($ctx->result()) {
+                $this->onSuccess($ctx);
+            } else {
+                $this->onError($ctx);
+            }
+
+            return $ctx;
         }
 
-        return $this->parser->parse($context);
+        $ctx = $this->parser->parse($context);
+        return $ctx;
     }
 
     public function isResolved()
@@ -55,6 +69,10 @@ class EmptyParser implements P\Parser
 
         //$this->parser = ParserFactory::Seq()->add($quote)->add($quote)->setName("Empty");
         $this->parser = $psr;
+
+        $this->name = "Empty";
+
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function __toString()

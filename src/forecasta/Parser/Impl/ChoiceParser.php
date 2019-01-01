@@ -35,18 +35,30 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
             $currentParsed = $currentParser->parse($currentParsed);
 
             if ($currentParsed->result() === true) {
-                $this->onSuccess();
-                return $currentParsed;
+
+
+                $ctx = $currentParsed;
+
+                $this->onSuccess($ctx);
+
+                return $ctx;
             }
         }
 
-        $this->onError();
-        return new P\ParserContext($context->target(), $currentParsed->current(), null, false);
+        $ctx = new P\ParserContext($context->target(), $currentParsed->current(), null, false);
+
+        $ctx->setParsedBy($this);
+
+        $this->onError($ctx);
+
+        return $ctx;
     }
 
     public function __construct()
     {
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
+        $this->name = "Choice";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function add(P\Parser $parser)

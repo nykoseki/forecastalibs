@@ -47,6 +47,12 @@ trait ParserTrait
      */
     private $tag = "";
 
+    /**
+     * パーサヒストリエントリ
+     * @var P\HistoryEntry
+     */
+    private $parserHistoryEntry = null;
+
     public function isDebugMode()
     {
         return $this->debugMode;
@@ -136,24 +142,27 @@ trait ParserTrait
     /**
      * @param string $alias
      */
-    public function onSuccess($alias = "")
+    public function onSuccess(CTX $context, $alias = "")
     {
         if ($this->debugMode) {
             $className = get_class($this);
             applLog("Parser:onSuccess", "[Name:$this->name] of <$className>");
         }
+
+        $this->parserHistoryEntry->leave();
     }
 
     /**
      * @param string $alias
      */
-    public function onError($alias = "")
+    public function onError(CTX $context, $alias = "")
     {
         if ($this->debugMode) {
             $className = get_class($this);
             applLog("Parser:onError", "[Name:$this->name] of <$className>");
         }
 
+        $this->parserHistoryEntry->leave();
     }
 
     /**
@@ -166,6 +175,7 @@ trait ParserTrait
             applLog("Parser:onTry", "[Name:$this->name] of <$className>");
         }
 
+        $this->parserHistoryEntry->enter($this);
     }
 
     /**
@@ -179,10 +189,45 @@ trait ParserTrait
             $nm = $this->getName();
             $clsName = get_class($this);
 
-            return "<{$nm}@\"{$parsed}\">";
+            $intermediate = $parsed;
+            $intermediate = preg_replace("/\s+/", "", $intermediate);
+            $intermediate = str_replace("\r\n", "", $intermediate);
+            $intermediate = str_replace("\r", "", $intermediate);
+            $intermediate = str_replace("\n", "", $intermediate);
+
+            if(empty($intermediate)) {
+                //$parsed = "<WhiteSpace>";
+                //return "<{$this->getName()}>";
+                return "";
+            }
+
+
+            if($parsed === "\"") {
+                $parsed = '\"';
+                //return "<{$this->getName()}>";
+            }
+
+            return "{\"{$nm}\" : \"{$parsed}\"}";
         } else {
             return $parsed;
         }
     }
+
+    public function addAt(P\Parser $parser) {
+        if($parser instanceof P\HasMoreChildren) {
+            $parser->add($this);
+        }
+        return $this;
+    }
+
+    public function getHistory() {
+        return $this->parserHistoryEntry;
+    }
+
+    public function setHistory($history) {
+        $this->parserHistoryEntry = $history;
+    }
+
+
 }
 

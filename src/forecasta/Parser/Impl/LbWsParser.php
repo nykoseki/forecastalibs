@@ -24,7 +24,20 @@ class LbWsParser implements P\Parser
      */
     public function parse($context)
     {
-        return $this->parser->parse($context);
+        $this->onTry();
+
+        $ctx = $this->parser->parse($context);
+
+
+        $ctx->setParsedBy($this);
+
+        if($ctx->result()) {
+            $this->onSuccess($ctx);
+        } else {
+            $this->onError($ctx);
+        }
+
+        return $ctx;
     }
 
     public function isResolved()
@@ -40,6 +53,10 @@ class LbWsParser implements P\Parser
 
         $whiteSpace = ParserFactory::Seq()->add($whiteSpace)->add($lineBreak)->add($whiteSpace);
         $this->parser = $whiteSpace;
+
+        $this->parserHistoryEntry = new P\HistoryEntry;
+
+        $this->name = "LbWs";
     }
 
     public function __toString()

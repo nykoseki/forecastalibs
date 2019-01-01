@@ -6,10 +6,19 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="false"
+        >
     <testsuites>
-        <testsuite name="Collection Test Suite">
+        <testsuite name="TestSuite(Root)">
             <directory suffix="Test001.php">./tests/forecasta/</directory>
+        </testsuite>
+        <testsuite name="TestSuite(Parser)">
+
+            <directory suffix="ParserTestCase.php">./tests/forecasta/Parser/</directory>
+            <directory suffix="*TestCase.php">./tests/forecasta/Comment/Processor/</directory>
+        </testsuite>
+        <testsuite name="TestSuite(Comment)">
+            <directory>./tests/forecasta/Comment/Processor/CommentParserTestCase.php</directory>
         </testsuite>
     </testsuites>
 

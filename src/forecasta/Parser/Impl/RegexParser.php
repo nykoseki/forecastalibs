@@ -45,7 +45,7 @@ class RegexParser implements P\Parser
             $position = $position + $matchLen;
 
             //applLog("RegexParser", $matches);
-            $this->onSuccess();
+
 
             //$this->setName("Regex-0");
 
@@ -53,12 +53,22 @@ class RegexParser implements P\Parser
 
             $ctx = new P\ParserContext($context->target(), $position, $match, true);
 
+            $ctx->setParsedBy($this);
+
+            $this->onSuccess($ctx);
 
             //return new P\ParserContext($context->target(), $position, $match, true);
             return $ctx;
         } else {
-            $this->onError();
-            return (new P\impl\FalseParser())->parse($context);
+
+
+            $ctx = (new P\Impl\FalseParser())->parse($context);
+
+            $ctx->setParsedBy($this);
+
+            $this->onError($ctx);
+
+            return $ctx;
         }
     }
 
@@ -91,6 +101,8 @@ class RegexParser implements P\Parser
     {
         $this->regexStr = $regex;
         //$this->name = 'Anonymous_' . md5(rand());
+        $this->parserHistoryEntry = new P\HistoryEntry;
+        $this->name = "Regex";
     }
 
     public function isResolved()

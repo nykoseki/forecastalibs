@@ -26,29 +26,51 @@ class SequenceParser implements P\Parser, P\HasMoreChildren
         $this->onTry();
         $result = [];
 
-        //applLog("ChoiceParser", $this->parsers);
-
         $currentParsed = $context;
+
+        $ctxArray = array();
 
         for ($i = 0; $i < count($this->parsers); $i++) {
             $currentParser = $this->parsers[$i];
             $currentParsed = $currentParser->parse($currentParsed);
 
+            //$context->add($currentParsed);
+
             if ($currentParsed->result() === true) {
                 array_push($result, $currentParsed->parsed());
+
+                $currentParsed->setParent($context);
+                array_push($ctxArray, $currentParsed);
+
             } else {
-                $this->onError();
-                return (new P\Impl\FalseParser())->parse($context);
+                $ctx = (new P\Impl\FalseParser())->parse($context);
+
+                $ctx->setParsedBy($this);
+
+                $this->onError($ctx);
+
+                return $ctx;
             }
         }
 
-        $this->onSuccess();
-        return new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
+        $ctx = new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
+
+        foreach($ctxArray as $v) {
+            $ctx->add($v);
+        }
+
+        $this->onSuccess($ctx);
+
+        $ctx->setParsedBy($this);
+
+        return $ctx;
     }
 
     public function __construct()
     {
-        $this->name = 'Anonymous_' . md5(rand());
+        //$this->name = 'Anonymous_' . md5(rand());
+        $this->name = "Sequence";
+        $this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function add(P\Parser $parser)
