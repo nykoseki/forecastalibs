@@ -21,10 +21,13 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $result = [];
+
+        $currentCtx = P\ParserContext::getBlank();
 
         //applLog("ChoiceParser", $this->parsers);
 
@@ -32,14 +35,12 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
 
         for ($i = 0; $i < count($this->parsers); $i++) {
             $currentParser = $this->parsers[$i];
-            $currentParsed = $currentParser->parse($currentParsed);
+            $currentParsed = $currentParser->parse($currentParsed, $depth);
 
             if ($currentParsed->result() === true) {
-
-
                 $ctx = $currentParsed;
 
-                $this->onSuccess($ctx);
+                $this->onSuccess($ctx, $depth);
 
                 return $ctx;
             }
@@ -47,9 +48,7 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
 
         $ctx = new P\ParserContext($context->target(), $currentParsed->current(), null, false);
 
-        $ctx->setParsedBy($this);
-
-        $this->onError($ctx);
+        $this->onError($ctx, $depth);
 
         return $ctx;
     }

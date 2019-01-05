@@ -45,20 +45,20 @@ class JsonParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
 
-        $ctx = $this->parser->parse($context);
+        $this->onTry($depth);
 
+        $currentCtx = P\ParserContext::getBlank();
 
-
-        $ctx->setParsedBy($this);
+        $ctx = $this->parser->parse($context, $depth);
 
         if($ctx->result()) {
-            $this->onSuccess($ctx);
+            $this->onSuccess($ctx, $depth);
         } else {
-            $this->onError($ctx);
+            $this->onError($ctx, $depth);
         }
 
         return $ctx;
@@ -66,13 +66,6 @@ class JsonParser implements P\Parser
 
     public function __construct()
     {
-        /*
-        $whiteSpace = ParserFactory::Option()->add(ParserFactory::Regex("/^\s+/"));
-        $lineBreak = ParserFactory::Option()->add(ParserFactory::Token("\n"));
-
-        $whiteSpace = ParserFactory::Seq()->add($whiteSpace)->add($lineBreak)->add($whiteSpace);
-        */
-
 
         /*
          * [Parser Overview]
@@ -211,18 +204,6 @@ class JsonParser implements P\Parser
 
 
         // Element := "{" + Entries + "}"
-        /*
-        $element->forward(
-            ParserFactory::Seq()
-                ->add($whiteSpace)
-                ->add(ParserFactory::Token("{"))
-                ->add($whiteSpace)
-                ->add($entries)
-                ->add($whiteSpace)
-                ->add(ParserFactory::Token("}"))
-                ->add($whiteSpace)
-        );
-        */
         $element->forward(
             ParserFactory::Seq()
                 ->add($whiteSpace)
@@ -235,8 +216,6 @@ class JsonParser implements P\Parser
         );
 
         $this->parser = $element;
-
-        $this->parserHistoryEntry = new P\HistoryEntry;
 
         $this->name = "Json";
     }

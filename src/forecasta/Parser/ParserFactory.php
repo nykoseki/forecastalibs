@@ -2,7 +2,6 @@
 
 namespace Forecasta\Parser;
 
-use Forecasta\Parser\ASTContext as ASTContext;
 use Forecasta\Parser\Impl\CharParser as Char;
 use Forecasta\Parser\Impl\ChoiceParser as Choice;
 use Forecasta\Parser\Impl\FalseParser as F;
@@ -15,8 +14,11 @@ use Forecasta\Parser\Impl\SequenceParser as Seq;
 use Forecasta\Parser\Impl\TokenParser as Token;
 use Forecasta\Parser\Impl\TrueParser as T;
 use Forecasta\Parser\Impl\LbWsParser as LbWs;
+use Forecasta\Parser\Impl\TrueParser;
+use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\Impl\EmptyParser;
+use Forecasta\Parser\Impl\BoolParser;
 
-//require_once dirname(__FILE__). '/../Common/YCombinator.php';
 
 /**
  * 各種パーサを生成・組み立てするためのユーティリティクラスです
@@ -151,6 +153,42 @@ class ParserFactory
     }
 
     /**
+     * TrueParserを生成します
+     * @return True
+     */
+    public static function True()
+    {
+        return new TrueParser;
+    }
+
+    /**
+     * FalseParserを生成します
+     * @return False
+     */
+    public static function False()
+    {
+        return new FalseParser;
+    }
+
+    /**
+     * EmptyParser
+     * @return False
+     */
+    public static function Empty()
+    {
+        return new EmptyParser;
+    }
+
+    /**
+     * BoolParser
+     * @return False
+     */
+    public static function Bool()
+    {
+        return new BoolParser;
+    }
+
+    /**
      * 引数に指定されたパーサタイプと生成パラメータを用いて，パーサを生成します
      * @param string $type パーサタイプ
      * @param mixed $param 生成パラメータ
@@ -179,6 +217,14 @@ class ParserFactory
             return self::T();
         } else if ($type === 'any') {
             return self::Any();
+        } else if ($type === 'str_true') {
+            return self::True();
+        } else if ($type === 'str_false') {
+            return self::False();
+        } else if ($type === 'empty') {
+            return self::Empty();
+        } else if ($type === 'bool') {
+            return self::Bool();
         }
     }
 

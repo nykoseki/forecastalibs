@@ -15,6 +15,236 @@ use Forecasta\Parser\Impl\FalseParser;
 class ParserTestCase extends TestCase
 {
 
+    public function testTrueParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::True()->setName("W");
+
+        $ctx = CTX::create("{{tu{v}}abc{ijk{op}lmn}def{qr{wx{y}z}s}gh}");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testTrueParser is Fail!");
+    }
+
+    public function testFalseParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::False()->setName("W");
+
+        $ctx = CTX::create("");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue(!$result->result(), "testFalseParser is Fail!");
+    }
+
+    public function testCharParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Char("X")->setName("W");
+
+        $ctx = CTX::create("X");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testCharParser is Fail!");
+    }
+
+    public function testTokenParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Token("123ABC")->setName("W");
+
+        $ctx = CTX::create("123ABC");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testTokenParser is Fail!");
+    }
+
+    public function testRegexParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Regex("/^[A-Za-z0-9]+/")->setName("W");
+
+        $ctx = CTX::create("123ABCaadfdsafsaefagEfaef9");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testRegexParser is Fail!(1)");
+
+        $parser = ParserFactory::Regex("/^[A-Za-z0-9]+/")->setName("W");
+
+        $ctx2 = CTX::create("123ABCaadfdsafsaefagEfaef9+_");
+
+        $result = $parser->parse($ctx2);
+
+        $this->assertTrue($result->result(), "testRegexParser is Fail!(2)");
+
+
+        $parser = ParserFactory::Regex("/^[A-Za-z0-9]+$/")->setName("W");
+
+        $ctx2 = CTX::create("123ABCaadfdsafsaefagEfaef9@");
+
+        $result = $parser->parse($ctx2);
+
+        $this->assertTrue(!$result->result(), "testRegexParser is Fail!(3)");
+    }
+
+    public function testSeqParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Seq()->setName("W");
+        $parser->add(ParserFactory::Token("AA"));
+        $parser->add(ParserFactory::Token("BB"));
+        $parser->add(ParserFactory::Token("CCC"));
+
+        $ctx = CTX::create("AABBCCC");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testSeqParser is Fail!(1)");
+
+        $ctx = CTX::create("AABBCCCz");
+
+        $result = $parser->parse($ctx);
+
+        $resStr = join("", $result->parsed());
+        $this->assertTrue($result->result(), "testSeqParser is Fail!(2):{$resStr}");
+
+        $ctx = CTX::create("AABBzCCCz");
+
+        $result = $parser->parse($ctx);
+
+        //$resStr = join("", $result->parsed());
+        $this->assertTrue(!$result->result(), "testSeqParser is Fail!(2):{$resStr}");
+    }
+
+    public function testManyParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Many()->setName("W");
+        $parser->add(ParserFactory::Token("AAA"));
+
+        $ctx = CTX::create("AAA");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testManyParser is Fail!(1)");
+
+        $ctx = CTX::create("AA");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testManyParser is Fail!(2)");
+
+        $ctx = CTX::create("");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testManyParser is Fail!(3)");
+        $parsed = $result->parsed();
+        $parsed = join("", $parsed);
+        $this->assertTrue($parsed === "", "testManyParser is Fail!(4): '{$parsed}'");
+    }
+
+    public function testAnyParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Any()->setName("W");
+        $parser->add(ParserFactory::Token("AAA"));
+
+        $ctx = CTX::create("AAA");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testAnyParser is Fail!(1)");
+
+        $ctx = CTX::create("AAAAAA");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testAnyParser is Fail!(2)");
+
+        $ctx = CTX::create("AAAAAAB");
+
+        $result = $parser->parse($ctx);
+        $parsed = $result->parsed();
+        $parsed = join("", $parsed);
+        $this->assertTrue($parsed !== $ctx->target(), "testAnyParser is Fail!(3):{$parsed}");
+
+        $ctx = CTX::create("");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue(!$result->result(), "testAnyParser is Fail!(4)");
+    }
+
+
+    public function testChoiceParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Choice()->setName("W");
+        $parser->add(ParserFactory::Token("XX"));
+        $parser->add(ParserFactory::Token("YY"));
+
+        $ctx = CTX::create("XX");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testChoiceParser is Fail!(1)");
+
+        $ctx = CTX::create("YY");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testChoiceParser is Fail!(2)");
+
+        $ctx = CTX::create("ZZ");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue(!$result->result(), "testChoiceParser is Fail!(3)");
+    }
+
+    public function testOptionParser()
+    {
+        //$open = ParserFactory::Token("{");
+        // 数値
+        $parser = ParserFactory::Option()->setName("W");
+        $parser->add(ParserFactory::Token("XX"));
+
+
+        $ctx = CTX::create("XX");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testOptionParser is Fail!(1):{$result->parsed()}");
+
+        $ctx = CTX::create("XXXX");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->parsed() === "XX", "testOptionParser is Fail!(2):{$result->parsed()}");
+
+        $ctx = CTX::create("YY");
+
+        $result = $parser->parse($ctx);
+
+        $this->assertTrue($result->result(), "testOptionParser is Fail!(2):{$result->parsed()}");
+        $this->assertTrue($result->parsed() === null, "testOptionParser is Fail!(3):{$result->parsed()}");
+    }
+
     /**
      * JsonParserのパースが成功するかテストする
      */

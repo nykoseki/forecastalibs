@@ -19,16 +19,17 @@ class TrueParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
+        $depth = $depth + 1;
+
         $this->onTry();
+        $currentCtx = P\ParserContext::getBlank();
 
 
         $ctx = new P\ParserContext($context->target(), $context->current(), null, true);
 
-        $this->onSuccess($ctx);
-
-        $ctx->setParsedBy($this);
+        $this->onSuccess($ctx, $depth);
 
         return $ctx;
     }

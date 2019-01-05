@@ -21,34 +21,23 @@ class TokenParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $len = mb_strlen($this->str);
-        
-        //applLog("CharParser", $context);
 
         if (mb_substr($context->target(), $context->current(), $len) === $this->str) {
-
-
             $parsed = $this->str;
-            $parsed = $this->decolateParsed($parsed);
 
             $ctx = new P\ParserContext($context->target(), $context->current() + $len, $parsed, true);
 
-            $this->onSuccess($ctx);
-
-            $ctx->setParsedBy($this);
+            $this->onSuccess($ctx, $depth);
 
             return $ctx;
         } else {
-
-            $ctx = new P\ParserContext($context->target(), $context->current(), null, false);
-
-            $this->onError($ctx);
-
-            $ctx->setParsedBy($this);
-
+            $ctx = (new P\Impl\FalseParser())->parse($context);
+            $this->onError($ctx, $depth);
             return $ctx;
         }
     }

@@ -22,19 +22,20 @@ class LbWsParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
 
-        $ctx = $this->parser->parse($context);
+        $currentCtx = P\ParserContext::getBlank();
 
-
-        $ctx->setParsedBy($this);
+        $ctx = $this->parser->parse($context, $depth);
 
         if($ctx->result()) {
-            $this->onSuccess($ctx);
+            $ctx->updateParsed("<LbWs>");
+            $this->onSuccess($ctx, $depth);
         } else {
-            $this->onError($ctx);
+            $this->onError($ctx, $depth);
         }
 
         return $ctx;

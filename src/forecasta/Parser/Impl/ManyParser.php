@@ -21,19 +21,20 @@ class ManyParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $result = [];
 
-        //$position = $context->current();
+        $currentCtx = P\ParserContext::getBlank();
 
         $currentParsed = $context;
 
         $ctxArray = array();
 
         for (; ;) {
-            $currentParsed = $this->parser->parse($currentParsed);
+            $currentParsed = $this->parser->parse($currentParsed, $depth);
             if ($currentParsed->result() === true) {
                 array_push($result, $currentParsed->parsed());
                 $currentParsed->setParent($context);
@@ -45,9 +46,7 @@ class ManyParser implements P\Parser, P\HasMoreChildren
 
         $ctx = new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
 
-        $ctx->setParsedBy($this);
-
-        $this->onSuccess($ctx);
+        $this->onSuccess($ctx, $depth);
 
         foreach($ctxArray as $v) {
             $ctx->add($v);

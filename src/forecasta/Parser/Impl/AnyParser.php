@@ -21,10 +21,13 @@ class AnyParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $result = [];
+
+        $currentCtx = P\ParserContext::getBlank();
 
         //$position = $context->current();
 
@@ -32,7 +35,7 @@ class AnyParser implements P\Parser, P\HasMoreChildren
 
         $isSuccess = false;
         for (; ;) {
-            $currentParsed = $this->parser->parse($currentParsed);
+            $currentParsed = $this->parser->parse($currentParsed, $depth);
             if ($currentParsed->result() === true) {
                 array_push($result, $currentParsed->parsed());
 
@@ -45,22 +48,16 @@ class AnyParser implements P\Parser, P\HasMoreChildren
 
         if($isSuccess) {
 
-
             $ctx = new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
 
-            $ctx->setParsedBy($this);
-
-            $this->onSuccess($ctx);
+            $this->onSuccess($ctx, $depth);
 
             return $ctx;
         } else {
 
-
             $ctx = new P\ParserContext($context->target(), $context->current(), null, false);
 
-            $ctx->setParsedBy($this);
-
-            $this->onError($ctx);
+            $this->onError($ctx, $depth);
 
             return $ctx;
         }

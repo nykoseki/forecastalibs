@@ -21,12 +21,15 @@ class RegexParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $target0 = $context->target();
         $position = $context->current();
         $len = mb_strlen($target0);
+
+        $currentCtx = P\ParserContext::getBlank();
 
         $tmpTarget = mb_substr($target0, $position, $len - $position);
 
@@ -49,24 +52,21 @@ class RegexParser implements P\Parser
 
             //$this->setName("Regex-0");
 
-            $match = $this->decolateParsed($match);
+            //$match = $this->decolateParsed($match);
 
             $ctx = new P\ParserContext($context->target(), $position, $match, true);
 
-            $ctx->setParsedBy($this);
 
-            $this->onSuccess($ctx);
+            $this->onSuccess($ctx, $depth);
 
             //return new P\ParserContext($context->target(), $position, $match, true);
             return $ctx;
         } else {
 
 
-            $ctx = (new P\Impl\FalseParser())->parse($context);
+            $ctx = (new P\Impl\FalseParser())->parse($context, $depth);
 
-            $ctx->setParsedBy($this);
-
-            $this->onError($ctx);
+            $this->onError($ctx, $depth);
 
             return $ctx;
         }

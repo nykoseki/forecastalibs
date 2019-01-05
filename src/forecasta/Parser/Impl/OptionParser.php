@@ -21,29 +21,28 @@ class OptionParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $result = [];
 
-        $currentParsed = $this->parser->parse($context);
+        $currentCtx = P\ParserContext::getBlank();
+
+        $currentParsed = $this->parser->parse($context, $depth);
 
         if ($currentParsed->result()) {
             $context->add($currentParsed);
             $currentParsed->setParent($context);
-
-            $currentParsed->setParsedBy($this);
 
             $this->onSuccess($currentParsed);
 
             return $currentParsed;
         } else {
             
-            $ctx = (new P\Impl\TrueParser())->parse($context);
+            $ctx = (new P\Impl\TrueParser())->parse($context, $depth);
 
-            $this->onSuccess($ctx);
-
-            $ctx->setParsedBy($this);
+            $this->onSuccess($ctx, $depth);
 
             $context->add($ctx);
             $ctx->setParent($context);

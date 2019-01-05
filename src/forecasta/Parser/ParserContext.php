@@ -2,6 +2,9 @@
 
 namespace Forecasta\Parser;
 
+use Forecasta\Common\Composite;
+use Forecasta\Common\Named;
+
 /**
  * パーサの入力と出力を司るコンテキストクラスです
  * @author nkoseki
@@ -9,6 +12,8 @@ namespace Forecasta\Parser;
  */
 class ParserContext
 {
+    use Composite;
+    use Named;
 
     /**
      * 解析対象文字列です
@@ -32,14 +37,12 @@ class ParserContext
      * true:解析成功/false:解析失敗
      * @var null
      */
-    private $ctx = null;
+    private $result = null;
 
     /**
-     * 現在の解析を意味するタグです
-     * @var string
+     * スキップフラグ
+     * @var bool
      */
-    private $name = "";
-
     private $skipFlg = false;
 
     /**
@@ -49,47 +52,19 @@ class ParserContext
     private $parser = null;
 
     /**
-     * 親コンテキストです
-     * @var null
+     * 解析対象文字列、解析開始位置、解析後文字列、解析結果を指定してパーサコンテキストを生成します
+     * ParserContext constructor.
+     * @param $target 解析対象文字列
+     * @param $position 解析開始位置
+     * @param $parsed 解析後文字列
+     * @param $ctx 解析結果(true / false)
      */
-    private $parent = null;
-
-    /**
-     * 子コンテキストです
-     * @var array
-     */
-    private $children = array();
-
     public function __construct($target, $position, $parsed, $ctx)
     {
         $this->target = $target;
         $this->currentPosition = $position;
         $this->parsed = $parsed;
-        $this->ctx = $ctx;
-    }
-
-    public function getParent() {
-        return $this->parent;
-    }
-
-    public function setParent(ParserContext $context) {
-        return $this->parent;
-    }
-
-    public function add(ParserContext $context) {
-        array_push($this->children, $context);
-    }
-
-    public function children() {
-        return $this->children();
-    }
-
-    public function parsedBy() {
-        return $this->parser;
-    }
-
-    public function setParsedBy($parser) {
-        $this->parser = $parser;
+        $this->result = $ctx;
     }
 
     public function setSkip($skipFlg)
@@ -102,22 +77,15 @@ class ParserContext
         return $this->skipFlg;
     }
 
-    public function getName()
-    {
-        return $this->name;
-    }
 
-    public function setName($name)
-    {
-        $this->name = $name;
-    }
 
     public static function create($target)
     {
         return new ParserContext($target, 0, null, false);
     }
 
-    public static function getBlank() {
+    public static function getBlank()
+    {
         return new ParserContext("", 0, null, false);
     }
 
@@ -125,7 +93,9 @@ class ParserContext
     {
         return $this->target;
     }
-    public function updateTarget($target) {
+
+    public function updateTarget($target)
+    {
         $this->target = $target;
     }
 
@@ -134,7 +104,8 @@ class ParserContext
         return $this->currentPosition;
     }
 
-    public function updateCurrent($currentPosition) {
+    public function updateCurrent($currentPosition)
+    {
         $this->currentPosition = $currentPosition;
     }
 
@@ -143,17 +114,19 @@ class ParserContext
         return $this->parsed;
     }
 
-    public function updateParsed($parsed) {
+    public function updateParsed($parsed)
+    {
         $this->parsed = $parsed;
     }
 
     public function result()
     {
-        return $this->ctx;
+        return $this->result;
     }
 
-    public function updateResult($result) {
-        $this->ctx = $result;
+    public function updateResult($result)
+    {
+        $this->result = $result;
     }
 
     public function currentTarget()
@@ -168,7 +141,35 @@ class ParserContext
 
     public function isFinished()
     {
-        return (($this->ctx) && ($this->currentPosition == mb_strlen($this->target)));
+        return (($this->result) && ($this->currentPosition == mb_strlen($this->target)));
+    }
+
+    public function toFlatString() {
+        $parsed = $this->parsed;
+
+        if(is_array($parsed)) {
+            $parsed = "<ShowChildReference>";
+        }
+
+        //var_dump($parsed);
+
+        $res = $this->result() ? "OK" : "NG";
+        $target = $this->target();
+
+        $lastPosition = "{$this->current()}";
+
+
+        $prefix = "<Result:{$res}, LastPosition:{$lastPosition} Parsed:{$parsed} of Target:";
+        $len = mb_strlen($prefix);
+        $padding = str_repeat(" ", $len);
+        $padding = $padding. str_repeat("+",  + $this->current()).  "^";
+
+
+        $resultMessage = $prefix. "{$target}>";
+        $resultMessage = $resultMessage. "\n". $padding;
+
+
+        return $resultMessage;
     }
 
     public function __toString()
@@ -176,7 +177,8 @@ class ParserContext
         return $this->output();
     }
 
-    private function output() {
+    private function output()
+    {
         //echo "toString\n";
         $parsed0 = $this->parsed;
 
@@ -226,19 +228,19 @@ class ParserContext
                                     $tmpItem = "<wLb>";
                                 } else if ($tmpItem === "}") {
                                     $tmpItem = "<wRb>";
-                                } else if($tmpItem === null) {
+                                } else if ($tmpItem === null) {
                                     $tmpItem = "";
-                                } else if($tmpItem === "[") {
+                                } else if ($tmpItem === "[") {
                                     $tmpItem = "<Al>";
-                                } else if($tmpItem === "]") {
+                                } else if ($tmpItem === "]") {
                                     $tmpItem = "<Ar>";
-                                } else if($tmpItem === ":") {
+                                } else if ($tmpItem === ":") {
                                     $tmpItem = "<Cl>";
-                                } else if($tmpItem === "<WhiteSpace>") {
+                                } else if ($tmpItem === "<WhiteSpace>") {
                                     $tmpItem = "";
                                 }
 
-                                if(mb_strlen($tmpItem) === 0) {
+                                if (mb_strlen($tmpItem) === 0) {
                                     //echo "Empty!!\n";
                                 }
                                 //return '"' . $tmpItem . '"';
@@ -248,17 +250,17 @@ class ParserContext
                         }, $x);
 
                         $immidiate = array();
-                        foreach($parsed0 as $v) {
-                            if(mb_strlen($v) > 0) {
+                        foreach ($parsed0 as $v) {
+                            if (mb_strlen($v) > 0) {
                                 array_push($immidiate, $v);
                             }
                         }
                         $parsed0 = $immidiate;
 
-                        if(count($parsed0) == 0) {
+                        if (count($parsed0) == 0) {
                             return "";
                         }
-                        if(count($parsed0) == 1) {
+                        if (count($parsed0) == 1) {
                             return implode(', ', $parsed0);
                         }
 
@@ -274,7 +276,7 @@ class ParserContext
             };
         })->__invoke($parsed0);
 
-        $res = ($this->ctx) ? '"OK"' : '"NG"';
+        $res = ($this->result) ? '"OK"' : '"NG"';
 
         $finish = (mb_strlen($this->target) == $this->currentPosition) ? '"OK"' : '"NG"';
 

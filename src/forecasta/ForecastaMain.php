@@ -2,6 +2,7 @@
 
 namespace Forecasta;
 
+use Faker\Provider\File;
 use Forecasta\Parser as P;
 use Forecasta\Parser\ParserContext as CTX;
 use Forecasta\Parser\Impl as PImpl;
@@ -10,6 +11,9 @@ use Forecasta\Comment\Processor\CommentParser;
 use Forecasta\Parser\Impl\JsonParser;
 use Forecasta\Common\ProxyTrait;
 use PhpParser\Comment;
+use Forecasta\Loader\Xml\XMLLoader;
+use Forecasta\Loader\Filesystem;
+
 
 class ForecastaMain
 {
@@ -187,7 +191,6 @@ class ForecastaMain
     {
         echo "=========================================================================\n";
         echo "parse005_3\n";
-
 
         //$open = ParserFactory::Token("{");
         // 数値
@@ -475,13 +478,30 @@ EOF;
         $result = $element->parse($ctx);
         $time = microtime(true) - $time_start;
 
-        $history = $element->getHistory();
-
         echo print_r($result . "", true) . "\n";
-        echo print_r($history->isRoot() . "", true) . "\n";
+        //echo print_r($history->isRoot() . "", true) . "\n";
 
         //echo var_dump($history, true) . "\n";
         echo "{$time} 秒" . PHP_EOL;
+
+        $xml = new XMLLoader();
+        //$xml->init("");
+
+        $file = new Filesystem();
+
+        //echo getcwd() . PHP_EOL;
+        //echo print_r($file->exists() ? "<Yes>": "<N>", true) . "\n";
+        //echo print_r($file->_clear()->src->forecasta->Loader->Test001->_back()->exists() ? "<Yes>": "<N>", true) . "\n";
+        //echo print_r($file->_clear()->src->forecasta->Parser->sample->_file("parser001.xml")->exists() ? "<Yes>": "<N>", true) . "\n";
+
+        $file->_clear()
+            ->select
+            ->all
+            ->from
+            ->TestMaster
+            ->where
+            ->get()
+            ->exists();
     }
 
     public function parse006()
@@ -605,5 +625,66 @@ EOF;
         $result = $configurations->parse(CTX::create($context));
         echo print_r($result . "", true) . "\n";
         */
+    }
+
+
+    public function parse007() {
+        //$target = "AAXX***312604806YYZZ<{222:{123:{456:789},888:098},223:334,444:{12:34}}>dcc";
+        $target = "{111:222,333:444,444:{555:{556:{9:{10:{11:12,13:14}}}}},777:888}";
+
+        $composite = ParserFactory::Forward()->setDebug(true)->setName("Root");
+        $key = ParserFactory::Regex("/^[0-9]+/")->setDebug(true)->setName("Key");
+
+        $primitive = ParserFactory::Regex("/^[0-9]+/")->setDebug(true)->setName("Primitive");
+
+        $delim = ParserFactory::Token(":")->setName("Delimiter")->setDebug(true);
+
+        $value = ParserFactory::Choice()->setName("Value")->setDebug(true);
+        $value->add($primitive);
+        $value->add($composite);
+
+        $keyValue = ParserFactory::Seq()->setDebug(true)->setName("Entry");
+        $keyValue->add($key)->add($delim)->add($value);
+
+        $composite->forward(
+            ParserFactory::Seq()->setName("Container")->setDebug(true)
+                ->add(ParserFactory::Token("{")->setDebug(true)->setName("Open"))
+                ->add(
+                    ParserFactory::Choice()->setDebug(true)->setName("ContainerInner")
+                        ->add(
+                            ParserFactory::Seq()->setDebug(true)->setName("Elements")
+                                ->add(
+                                    ParserFactory::Any()->setDebug(true)->setName("EntryAny")
+                                        ->add(
+                                            ParserFactory::Seq()->setDebug(true)->setName("Entries")
+                                                ->add($keyValue)
+                                                ->add(ParserFactory::Token(",")->setDebug(true)->setName("Comma"))
+                                        )
+                                )
+                                ->add($keyValue)
+                        )
+                        ->add($keyValue)
+                )
+                ->add(ParserFactory::Token("}")->setDebug(true)->setName("Close"))
+        );
+
+        $base = CTX::create($target);
+
+        // 構文解析スタート
+        //$result = $parser->parse($base);
+
+        $time_start = microtime(true);
+        $result = $composite->parse($base);
+        $time = microtime(true) - $time_start;
+        echo "{$time} 秒" . PHP_EOL;
+        //$func($base);
+
+        $target = $result->target();
+        $len = mb_strlen($target);
+        if(mb_strlen($target) !== $result->current()) {
+            echo "Non Parsed!!!({$result->current()}, {$len})\n";
+        }
+
+        echo print_r($result . "", true) . "\n";
     }
 }

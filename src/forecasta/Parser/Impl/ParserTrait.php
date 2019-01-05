@@ -27,8 +27,6 @@ trait ParserTrait
      */
     private $description;
 
-    private $runtime = array();
-
     /**
      * パーサの解析状態を詳細に出力する場合はtrueを設定します
      * @var bool
@@ -48,16 +46,19 @@ trait ParserTrait
     private $tag = "";
 
     /**
-     * パーサヒストリエントリ
-     * @var P\HistoryEntry
+     * デバッグフラグを取得します
+     * @return mixed
      */
-    private $parserHistoryEntry = null;
-
     public function isDebugMode()
     {
         return $this->debugMode;
     }
 
+    /**
+     * デバッグフラグを設定します
+     * @param $debugMode
+     * @return $this
+     */
     public function setDebug($debugMode)
     {
         $this->debugMode = $debugMode;
@@ -65,11 +66,20 @@ trait ParserTrait
         return $this;
     }
 
+    /**
+     * タグを取得します
+     * @return mixed
+     */
     public function getTag()
     {
         return $this->tag;
     }
 
+    /**
+     * タグを設定します
+     * @param $tag
+     * @return $this
+     */
     public function setTag($tag)
     {
         $this->tag = $tag;
@@ -77,11 +87,21 @@ trait ParserTrait
         return $this;
     }
 
+    /**
+     * スキップフラグを取得します
+     * @return mixed スキップフラグ
+     */
     public function isSkip()
     {
         return $this->skipFlg;
     }
 
+    /**
+     * このパーサが抽象構文木として生成されるかを設定します.
+     * setSkip(true)を設定した場合、抽象構文木としてのせいせいをスキップします.
+     * @param $skipFlg
+     * @return $this
+     */
     public function skip($skipFlg)
     {
         $this->skipFlg = $skipFlg;
@@ -121,6 +141,7 @@ trait ParserTrait
     }
 
     /**
+     * 詳細情報を設定します
      * @param $description
      * @return $this
      */
@@ -132,6 +153,7 @@ trait ParserTrait
     }
 
     /**
+     * 詳細情報を取得します
      * @return mixed
      */
     public function getDescription()
@@ -140,42 +162,108 @@ trait ParserTrait
     }
 
     /**
+     *
+     * @param CTX $context
+     * @param int $depth
      * @param string $alias
      */
-    public function onSuccess(CTX $context, $alias = "")
+    public function onSuccess(CTX $context, $depth = 0, $alias = "")
     {
         if ($this->debugMode) {
             $className = get_class($this);
             applLog("Parser:onSuccess", "[Name:$this->name] of <$className>");
         }
 
-        $this->parserHistoryEntry->leave();
+        $pad = str_repeat("    ", $depth);
+
+        if ($this->debugMode === true) {
+
+            $tab = str_repeat("  ", 1);
+            $tab2 = str_repeat("  ", 2);
+            $tabLen = mb_strlen($tab);
+
+            $message = $context->toFlatString();
+
+            foreach (explode("\n", $message) as $item) {
+                $item = $tab2 . $item;
+                //echo "\033[1;32m{$item}\033[0m" . "\n";
+            }
+
+            $message = $tab . "FinishParse: {$this->getName()}, Depth:{---}";
+            //echo "\033[1;35m{$message}\033[0m" . "\n";
+
+            $depth = str_pad($depth, "4", "0", STR_PAD_LEFT);
+
+            //echo "{$pad}Close:Depth:{$depth} {$this->getName()}(Success)\n";
+        }
     }
 
     /**
+     *
+     * @param CTX $context
+     * @param int $depth
      * @param string $alias
      */
-    public function onError(CTX $context, $alias = "")
+    public function onError(CTX $context, $depth = 0, $alias = "")
     {
         if ($this->debugMode) {
             $className = get_class($this);
             applLog("Parser:onError", "[Name:$this->name] of <$className>");
         }
 
-        $this->parserHistoryEntry->leave();
+        $pad = str_repeat("    ", $depth);
+
+        if ($this->debugMode === true) {
+
+            $tab = str_repeat("  ", 1);
+            $tabLen = mb_strlen($tab);
+
+            $message = $tab . "ParseFail: {$this->getName()} try at. {$context->target()} (StartPos: {$context->current()})";
+            $len = mb_strlen("ParseFail: {$this->getName()} try at. ");
+            $prefix = str_repeat(" ", $len + $tabLen);
+            $prefix = $prefix . str_repeat("+", $context->current()) . "^";
+            $message = $message . "\n" . $prefix;
+
+            //echo "\033[1;31m{$message}\033[0m" . "\n";
+            //echo "ParseFail: {$this->getName()} try at. {$context->target()} (StartPos: {$context->current()})". "\n";
+
+            $message = $tab . "FinishParse: {$this->getName()}, Depth:{---}";
+            //echo "\033[1;35m{$message}\033[0m" . "\n";
+            //echo "FinishParse: {$this->getName()}". "\n";
+
+            $depth = str_pad($depth, "4", "0", STR_PAD_LEFT);
+
+            //echo "{$pad}Close:Depth:{$depth} {$this->getName()}(Error)\n";
+        }
     }
 
     /**
+     *
+     * @param int $depth
      * @param string $alias
      */
-    public function onTry($alias = "")
+    public function onTry($depth = 0, $alias = "")
     {
         if ($this->debugMode) {
             $className = get_class($this);
             applLog("Parser:onTry", "[Name:$this->name] of <$className>");
         }
 
-        $this->parserHistoryEntry->enter($this);
+        $pad = str_repeat("    ", $depth);
+
+        if ($this->debugMode === true) {
+            $tab = str_repeat("  ", 2);
+            $tabLen = mb_strlen($tab);
+
+            $message = $tab . "TryParse: {$this->getName()}, Depth:{---}";
+
+            //echo "\033[1;34m{$message}\033[0m" . "\n";
+
+            $depth = str_pad($depth, "4", "0", STR_PAD_LEFT);
+
+            //echo "{$pad}Open :Depth:{$depth} {$this->getName()}\n";
+            //echo "Close: {$this->getName()}";
+        }
     }
 
     /**
@@ -195,14 +283,13 @@ trait ParserTrait
             $intermediate = str_replace("\r", "", $intermediate);
             $intermediate = str_replace("\n", "", $intermediate);
 
-            if(empty($intermediate)) {
+            if (empty($intermediate)) {
                 //$parsed = "<WhiteSpace>";
                 //return "<{$this->getName()}>";
                 return "";
             }
 
-
-            if($parsed === "\"") {
+            if ($parsed === "\"") {
                 $parsed = '\"';
                 //return "<{$this->getName()}>";
             }
@@ -213,21 +300,17 @@ trait ParserTrait
         }
     }
 
-    public function addAt(P\Parser $parser) {
-        if($parser instanceof P\HasMoreChildren) {
+    /**
+     * 引数に指定したパーサにこのパーサを追加します.
+     * @param P\Parser $parser
+     * @return $this
+     */
+    public function addAt(P\Parser $parser)
+    {
+        if ($parser instanceof P\HasMoreChildren) {
             $parser->add($this);
         }
         return $this;
     }
-
-    public function getHistory() {
-        return $this->parserHistoryEntry;
-    }
-
-    public function setHistory($history) {
-        $this->parserHistoryEntry = $history;
-    }
-
-
 }
 

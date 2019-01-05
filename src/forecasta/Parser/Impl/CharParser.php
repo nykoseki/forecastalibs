@@ -21,10 +21,13 @@ class CharParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $targetArray = [];
+
+        $currentCtx = P\ParserContext::getBlank();
 
         $strArray = str_split($this->chars);
 
@@ -38,21 +41,17 @@ class CharParser implements P\Parser
         if (array_key_exists($target0, $targetArray)) {
 
 
-            $target0 = $this->decolateParsed($target0);
+            //$target0 = $this->decolateParsed($target0);
 
             $ctx = new P\ParserContext($context->target(), $context->current() + 1, $target0, true);
 
-            $ctx->setParsedBy($this);
-
-            $this->onSuccess($ctx);
+            $this->onSuccess($ctx, $depth);
 
             return $ctx;
         } else {
             $ctx = (new P\Impl\FalseParser())->parse($context);
 
-            $ctx->setParsedBy($this);
-
-            $this->onError($ctx);
+            $this->onError($ctx, $depth);
 
             return $ctx;
         }

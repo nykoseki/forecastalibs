@@ -19,16 +19,16 @@ class FalseParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
 
+        $currentCtx = P\ParserContext::getBlank();
 
         $ctx = new P\ParserContext($context->target(), $context->current(), null, false);
 
-        $ctx->setParsedBy($this);
-
-        $this->onError($ctx);
+        $this->onError($ctx, $depth);
 
         return $ctx;
     }

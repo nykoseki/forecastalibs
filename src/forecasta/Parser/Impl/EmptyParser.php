@@ -17,36 +17,43 @@ class EmptyParser implements P\Parser
 
     private $parser = null;
 
+
     /**
      * パースメソッド
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $resultCtx = $this->parser->parse($context);
+        $depth = $depth + 1;
+        $this->onTry($depth);
+
+        $resultCtx = $this->parser->parse($context, $depth);
+
+        $currentCtx = P\ParserContext::getBlank();
 
         if($resultCtx->result()) {
             /*
              * $target, $position, $parsed, $ctx
              */
 
-            $this->onTry();
 
-            $ctx = new P\ParserContext($resultCtx->target(), $resultCtx->current(), "<Empty>", $resultCtx->result());
 
-            $ctx->setParsedBy($this);
+            $ctx = new P\ParserContext($resultCtx->target(), $resultCtx->current(), $resultCtx->parsed(), $resultCtx->result());
+            //$ctx = new P\ParserContext($resultCtx->target(), $resultCtx->current(), "<Empty>", $resultCtx->result());
 
             if($ctx->result()) {
-                $this->onSuccess($ctx);
+                //$ctx->setParsed("<Empty>");
+                $ctx->updateParsed("<Empty>");
+                $this->onSuccess($ctx, $depth);
             } else {
-                $this->onError($ctx);
+                $this->onError($ctx, $depth);
             }
 
             return $ctx;
         }
 
-        $ctx = $this->parser->parse($context);
+        $ctx = $this->parser->parse($context, $depth);
         return $ctx;
     }
 

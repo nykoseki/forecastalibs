@@ -21,20 +21,21 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
+
+        $currentCtx = P\ParserContext::getBlank();
 
         //$parser = $this->forwarder->__invoke();
 
-        $ctx = $this->forwarder->parse($context);
-
-        $ctx->setParsedBy($this->forwarder);
+        $ctx = $this->forwarder->parse($context, $depth);
 
         if($ctx->result()) {
-            $this->onSuccess($ctx);
+            $this->onSuccess($ctx, $depth);
         } else {
-            $this->onError($ctx);
+            $this->onError($ctx, $depth);
         }
 
         //return $parser->parse($context);

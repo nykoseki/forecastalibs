@@ -21,47 +21,32 @@ class SequenceParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context)
+    public function parse($context, $depth=0)
     {
-        $this->onTry();
+        $depth = $depth + 1;
+        $this->onTry($depth);
         $result = [];
 
         $currentParsed = $context;
 
-        $ctxArray = array();
-
         for ($i = 0; $i < count($this->parsers); $i++) {
             $currentParser = $this->parsers[$i];
-            $currentParsed = $currentParser->parse($currentParsed);
-
-            //$context->add($currentParsed);
+            $currentParsed = $currentParser->parse($currentParsed, $depth);
 
             if ($currentParsed->result() === true) {
                 array_push($result, $currentParsed->parsed());
 
                 $currentParsed->setParent($context);
-                array_push($ctxArray, $currentParsed);
-
             } else {
-                $ctx = (new P\Impl\FalseParser())->parse($context);
+                $ctx = (new P\Impl\FalseParser())->parse($context, $depth);
 
-                $ctx->setParsedBy($this);
-
-                $this->onError($ctx);
-
+                $this->onError($ctx, $depth);
                 return $ctx;
             }
         }
 
         $ctx = new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
-
-        foreach($ctxArray as $v) {
-            $ctx->add($v);
-        }
-
-        $this->onSuccess($ctx);
-
-        $ctx->setParsedBy($this);
+        $this->onSuccess($ctx, $depth);
 
         return $ctx;
     }
@@ -101,11 +86,6 @@ class SequenceParser implements P\Parser, P\HasMoreChildren
 
         $childMessageAry = [];
         foreach ($this->parsers as $child) {
-// 			if($child instanceof P\HasMoreChildren) {
-// 				$childMessageAry[] = $child->outputRecursive($searched);
-// 			} else {
-// 				$childMessageAry[] = $child->outputRecursive($searched);
-// 			}
 
             if (array_search($child->getName(), $searched) > -1) {
                 $childName = $child->getName();

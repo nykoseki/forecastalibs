@@ -17,7 +17,7 @@ interface Parser extends RecursiveOut
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context);
+    public function parse($context, $depth=0);
 
     /**
      * 引数に指定された文字列をパースし，結果を返します

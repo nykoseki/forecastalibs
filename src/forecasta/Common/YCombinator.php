@@ -38,11 +38,10 @@ if (!function_exists('applLog')) {
      */
     function applLog($category, $message, $debugFlg = false)
     {
-        echo "Call applLog.\n";
         if(is_array($message)) {
-            return print_r($message, true). "\n";
+            return print_r("{$category}:". $message, true). "\n";
         } else if(is_object($message)) {
-            return print_r($message, true). "\n";
+            return print_r("{$category}:". $message, true). "\n";
         } else {
             return $message. "\n";
         }
