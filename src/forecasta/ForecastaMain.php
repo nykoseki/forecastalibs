@@ -677,7 +677,6 @@ EOF;
         $result = $composite->parse($base);
         $time = microtime(true) - $time_start;
         echo "{$time} 秒" . PHP_EOL;
-        //$func($base);
 
         $target = $result->target();
         $len = mb_strlen($target);

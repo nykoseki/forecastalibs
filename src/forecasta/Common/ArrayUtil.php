@@ -4,6 +4,7 @@ namespace Forecasta\Common;
 
 class ArrayUtil
 {
+    /*
     public function flatten_array($value, $key, &$array)
     {
         if (!is_array($value)) {
@@ -12,6 +13,7 @@ class ArrayUtil
             array_walk($value, array('self', 'flatten_array', &$array));
         }
     }
+    */
 
     public static function flatten($arr, callable $filter = null, callable $predicate = null)
     {
