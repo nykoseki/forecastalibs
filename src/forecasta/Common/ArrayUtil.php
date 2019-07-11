@@ -2,19 +2,21 @@
 
 namespace Forecasta\Common;
 
+/**
+ * 配列操作関連ユーティリティです
+ * Class ArrayUtil
+ * @package Forecasta\Common
+ */
 class ArrayUtil
 {
-    /*
-    public function flatten_array($value, $key, &$array)
-    {
-        if (!is_array($value)) {
-            array_push($array, $value);
-        } else {
-            array_walk($value, array('self', 'flatten_array', &$array));
-        }
-    }
-    */
 
+    /**
+     * 配列を再帰的にフラットな１次元配列に焼き直します.
+     * @param $arr 対象配列
+     * @param callable|null $filter 要素フィルタ
+     * @param callable|null $predicate 要素述語
+     * @return array 変換後配列
+     */
     public static function flatten($arr, callable $filter = null, callable $predicate = null)
     {
         $flat_arr = array();
