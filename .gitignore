@@ -1,10 +1,10 @@
 /vendor
 .env
 composer.lock
-reflesh.sh
-run.php
-run.sh
-run-serv.sh
-exc.php
+#reflesh.sh
+#run.php
+#run.sh
+#run-serv.sh
+#exc.php
 /tmp
 /forecasta/Parser/sample
