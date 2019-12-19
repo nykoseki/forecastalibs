@@ -19,7 +19,7 @@ class ForecastaMain
 {
     public function test0001()
     {
-        return "test00001-00001テスト2";
+        return "test00001-00001テスト2(new)";
     }
 
     public function parse001()
