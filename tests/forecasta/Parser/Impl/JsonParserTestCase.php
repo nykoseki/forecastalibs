@@ -23,7 +23,7 @@ class JsonParserTestCase extends TestCase
 
     private $compositeTarget = "";
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = new Parser\Impl\JsonParser();
 

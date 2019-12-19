@@ -18,7 +18,7 @@ class CharParserTestCase extends TestCase
     private $parser = null;
     private $clsName = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = new Parser\Impl\CharParser("x");
     }

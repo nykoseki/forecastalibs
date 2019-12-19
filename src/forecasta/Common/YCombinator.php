@@ -35,6 +35,8 @@ if (!function_exists('applLog')) {
      * @param $category
      * @param $message
      * @param bool $debugFlg
+     *
+     * @return a
      */
     function applLog($category, $message, $debugFlg = false)
     {

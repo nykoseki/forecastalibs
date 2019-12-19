@@ -1,0 +1,27 @@
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="tests/bootstrap.php"
+         colors="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+>
+    <testsuites>
+        <testsuite name="TestSuite(Root)">
+            <directory suffix=".php">./tests/forecasta/</directory>
+        </testsuite>
+        <testsuite name="TestSuite(Parser)">
+            <directory suffix=".php">./tests/forecasta/Parser/</directory>
+            <directory suffix=".php">./tests/forecasta/Comment/Processor/</directory>
+            <directory suffix=".php">./tests/forecasta/Parser/Impl/</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
+</phpunit>

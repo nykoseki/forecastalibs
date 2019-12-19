@@ -22,7 +22,7 @@ class EmptyParserTestCase extends TestCase
 
     private $filter = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = new Parser\Impl\EmptyParser;
 

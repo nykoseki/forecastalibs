@@ -18,7 +18,7 @@ class ManyParserTestCase extends TestCase
     private $parser = null;
     private $clsName = null;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->parser = new Parser\Impl\ManyParser();
         $this->parser->add(new Parser\Impl\TokenParser("ABC"));
