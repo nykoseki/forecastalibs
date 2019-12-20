@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<perser>
+    <description><![CDATA[
+        コメントパーサーコンビネータ
+    ]]></description>
+
+    <definition target="definitions">
+        <sequence id="subject">
+            <token value="@" />
+            <regex value="/^[A-Za-z0-9_][A-Za-z0-9_\-]+/" />
+        </sequence>
+
+        <sequence id="primitive">
+            <token value="&quot;" />
+            <choice>
+                <regex value="/^[1-9]|([0-9][1-9]+)/" />
+                <bool />
+                <regex value="/^[^&quot;]+/" />
+            </choice>
+            <token value="&quot;" />
+        </sequence>
+
+        <sequence id="keyPairs">
+            <many>
+                <parser id="keyPair" class="Forecasta\Parser\Impl\KeyPairParser" />
+                <lbws skip="true" />
+                <token value="," />
+            </many>
+            <parser id="keyPair" class="Forecasta\Parser\Impl\KeyPairParser" />
+        </sequence>
+
+        <choice id="confValue">
+            <parser references="primitive" />
+            <sequence>
+                <regex value="/^\s*/" />
+                <token value="(" />
+                <lbws skip="true" />
+                <parser references="keyPairs" />
+                <lbws skip="true" />
+                <token value=")" />
+            </sequence>
+        </choice>
+
+        <choice id="definition">
+            <sequence>
+                <lbws skip="true" />
+                <parser references="subject" />
+                <lbws skip="true" />
+                <parser references="confValue" />
+                <lbws skip="true" />
+            </sequence>
+
+            <sequence>
+                <parser references="subject" />
+                <lbws skip="true" />
+                <regex value="/^[A-Za-z0-9_\-]" />
+                <lbws skip="true" />
+            </sequence>
+
+            <sequence>
+                <parser references="subject" />
+                <option>
+                    <regex value="/^\r|\n|\r\n/" />
+                </option>
+            </sequence>
+            <any>
+                <regex value="/^[^@].+" />
+            </any>
+        </choice>
+
+        <forward id="forward" forwardedFor="forwarder">
+
+        </forward>
+
+        <any id="definitions">
+            <parser references="definition" />
+        </any>
+    </definition>
+</perser>
