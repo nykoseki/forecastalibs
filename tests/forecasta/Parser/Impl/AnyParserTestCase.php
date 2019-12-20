@@ -27,21 +27,21 @@ class AnyParserTestCase extends TestCase
     // =================================================================================================================
 
     public function testParsed()
-    {
-        $ctx = CTX::create("ABC");
+{
+    $ctx = CTX::create("ABC");
 
-        $result = $this->parser->parse($ctx);
-        $this->clsName = get_class($this->parser);
+    $result = $this->parser->parse($ctx);
+    $this->clsName = get_class($this->parser);
 
-        $parsed = $result->parsed();
+    $parsed = $result->parsed();
 
-        $this->assertEquals(1, count($parsed), "{$this->clsName}#testParsed(Len) : Fail");
+    $this->assertEquals(1, count($parsed), "{$this->clsName}#testParsed(Len) : Fail");
 
-        if(count($parsed) === 1) {
-            $parsed0 = $parsed[0];
-            $this->assertEquals("ABC", $parsed0, "{$this->clsName}#testParsed(1) : Fail");
-        }
+    if(count($parsed) === 1) {
+        $parsed0 = $parsed[0];
+        $this->assertEquals("ABC", $parsed0, "{$this->clsName}#testParsed(1) : Fail");
     }
+}
 
     public function testFinished() {
         $ctx = CTX::create("ABC");

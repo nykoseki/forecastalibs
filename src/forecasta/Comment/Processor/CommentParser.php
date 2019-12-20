@@ -17,8 +17,95 @@ class CommentParser
         $comment = $m->getDocComment();
         $comment = $this->normalizeComment($comment);
 
-        //echo print_r(join("\n", $newAry), true). "\n";
-        return $comment;
+        //サブジェクト := "@" + (文字列 | 数値 | アンダースコア) + (文字列 | 数値 | アンダースコア | ハイフン)*
+        $subject = ParserFactory::Seq()
+            ->add(ParserFactory::Token("@"))
+            ->add(ParserFactory::Regex("/^[A-Za-z0-9_][A-Za-z0-9_\-]+/")->setName("Subject"));
+
+        // プリミティブ := ダブルクォート + (ダブルクォート以外)+ + ダブルクォート
+        $premitive = ParserFactory::Seq()
+            ->add(ParserFactory::Token("\""))
+            ->add(
+                ParserFactory::Choice()
+                    ->add(ParserFactory::Regex("/^[1-9]|([0-9][1-9]+)/"))// 数値
+                    ->add(ParserFactory::Bool())// Bool値
+                    ->add(ParserFactory::Regex("/^[^\"]+/"))// 文字列(ダブルクォート以外)
+            )
+            ->add(ParserFactory::Token("\""));
+
+        $keyPairs = ParserFactory::Seq()
+            ->add(
+                ParserFactory::Many()
+                    ->add(
+                        ParserFactory::Seq()
+                            ->add(ParserFactory::KeyPair())
+                            ->add(ParserFactory::LbWs()->skip(true))
+                            ->add(ParserFactory::Token(","))
+                    )
+            )
+            ->add(ParserFactory::KeyPair());
+
+
+        // 設定値 := プリミティブ | 設定値配列
+        $confValue = ParserFactory::Choice()
+            ->add($premitive)
+            ->add(
+                ParserFactory::Seq()
+                    ->add(ParserFactory::Regex("/^\s*/")->skip(true))
+                    ->add(ParserFactory::Token("("))
+                    ->add(ParserFactory::LbWs()->skip(true))
+                    ->add($keyPairs)
+                    ->add(ParserFactory::LbWs()->skip(true))
+                    ->add(ParserFactory::Token(")"))
+            )->setName("ConfValue");
+
+        // 設定エントリ
+        $difinition = ParserFactory::Choice()
+
+            ->add(
+                ParserFactory::Seq()
+                    ->add(ParserFactory::LbWs()->skip(true))
+                    ->add($subject)
+                    ->add(ParserFactory::LbWs()->skip(true))
+                    ->add($confValue)
+                    ->add(ParserFactory::LbWs()->skip(true))
+            )
+
+            ->add(
+                ParserFactory::Seq()
+                    ->add($subject)
+                    ->add(ParserFactory::LbWs()->skip(true))
+                    ->add(ParserFactory::Regex("/^[A-Za-z0-9_\-]+/"))// 文字列
+                    ->add(ParserFactory::LbWs()->skip(true))
+            )
+            ->add(
+                ParserFactory::Seq()
+                ->add($subject)
+                ->add(
+                    ParserFactory::Option()
+                        ->add(ParserFactory::Regex("/^\r|\n|\r\n/"))
+                )
+
+            )
+
+            ->add(
+                ParserFactory::Any()
+                    ->add(ParserFactory::Regex("/^[^@].+/"))
+
+
+            )
+
+            ->setName("Definition");
+
+        // 設定エントリ群
+        $difinitions = ParserFactory::Any()
+            ->add($difinition);
+
+        $result = $difinitions->parse(CTX::create($comment));
+        //$result2 = $difinitions->parse(CTX::create($comment));
+
+        //echo print_r(join("\n", $difinitions), true). "\n";
+        return $result;
     }
 
     /**
@@ -43,6 +130,11 @@ class CommentParser
             $ptn03 = '/\s*?\\*\s+?(.+)/i';
             $rep03 = '${1}';
             $tmp = preg_replace($ptn03, $rep03, $tmp);
+
+            $ptn04 = '/\s*?\\*\s*/i';
+            $rep04 = '';
+            $tmp = preg_replace($ptn04, $rep04, $tmp);
+
 
             if (empty($tmp)) {
                 continue;

@@ -312,5 +312,22 @@ trait ParserTrait
         }
         return $this;
     }
+
+    public function includedOn(P\Parser $pre, P\Parser $post) {
+        if($pre == null) {
+            $pre = P\ParserFactory::True();
+        }
+
+        if($post == null) {
+            $post = P\ParserFactory::True();
+        }
+
+        $parser = P\ParserFactory::Seq()
+            ->add($pre)
+            ->add($this)
+            ->add($post);
+
+        return $parser;
+    }
 }
 

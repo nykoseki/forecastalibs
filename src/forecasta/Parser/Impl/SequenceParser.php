@@ -34,7 +34,10 @@ class SequenceParser implements P\Parser, P\HasMoreChildren
             $currentParsed = $currentParser->parse($currentParsed, $depth);
 
             if ($currentParsed->result() === true) {
-                array_push($result, $currentParsed->parsed());
+                if($currentParser->isSkip() === false) {
+                    array_push($result, $currentParsed->parsed());
+                }
+                //array_push($result, $currentParsed->parsed());
 
                 $currentParsed->setParent($context);
             } else {

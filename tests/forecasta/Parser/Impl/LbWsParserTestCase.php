@@ -26,14 +26,65 @@ class LbWsParserTestCase extends TestCase
 
     // =================================================================================================================
 
-    public function testParsed()
+    /**
+     * 空白の連続
+     */
+    public function testParsed01()
     {
         $ctx = CTX::create("     ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
 
-        $this->assertTrue(true, "{$this->clsName}#testParsed : Fail");
+        //$this->assertTrue(true, "{$this->clsName}#testParsed : Fail");
+        $this->assertEquals("<LbWs>", $result->parsed(), "{$this->clsName}#testParsed : Fail");
+    }
+
+    /**
+     * 空白と改行(\n)の連続
+     */
+    public function testParsed02()
+    {
+        $ctx = CTX::create(" \n  \n \n\n\n ");
+
+        $result = $this->parser->parse($ctx);
+
+        $this->clsName = get_class($this->parser);
+
+        $this->assertEquals("<LbWs>", $result->parsed(), "{$this->clsName}#testParsed : Fail");
+    }
+
+    public function testParsed03()
+    {
+        $tgt = <<<EOF
+       
+  
+   
+      
+          
+
+
+
+EOF;
+        $ctx = CTX::create($tgt);
+
+        $result = $this->parser->parse($ctx);
+
+        $this->clsName = get_class($this->parser);
+
+        $this->assertEquals("<LbWs>", $result->parsed(), "{$this->clsName}#testParsed : Fail");
+    }
+
+    public function testParsed04()
+    {
+        $tgt = "\n\n\n\n\n\t\t\n\n\n\n\n";
+        $ctx = CTX::create($tgt);
+
+        $result = $this->parser->parse($ctx);
+
+        $this->clsName = get_class($this->parser);
+
+        $this->assertEquals("<LbWs>", $result->parsed(), "{$this->clsName}#testParsed : Fail");
     }
 
     public function testFinished() {

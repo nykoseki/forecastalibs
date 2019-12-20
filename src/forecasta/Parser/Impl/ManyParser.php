@@ -36,6 +36,9 @@ class ManyParser implements P\Parser, P\HasMoreChildren
         for (; ;) {
             $currentParsed = $this->parser->parse($currentParsed, $depth);
             if ($currentParsed->result() === true) {
+                //if($this->parser->isSkip() === false) {
+                //    array_push($result, $currentParsed->parsed());
+                //}
                 array_push($result, $currentParsed->parsed());
                 $currentParsed->setParent($context);
                 array_push($ctxArray, $currentParsed);

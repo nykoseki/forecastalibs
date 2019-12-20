@@ -7,7 +7,7 @@ use Forecasta\Parser\Impl\ParserTrait as PST;
 use Forecasta\Parser\ParserFactory;
 
 /**
- * 改行およびホワイトスペースを表すパーサです
+ * 改行およびホワイトスペース・タブ文字の連続を表すパーサです
  * @author nkoseki
  *
  */
@@ -48,12 +48,30 @@ class LbWsParser implements P\Parser
 
     public function __construct()
     {
-        //$this->name = 'Anonymous_' . md5(rand());
-        $whiteSpace = ParserFactory::Option()->add(ParserFactory::Regex("/^\s+/"));
-        $lineBreak = ParserFactory::Option()->add(ParserFactory::Token("\n"));
+        $whiteSpace = ParserFactory::Regex("/^\s+/");
+        $lineBreak1 = ParserFactory::Token("\n");
+        $lineBreak2 = ParserFactory::Token("\r");
+        $lineBreak3 = ParserFactory::Token("\r\n");
+        $tab = ParserFactory::Token("\t");
 
-        $whiteSpace = ParserFactory::Seq()->add($whiteSpace)->add($lineBreak)->add($whiteSpace);
-        $this->parser = $whiteSpace;
+        $lbws = ParserFactory::Option()->add(
+            ParserFactory::Many()
+                ->add(
+                    ParserFactory::Choice()
+                        ->add($tab)
+                        ->add($whiteSpace)
+                        ->add(
+                            ParserFactory::Choice()
+                                ->add($lineBreak1)
+                                ->add($lineBreak2)
+                                ->add($lineBreak3)
+                        )
+                )
+        );
+
+
+        //$whiteSpace = ParserFactory::Seq()->add($whiteSpace)->add($lineBreak)->add($whiteSpace);
+        $this->parser = $lbws;
 
         $this->parserHistoryEntry = new P\HistoryEntry;
 

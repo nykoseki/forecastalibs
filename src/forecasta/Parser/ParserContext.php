@@ -109,9 +109,13 @@ class ParserContext
         $this->currentPosition = $currentPosition;
     }
 
-    public function parsed()
+    public function parsed($formatFlg=false)
     {
-        return $this->parsed;
+        $parsed = $this->parsed;
+
+
+
+        return $parsed;
     }
 
     public function updateParsed($parsed)
@@ -182,12 +186,18 @@ class ParserContext
         //echo "toString\n";
         $parsed0 = $this->parsed;
 
+
+
+        // skipが付いたものを除外
+        //array_filter($parsed0, function($item){});
+
         // Y-Combinatorで再帰処理を行う
         // 配列->[...]
         // 文字列->"..."
 
         $currentName = $this->getName();
 
+        /*
         $parsed0 = Y(function ($callback) use (&$currentName) {
             return function ($x) use (&$callback, &$currentName) {
                 if (is_array($x)) {
@@ -202,8 +212,8 @@ class ParserContext
                                 //return $item;
                                 $tmpItem = $item;
                                 if ($tmpItem === "\"") {
-                                    //$tmpItem = "<Dq>";
-                                    $tmpItem = "";
+                                    $tmpItem = "<Dq>";
+                                    //$tmpItem = "";
                                 } else if ($tmpItem === " ") {
                                     //$tmpItem = "<Sp>";
                                     $tmpItem = "";
@@ -238,6 +248,8 @@ class ParserContext
                                     $tmpItem = "<Cl>";
                                 } else if ($tmpItem === "<WhiteSpace>") {
                                     $tmpItem = "";
+                                } else if ($tmpItem === "=>") {
+                                    $tmpItem = "<Arrow>";
                                 }
 
                                 if (mb_strlen($tmpItem) === 0) {
@@ -275,6 +287,8 @@ class ParserContext
                 }
             };
         })->__invoke($parsed0);
+        */
+        $parsed0 = $this->normalize($parsed0);
 
         $res = ($this->result) ? '"OK"' : '"NG"';
 
@@ -283,5 +297,102 @@ class ParserContext
         $targetLen = mb_strlen($this->target);
 
         return "{\"Target\":<{$this->target}>, \"Length\":\"{$targetLen}\", \"Current\":{$this->currentPosition}, \"Result\":{$res}, \"Finish\":{$finish}, \"Parsed\":{$parsed0}}";
+    }
+
+    public function normalize() {
+
+        $currentName = $this->getName();
+
+        $parsed = Y(function ($callback) use (&$currentName) {
+            return function ($x) use (&$callback, &$currentName) {
+                if (is_array($x)) {
+                    if (count($x) == 0) {
+                        return '"<Null>"';
+                    } else {
+
+                        $parsed0 = array_map(function ($item) use (&$callback) {
+                            if (is_array($item)) {
+                                return $callback($item);
+                            } else {
+                                //return $item;
+                                $tmpItem = $item;
+                                if ($tmpItem === "\"") {
+                                    //$tmpItem = "<Dq>";
+                                    //$tmpItem = "";
+                                } else if ($tmpItem === " ") {
+                                    //$tmpItem = "<Sp>";
+                                    $tmpItem = "";
+                                } else if ($tmpItem === "(") {
+                                    $tmpItem = "<Lb>";
+                                } else if ($tmpItem === ")") {
+                                    $tmpItem = "<Rb>";
+                                } else if ($tmpItem === "'") {
+                                    $tmpItem = "<Sq>";
+                                } else if ($tmpItem === ",") {
+                                    //$tmpItem = "<Camma>";
+                                    $tmpItem = "";
+                                } else if (preg_match('/^\s+$/', $tmpItem) > 0) {
+                                    //$tmpItem = "<Ws>";
+                                    $tmpItem = "";
+                                } else if ($tmpItem === "") {
+                                    $tmpItem = "<Empty>";
+                                    $tmpItem = "";
+                                } else if ($tmpItem === "\t") {
+                                    $tmpItem = "<Tab>";
+                                } else if ($tmpItem === "{") {
+                                    $tmpItem = "<wLb>";
+                                } else if ($tmpItem === "}") {
+                                    $tmpItem = "<wRb>";
+                                } else if ($tmpItem === null) {
+                                    $tmpItem = "";
+                                } else if ($tmpItem === "[") {
+                                    $tmpItem = "<Al>";
+                                } else if ($tmpItem === "]") {
+                                    $tmpItem = "<Ar>";
+                                } else if ($tmpItem === ":") {
+                                    $tmpItem = "<Cl>";
+                                } else if ($tmpItem === "<WhiteSpace>") {
+                                    $tmpItem = "";
+                                } else if ($tmpItem === "=>") {
+                                    $tmpItem = "<Arrow>";
+                                }
+
+                                if (mb_strlen($tmpItem) === 0) {
+                                    //echo "Empty!!\n";
+                                }
+                                //return '"' . $tmpItem . '"';
+                                return $tmpItem;
+                            }
+
+                        }, $x);
+
+                        $immidiate = array();
+                        foreach ($parsed0 as $v) {
+                            if (mb_strlen($v) > 0) {
+                                array_push($immidiate, $v);
+                            }
+                        }
+                        $parsed0 = $immidiate;
+
+                        if (count($parsed0) == 0) {
+                            return "";
+                        }
+                        if (count($parsed0) == 1) {
+                            return implode(', ', $parsed0);
+                        }
+
+                        $parsed0 = implode(', ', $parsed0);
+                        $parsed0 = '[' . $parsed0 . ']';
+                        return $parsed0;
+                    }
+                } else if (is_null($x)) {
+                    return '"<Null>"';
+                } else {
+                    return '"' . $x . '"';
+                }
+            };
+        })->__invoke($this->parsed);
+
+        return $parsed;
     }
 }

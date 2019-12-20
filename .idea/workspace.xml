@@ -2,7 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c5e226f5-ee50-40cd-9ab7-a851fd16a760" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/KeyPairParser.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/forecasta/Parser/Impl/KeyPairParserTestCase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.phpunit.result.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.phpunit.result.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/ForecastaMain.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/ForecastaMain.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/LbWsParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/LbWsParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ManyParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ManyParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ParserTrait.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ParserTrait.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/SequenceParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/SequenceParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/ParserContext.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/ParserContext.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/ParserFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/ParserFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/forecasta/Parser/Impl/AnyParserTestCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/forecasta/Parser/Impl/AnyParserTestCase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/forecasta/Parser/Impl/LbWsParserTestCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/forecasta/Parser/Impl/LbWsParserTestCase.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -18,10 +32,11 @@
     <session id="490506444">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.3" value="1" />
-          <entry key="project.opened" value="2" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -34,7 +49,7 @@
           <entry key="json" value="4" />
           <entry key="lock" value="1" />
           <entry key="md" value="2" />
-          <entry key="php" value="27" />
+          <entry key="php" value="93" />
           <entry key="sh" value="5" />
           <entry key="xml" value="3" />
         </counts>
@@ -44,7 +59,7 @@
           <entry key="Ini" value="1" />
           <entry key="JSON" value="5" />
           <entry key="Markdown" value="2" />
-          <entry key="PHP" value="27" />
+          <entry key="PHP" value="93" />
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="UML" value="1" />
           <entry key="XML" value="5" />
@@ -70,14 +85,14 @@
         <counts>
           <entry key="json" value="14" />
           <entry key="md" value="3" />
-          <entry key="php" value="456" />
+          <entry key="php" value="6378" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="JSON" value="14" />
           <entry key="Markdown" value="3" />
-          <entry key="PHP" value="456" />
+          <entry key="PHP" value="6378" />
         </counts>
       </usages-collector>
     </session>
@@ -85,69 +100,77 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Parser.php">
+        <entry file="file://$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+            <state relative-caret-position="323">
+              <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/composer.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/ParserTestCase.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1122">
-              <caret line="74" selection-start-line="74" selection-end-line="74" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1564">
-              <caret line="100" selection-start-line="100" selection-end-line="100" />
+            <state relative-caret-position="408">
+              <caret line="131" column="25" selection-start-line="131" selection-start-column="25" selection-end-line="131" selection-end-column="25" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/forecasta/ForecastaMain.php">
+        <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/Impl/KeyPairParserTestCase.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="661" column="41" lean-forward="true" selection-start-line="661" selection-start-column="41" selection-end-line="661" selection-end-column="41" />
+            <state relative-caret-position="391">
+              <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
+              <folding>
+                <element signature="e#127#158#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/exc.php">
+        <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/ParserTrait.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3536">
-              <caret line="212" selection-start-line="212" selection-end-line="212" />
+            <state relative-caret-position="289">
+              <caret line="304" column="30" lean-forward="true" selection-start-line="304" selection-start-column="30" selection-end-line="304" selection-end-column="30" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/SequenceParser.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+              <folding>
+                <element signature="e#41#67#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/KeyPairParser.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
+              <folding>
+                <element signature="e#175#201#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>isSkip</find>
+    </findStrings>
+    <dirStrings>
+      <dir>D:\ubuntu\forecastalibs\src\forecasta</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
@@ -159,11 +182,21 @@
         <option value="$PROJECT_DIR$/readme.md" />
         <option value="$PROJECT_DIR$/tests/forecasta/Parser/ParserTestCase.php" />
         <option value="$PROJECT_DIR$/tests/forecasta/Parser/Impl/ForwardParserTestCase.php" />
+        <option value="$PROJECT_DIR$/exc.php" />
+        <option value="$PROJECT_DIR$/composer.json" />
+        <option value="$PROJECT_DIR$/src/forecasta/ForecastaMain.php" />
+        <option value="$PROJECT_DIR$/tests/forecasta/Parser/Impl/LbWsParserTestCase.php" />
+        <option value="$PROJECT_DIR$/src/forecasta/Parser/Impl/LbWsParser.php" />
+        <option value="$PROJECT_DIR$/src/forecasta/Parser/Impl/ManyParser.php" />
+        <option value="$PROJECT_DIR$/tests/forecasta/Parser/Impl/AnyParserTestCase.php" />
+        <option value="$PROJECT_DIR$/src/forecasta/Parser/Impl/ParserTrait.php" />
+        <option value="$PROJECT_DIR$/src/forecasta/Parser/ParserFactory.php" />
+        <option value="$PROJECT_DIR$/src/forecasta/Parser/Impl/SequenceParser.php" />
+        <option value="$PROJECT_DIR$/src/forecasta/Parser/ParserContext.php" />
+        <option value="$PROJECT_DIR$/tests/forecasta/Parser/Impl/KeyPairParserTestCase.php" />
+        <option value="$PROJECT_DIR$/src/forecasta/Parser/Impl/KeyPairParser.php" />
         <option value="$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php" />
         <option value="$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php" />
-        <option value="$PROJECT_DIR$/exc.php" />
-        <option value="$PROJECT_DIR$/src/forecasta/ForecastaMain.php" />
-        <option value="$PROJECT_DIR$/composer.json" />
       </list>
     </option>
   </component>
@@ -279,35 +312,28 @@
             <path>
               <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
               <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
-              <item name="Comment" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
-              <item name="Comment" type="462c0819:PsiDirectoryNode" />
-              <item name="Processor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
-              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="forecasta" type="462c0819:PsiDirectoryNode" />
               <item name="Parser" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
+              <item name="Parser" type="462c0819:PsiDirectoryNode" />
+              <item name="Impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
@@ -340,13 +366,9 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="PHP Script.exc.php">
-    <configuration name="CommentParserTestCase.testParse" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="ForecastaTest\Comment\Processor\CommentParserTestCase" file="$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php" method="testParse" scope="Method" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ForwardParserTestCase" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="ForecastaTest\Parser\Impl\ForwardParserTestCase" file="$PROJECT_DIR$/tests/forecasta/Parser/Impl/ForwardParserTestCase.php" scope="Class" />
+  <component name="RunManager" selected="PHPUnit.phpunit.xml">
+    <configuration name="LbWsParserTestCase" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="ForecastaTest\Parser\Impl\LbWsParserTestCase" file="$PROJECT_DIR$/tests/forecasta/Parser/Impl/LbWsParserTestCase.php" scope="Class" />
       <method v="2" />
     </configuration>
     <configuration name="forecastalibs" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -357,7 +379,10 @@
       <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="XML" use_alternative_configuration_file="true" />
       <method v="2" />
     </configuration>
-    <configuration name="ForecastaMain.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/src/forecasta/ForecastaMain.php">
+    <configuration name="CommentParser.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php">
+      <method v="2" />
+    </configuration>
+    <configuration name="KeyPairParser.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/src/forecasta/Parser/Impl/KeyPairParser.php">
       <method v="2" />
     </configuration>
     <configuration name="exc.php" type="PhpLocalRunConfigurationType" factoryName="PHP Console" temporary="true" path="$PROJECT_DIR$/exc.php">
@@ -365,19 +390,19 @@
     </configuration>
     <list>
       <item itemvalue="PHPUnit.forecastalibs" />
-      <item itemvalue="PHP Script.ForecastaMain.php" />
       <item itemvalue="PHPUnit.phpunit.xml" />
-      <item itemvalue="PHPUnit.ForwardParserTestCase" />
-      <item itemvalue="PHPUnit.CommentParserTestCase.testParse" />
       <item itemvalue="PHP Script.exc.php" />
+      <item itemvalue="PHP Script.CommentParser.php" />
+      <item itemvalue="PHPUnit.LbWsParserTestCase" />
+      <item itemvalue="PHP Script.KeyPairParser.php" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="PHP Script.exc.php" />
-        <item itemvalue="PHPUnit.CommentParserTestCase.testParse" />
-        <item itemvalue="PHP Script.ForecastaMain.php" />
         <item itemvalue="PHPUnit.phpunit.xml" />
-        <item itemvalue="PHPUnit.ForwardParserTestCase" />
+        <item itemvalue="PHP Script.KeyPairParser.php" />
+        <item itemvalue="PHPUnit.LbWsParserTestCase" />
+        <item itemvalue="PHP Script.CommentParser.php" />
+        <item itemvalue="PHP Script.exc.php" />
       </list>
     </recent_temporary>
   </component>
@@ -392,55 +417,56 @@
       <option name="presentableId" value="Default" />
       <updated>1576774159432</updated>
       <workItem from="1576774160970" duration="10247000" />
-      <workItem from="1576836277475" duration="248000" />
+      <workItem from="1576836277475" duration="6934000" />
+      <workItem from="1576843227554" duration="15950000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="phpunit_xml - 2019.12.20 at 03h 14m 15s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 24m 20s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="phpunit_xml - 2019.12.20 at 03h 14m 26s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 24m 59s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="phpunit_xml - 2019.12.20 at 03h 15m 04s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 25m 07s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="phpunit_xml - 2019.12.20 at 03h 15m 16s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 25m 17s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="phpunit_xml - 2019.12.20 at 03h 16m 28s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 25m 45s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="phpunit_xml - 2019.12.20 at 03h 17m 13s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 26m 18s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="ForwardParserTestCase - 2019.12.20 at 03h 18m 21s.xml">
-      <configuration name="ForwardParserTestCase" configurationId="PHPUnitRunConfigurationType" />
-    </history-entry>
-    <history-entry file="phpunit_xml - 2019.12.20 at 03h 19m 38s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 26m 41s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="phpunit_xml - 2019.12.20 at 04h 23m 38s.xml">
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 27m 08s.xml">
       <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
-    <history-entry file="CommentParserTestCase_testParse - 2019.12.20 at 04h 30m 08s.xml">
-      <configuration name="CommentParserTestCase.testParse" configurationId="PHPUnitRunConfigurationType" />
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 27m 50s.xml">
+      <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
+    </history-entry>
+    <history-entry file="phpunit_xml - 2019.12.21 at 01h 29m 02s.xml">
+      <configuration name="phpunit.xml" configurationId="PHPUnitRunConfigurationType" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="10495000" />
+    <option name="totallyTimeSpent" value="33131000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25305623" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25611246" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.7108802" weight="0.34334764" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32939914" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.7108802" visible="true" weight="0.36480686" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39914164" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -448,7 +474,7 @@
       <window_info anchor="bottom" id="Docker" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49938875" weight="0.32939914" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49938875" visible="true" weight="0.32939914" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49938875" weight="0.32939914" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50061125" side_tool="true" weight="0.32939914" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -473,37 +499,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/tests/results/result.xml">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/composer.lock">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-51">
-          <caret line="15" column="14" lean-forward="true" selection-start-line="15" selection-start-column="14" selection-end-line="15" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://C:/php/php-7.4.1-nts-Win32-vc15-x64/php.ini">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="73" selection-start-line="5" selection-start-column="73" selection-end-line="5" selection-end-column="73" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/phpunit/phpunit/src/Util/FileLoader.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="58" selection-start-line="58" selection-end-line="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/vendor/doctrine/annotations/tests/Doctrine/Tests/Common/Annotations/DocParserTest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="188">
-          <caret line="1447" selection-start-line="1447" selection-end-line="1447" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/run.sh">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -563,9 +558,6 @@
         <state relative-caret-position="-1122" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/forecasta/config/forecasta.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/.phpunit.result.cache">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -589,31 +581,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Parser.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/ParserTestCase.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
           <caret line="74" selection-start-line="74" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="20" column="24" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1564">
-          <caret line="100" selection-start-line="100" selection-end-line="100" />
         </state>
       </provider>
     </entry>
@@ -624,17 +595,249 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/forecasta/ForecastaMain.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="661" column="41" lean-forward="true" selection-start-line="661" selection-start-column="41" selection-end-line="661" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
           <caret line="6" column="19" selection-start-line="6" selection-start-column="19" selection-end-line="6" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/Impl/BoolParserTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2598" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/Aggregator.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/ForwardParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-765" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Parser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="30" lean-forward="true" selection-start-line="30" selection-end-line="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/TrueParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-153" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/RegexParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="125" lean-forward="true" selection-start-line="125" selection-end-line="125" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/Impl/LbWsParserTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="124">
+          <caret line="43" column="19" selection-start-line="43" selection-start-column="19" selection-end-line="43" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/Util/KeyPairParser.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Common/YCombinator.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="249">
+          <caret line="43" selection-start-line="43" selection-end-line="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/ASTContext.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-318" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/config/forecasta.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Laravel/ForecastaServiceFacade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/ForecastaMain.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="599" lean-forward="true" selection-start-line="599" selection-end-line="599" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/JsonParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3344">
+          <caret line="18" column="15" lean-forward="true" selection-start-line="18" selection-start-column="15" selection-end-line="18" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/RecursiveOut.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/ChoiceParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="41" lean-forward="true" selection-start-line="41" selection-end-line="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/LbWsParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="396">
+          <caret line="34" column="12" selection-start-line="34" selection-start-column="12" selection-end-line="34" selection-end-column="12" />
+          <folding>
+            <element signature="e#41#67#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/OptionParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-289">
+          <caret line="11" column="3" lean-forward="true" selection-start-line="11" selection-start-column="3" selection-end-line="11" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/AnyParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="39" column="16" selection-start-line="39" selection-start-column="16" selection-end-line="39" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/BoolParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="232">
+          <caret line="56" lean-forward="true" selection-start-line="56" selection-end-line="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/TokenParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="96">
+          <caret line="28" lean-forward="true" selection-start-line="28" selection-end-line="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/Impl/AnyParserTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="17" lean-forward="true" selection-start-line="17" selection-end-line="42" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/Impl/SequenceParserTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="215">
+          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/HistoryEntry.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-539">
+          <caret line="10" column="1" lean-forward="true" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/ParserFactory.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1275">
+          <caret line="21" lean-forward="true" selection-start-line="21" selection-end-line="21" />
+          <folding>
+            <element signature="e#36#81#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/ParserTrait.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="304" column="30" lean-forward="true" selection-start-line="304" selection-start-column="30" selection-end-line="304" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/ParserContext.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="144" lean-forward="true" selection-start-line="144" selection-end-line="144" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/FalseParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/ManyParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5">
+          <caret line="50" lean-forward="true" selection-start-line="50" selection-end-line="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/Impl/ChoiceParserTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-867">
+          <caret line="36" column="15" selection-start-line="36" selection-start-column="8" selection-end-line="36" selection-end-column="15" />
+          <folding>
+            <element signature="e#45#76#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/SequenceParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="40" lean-forward="true" selection-start-line="40" selection-end-line="40" />
+          <folding>
+            <element signature="e#41#67#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Impl/KeyPairParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="103" lean-forward="true" selection-start-line="103" selection-end-line="103" />
+          <folding>
+            <element signature="e#175#201#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Parser/Impl/KeyPairParserTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="71" column="4" lean-forward="true" selection-start-line="71" selection-start-column="4" selection-end-line="71" selection-end-column="4" />
+          <folding>
+            <element signature="e#127#158#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/forecasta/Comment/Processor/CommentParser.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="96" lean-forward="true" selection-start-line="96" selection-end-line="96" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="131" column="25" selection-start-line="131" selection-start-column="25" selection-end-line="131" selection-end-column="25" />
         </state>
       </provider>
     </entry>

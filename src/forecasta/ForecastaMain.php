@@ -539,6 +539,8 @@ EOF;
 
             // Bool
             $bool = (new PImpl\BoolParser())->setName("Bool")->addAt($primitive);
+
+            //$quoted = ParserFactory::Seq()->setName("Quoted")->addAt($primitive);
         }
 
         $space = ParserFactory::Regex("/^\s+/");

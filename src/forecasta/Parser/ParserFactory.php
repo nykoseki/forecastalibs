@@ -18,6 +18,7 @@ use Forecasta\Parser\Impl\TrueParser;
 use Forecasta\Parser\Impl\FalseParser;
 use Forecasta\Parser\Impl\EmptyParser;
 use Forecasta\Parser\Impl\BoolParser;
+use Forecasta\Parser\Impl\KeyPairParser;
 
 
 /**
@@ -78,7 +79,6 @@ class ParserFactory
 
     /**
      * ManyParserを生成します
-     * @param Parser $parser
      * @return Parser
      */
     public static function Many(/*Psr $parser*/)
@@ -145,7 +145,7 @@ class ParserFactory
 
     /**
      * LbWsParserを生成します
-     * @return LbWs
+     * @return Parser
      */
     public static function LbWs()
     {
@@ -154,7 +154,7 @@ class ParserFactory
 
     /**
      * TrueParserを生成します
-     * @return True
+     * @return Parser
      */
     public static function True()
     {
@@ -163,7 +163,7 @@ class ParserFactory
 
     /**
      * FalseParserを生成します
-     * @return False
+     * @return Parser
      */
     public static function False()
     {
@@ -171,8 +171,8 @@ class ParserFactory
     }
 
     /**
-     * EmptyParser
-     * @return False
+     * EmptyParserを生成します
+     * @return Parser
      */
     public static function Empty()
     {
@@ -180,8 +180,8 @@ class ParserFactory
     }
 
     /**
-     * BoolParser
-     * @return False
+     * BoolParserを生成します
+     * @return Parser
      */
     public static function Bool()
     {
@@ -189,9 +189,20 @@ class ParserFactory
     }
 
     /**
+     * KeyPairParserを生成します
+     * @return Parser
+     */
+    public static function KeyPair()
+    {
+        return new KeyPairParser;
+    }
+
+    /**
      * 引数に指定されたパーサタイプと生成パラメータを用いて，パーサを生成します
      * @param string $type パーサタイプ
      * @param mixed $param 生成パラメータ
+     *
+     * @return Parser
      */
     public static function CreateFrom($type, $param)
     {
@@ -225,6 +236,8 @@ class ParserFactory
             return self::Empty();
         } else if ($type === 'bool') {
             return self::Bool();
+        } else if ($type === 'keyPair') {
+            return self::KeyPair();
         }
     }
 
