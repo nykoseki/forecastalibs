@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c5e226f5-ee50-40cd-9ab7-a851fd16a760" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tests/forecasta/Loader/Xml/testLoad.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.phpunit.result.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.phpunit.result.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/forecasta/Loader/Xml/XMLLoader.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Loader/Xml/XMLLoader.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -99,7 +96,7 @@
           <entry key="json" value="4" />
           <entry key="lock" value="1" />
           <entry key="md" value="3" />
-          <entry key="php" value="103" />
+          <entry key="php" value="104" />
           <entry key="salaries" value="3" />
           <entry key="sh" value="5" />
           <entry key="sql" value="32" />
@@ -112,7 +109,7 @@
           <entry key="Ini" value="1" />
           <entry key="JSON" value="5" />
           <entry key="Markdown" value="3" />
-          <entry key="PHP" value="103" />
+          <entry key="PHP" value="104" />
           <entry key="PLAIN_TEXT" value="7" />
           <entry key="SQL" value="3" />
           <entry key="Scratch" value="29" />
@@ -140,8 +137,9 @@
         <counts>
           <entry key="json" value="14" />
           <entry key="md" value="530" />
-          <entry key="php" value="6710" />
+          <entry key="php" value="6731" />
           <entry key="sql" value="522" />
+          <entry key="txt" value="4" />
           <entry key="xml" value="914" />
         </counts>
       </usages-collector>
@@ -149,7 +147,8 @@
         <counts>
           <entry key="JSON" value="14" />
           <entry key="Markdown" value="530" />
-          <entry key="PHP" value="6710" />
+          <entry key="PHP" value="6731" />
+          <entry key="PLAIN_TEXT" value="4" />
           <entry key="SQL" value="1" />
           <entry key="Scratch" value="521" />
           <entry key="XML" value="914" />
@@ -168,13 +167,25 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/forecasta/Loader/Xml/XMLLoader.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="612">
+              <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
               <folding>
                 <element signature="e#40#66#0#PHP" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="493">
+              <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
+              <folding>
+                <element signature="e#124#155#0#PHP" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -217,7 +228,6 @@
         <option value="$PROJECT_DIR$/tests/forecasta/Comment/Processor/CommentParserTestCase.php" />
         <option value="$PROJECT_DIR$/src/forecasta/Parser/Impl/JsonParser.php" />
         <option value="$PROJECT_DIR$/tests/forecasta/Loader/XMLLoaderTestCase.php" />
-        <option value="$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php" />
         <option value="$PROJECT_DIR$/src/forecasta/Loader/Xml/XMLLoader.php" />
         <option value="$PROJECT_DIR$/tests/forecasta/Loader/Xml/testLoad.xml" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/fb006342-c7b7-406f-8671-60749eadd1ed/console.sql" />
@@ -229,6 +239,7 @@
         <option value="7ddb1fbf-df13-4302-a03a-9b72bf624dd0/schema/test00/table/salaries.sql" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/7ddb1fbf-df13-4302-a03a-9b72bf624dd0/console_1.sql" />
         <option value="$APPLICATION_CONFIG_DIR$/consoles/db/f5c5073b-5ea5-40c3-a1fc-3538d695fec0/console_1.sql" />
+        <option value="$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php" />
       </list>
     </option>
   </component>
@@ -297,8 +308,8 @@
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="29" />
-    <option name="y" value="83" />
+    <option name="x" value="105" />
+    <option name="y" value="68" />
     <option name="width" value="1400" />
     <option name="height" value="915" />
   </component>
@@ -307,7 +318,50 @@
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes />
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
+              <item name="Loader" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="forecastalibs" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+              <item name="forecasta" type="462c0819:PsiDirectoryNode" />
+              <item name="Loader" type="462c0819:PsiDirectoryNode" />
+              <item name="Xml" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="forecastalibs" type="b2602c69:ProjectViewProjectNode" />
+              <item name="外部ライブラリー" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="mysql" />
@@ -323,6 +377,131 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\ubuntu\forecastalibs\tests\forecasta\Loader\Xml" />
     </key>
+  </component>
+  <component name="RestoreUpdateTree" date="今" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock/phive.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock/src/DocBlock/Tags/Method.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock/tests/unit/DocBlock/Tags/MethodTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/phpdocumentor/reflection-common/.travis.yml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nikic/php-parser/.travis.yml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/src/Carbon/Lang/ta.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/src/Carbon/Lang/tk_TM.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TaInTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TaLkTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TaMyTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TaSgTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TaTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TeoKeTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TeoTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TkTest.php</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/vendor/nesbot/carbon/tests/Localization/TkTmTest.php</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -390,8 +569,23 @@
       <workItem from="1576836277475" duration="6934000" />
       <workItem from="1576843227554" duration="24322000" />
       <workItem from="1576878971495" duration="666000" />
-      <workItem from="1576880356638" duration="305000" />
+      <workItem from="1576880356638" duration="1258000" />
     </task>
+    <task id="LOCAL-00001" summary="test">
+      <created>1576880721056</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1576880721056</updated>
+    </task>
+    <task id="LOCAL-00002" summary="test">
+      <created>1576881411681</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1576881411681</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -427,12 +621,13 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="42474000" />
+    <option name="totallyTimeSpent" value="43427000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1066" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.12713936" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26650366" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -444,7 +639,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="9" sideWeight="0.49938875" visible="true" weight="0.32939914" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49938875" weight="0.39308578" />
       <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.49938875" weight="0.32939914" />
       <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.50061125" side_tool="true" weight="0.32939914" />
       <window_info active="true" anchor="bottom" id="Database Console" order="12" visible="true" weight="0.32939914" />
@@ -517,6 +712,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="test" />
+    <option name="LAST_COMMIT_MESSAGE" value="test" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/forecasta/Parser/Parser.php">
@@ -825,13 +1024,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/db/f5c5073b-5ea5-40c3-a1fc-3538d695fec0/console_1.sql">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -869,10 +1061,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/forecasta/Loader/Xml/XMLLoader.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="612">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
           <folding>
             <element signature="e#40#66#0#PHP" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/forecasta/Loader/Xml/XMLLoaderTestCase.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="34" column="32" selection-start-line="34" selection-start-column="32" selection-end-line="34" selection-end-column="32" />
+          <folding>
+            <element signature="e#124#155#0#PHP" expanded="true" />
           </folding>
         </state>
       </provider>

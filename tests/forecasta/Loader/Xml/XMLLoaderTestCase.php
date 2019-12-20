@@ -32,6 +32,6 @@ class XMLLoaderTestCase extends TestCase
 
         $this->loader->init($xmlpath);
 
-
+        $this->assertTrue(true);
     }
 }
