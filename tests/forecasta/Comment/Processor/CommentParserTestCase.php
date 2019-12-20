@@ -154,7 +154,7 @@ EOF;
         $parsed = $target->parsed();
 
         //$this->assertTrue(!$target->isFinish(), $target. '', $comment);
-        $this->assertTrue($target->isFinished(), $target. '');
+        $this->assertTrue(!$target->isFinished(), print_r($parsed, true));
         //$this->assertTrue(false, $target. '');
         //$this->assertTrue(false, print_r($target, true));
     }
