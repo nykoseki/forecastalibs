@@ -589,6 +589,7 @@ EOF;
         //  $compositeConfItem
         // )
         $multiConf = ParserFactory::Seq()
+            ->add($subject)
             ->add(ParserFactory::Token("("))
             ->add($whiteSpace)
             ->add($compositeElement)
@@ -621,12 +622,11 @@ EOF;
             ->add($configuration)
             ->setName("Configurations");
 
-        /*
+
         $result = $configurations->parse(CTX::create($context));
         echo print_r($result . "", true) . "\n";
-        */
-    }
 
+    }
 
     public function parse007() {
         //$target = "AAXX***312604806YYZZ<{222:{123:{456:789},888:098},223:334,444:{12:34}}>dcc";

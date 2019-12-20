@@ -35,7 +35,11 @@ class CommentParserTestCase extends TestCase
      *     "aaa" => "bbb",
      *     "ccc" => (
      *          "ddd" => "eee",
-     *          "fff" => "gggg"
+     *          "fff" => "gggg",
+     *          "hhh" => (
+     *            "iii" => "jjj",
+     *            "kkk" => "lll",
+     *          )
      *      )
      * )
      * @return string
@@ -52,7 +56,11 @@ EOF;
     "aaa" => "bbb",
     "ccc" => (
          "ddd" => "eee",
-         "fff" => "gggg"
+         "fff" => "gggg",
+         "hhh" => (
+           "iii" => "jjj",
+           "kkk" => "lll",
+         )
      )
 )
 @return string
@@ -62,10 +70,41 @@ EOF;
         $target = $parser->normalizeComment($comment);
 
         $targetCtx = CTX::create($target);
-
         $message = "Expected:\n{$test}\nActual\n{$target}\nEnd";
 
-        //$this->assertEquals($test, $target, $message);
-        $this->assertTrue(true, $message);
+        $this->assertEquals($test, $target, $message);
+        //$this->assertTrue(true, $message);
+    }
+
+    /**
+     * @aaa "aaaaa"
+     * @Test(
+     *     "aaa"=>"bbb",
+     *     "ccc"=>"ddd"
+     * )
+     * @bbb("aaaaa" => "bbbbb", "ccccc" => "dddddd")
+     * @xyz(
+     *     "aaa" => "bbb",
+     *     "ccc" => (
+     *          "ddd" => "eee",
+     *          "fff" => "gggg",
+     *          "hhh" => (
+     *            "iii" => "jjj",
+     *            "kkk" => "lll",
+     *          )
+     *      )
+     * )
+     * @return string
+     */
+    public function testParse() {
+        $parser = new CommentParser();
+
+
+        $target = $parser->parse($this, __FUNCTION__);
+
+
+
+
+        $this->assertTrue(false, print_r($target, true));
     }
 }

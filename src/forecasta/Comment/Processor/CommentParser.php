@@ -18,6 +18,7 @@ class CommentParser
         $comment = $this->normalizeComment($comment);
 
         //echo print_r(join("\n", $newAry), true). "\n";
+        return $comment;
     }
 
     /**

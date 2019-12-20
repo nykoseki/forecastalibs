@@ -4,14 +4,14 @@
   "type": "library",
   "minimum-stability": "dev",
   "require": {
-    "php": ">=7.0.0",
+    "php": ">=7.4.0",
     "vlucas/phpdotenv": "^2.2",
     "monolog/monolog": "^1.19",
     "illuminate/support": "~5.0",
     "ray/aop": "2.7.*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.0",
+    "phpunit/phpunit": "8.5.*",
     "codedungeon/phpunit-result-printer": "dev-master"
   },
   "license": "MIT",

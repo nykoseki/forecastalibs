@@ -214,3 +214,6 @@ echo sprintf("%5s -> %s\n", 'Main', $proc->current());
 
 
 echo "=============================================================================================\n";
+echo "test006\n";
+$tst->parse006();
+//echo print_r($tst->parse006(), true);
