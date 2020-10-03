@@ -9,7 +9,7 @@ namespace ForecastaTest\Loader\Xml;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Loader\Xml;
+use Forecasta\Loader\Xml\XMLLoader;
 use Forecasta\Parser as P;
 use Forecasta\Parser\ParserContext as CTX;
 
