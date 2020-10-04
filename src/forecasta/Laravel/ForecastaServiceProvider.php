@@ -15,7 +15,7 @@ class JavaScriptServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('ForeCasta', function ($app) {
+        $this->app->singleton('Forecasta', function ($app) {
             /*
             return new Transformer(
                 new LaravelViewBinder($app['events'], config('javascript.bind_js_vars_to_this_view')),

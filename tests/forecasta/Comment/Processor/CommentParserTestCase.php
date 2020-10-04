@@ -30,11 +30,6 @@ class CommentParserTestCase extends TestCase
      *     "aaa"=>"bbb",
      *     "ccc"=>"ddd"
      * )
-     * 
-     *
-     *
-     *
-     *
      * @bbb("aaaaa" => "bbbbb", "ccccc" => "ddddddd")
      * @xyz(
      *     "aaa" => "bbb",
@@ -51,6 +46,7 @@ class CommentParserTestCase extends TestCase
      */
 EOF;
         $test = <<<EOF
+
 @aaa "aaaaa"
 @Test(
     "aaa"=>"bbb",

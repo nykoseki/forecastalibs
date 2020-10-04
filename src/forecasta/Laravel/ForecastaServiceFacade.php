@@ -13,6 +13,6 @@ class ForecastaServiceFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'ForeCasta';
+        return 'Forecasta';
     }
 }
