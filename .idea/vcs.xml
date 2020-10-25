@@ -2,5 +2,31 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/codedungeon/phpunit-result-printer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/annotations" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/inflector" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/instantiator" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/doctrine/lexer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/illuminate/contracts" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/illuminate/support" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/monolog/monolog" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/myclabs/deep-copy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/nesbot/carbon" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/nikic/php-parser" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/phar-io/manifest" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/phpdocumentor/reflection-common" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/phpdocumentor/reflection-docblock" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/phpdocumentor/type-resolver" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/phpspec/prophecy" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/phpunit/phpunit" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/psr/container" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/psr/log" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/psr/simple-cache" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/polyfill-ctype" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/polyfill-mbstring" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/translation" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/translation-contracts" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/symfony/yaml" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vendor/vlucas/phpdotenv" vcs="Git" />
   </component>
 </project>

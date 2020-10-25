@@ -4,7 +4,7 @@ namespace Forecasta\Common;
 
 class DynamicProxy
 {
-    private $_Forecasta_Proxy_ProxyTrait_Proxy;
+    private static $_Forecasta_Proxy_ProxyTrait_Proxy;
 
     public function __construct($obj) {
         $this->_Forecasta_Proxy_ProxyTrait_Proxy = $obj;
@@ -20,7 +20,7 @@ class DynamicProxy
         $args = func_get_args();
 
         $methodName = $args[0];
-        $className = get_class($this->_Forecasta_Proxy_ProxyTrait_Proxy);
+        $className = get_class(self::_Forecasta_Proxy_ProxyTrait_Proxy);
 
         $parameter = array();
         $idx = 0;

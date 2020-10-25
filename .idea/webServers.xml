@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="a1f8b4ba-676c-42e8-9811-619a2d29ebf4" name="lancer-portfolio.biz" url="http://lancer-portfolio.biz">
+        <fileTransfer host="lancer-portfolio.biz" port="22" privateKey="C:\Users\nykos\.ssh\sv02.ppk" rootFolder="/usr/appl/forecasta.net.libs" accessType="SFTP" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

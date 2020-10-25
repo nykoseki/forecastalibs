@@ -36,10 +36,10 @@ class RegexParser implements P\Parser
         //$tmpRegexp = $this->normalize($this->regexStr);
         $tmpRegexp = $this->regexStr;
 
-        //applLog("RegexParser:target", $tmpTarget);
+        //Forecasta\Common\applLog("RegexParser:target", $tmpTarget);
         preg_match($tmpRegexp, $tmpTarget, $matches);
 
-        //applLog("RegexParser:match", $matches);
+        //Forecasta\Common\applLog("RegexParser:match", $matches);
 
         if (count($matches) > 0) {
             $match = $matches[0];
@@ -47,7 +47,7 @@ class RegexParser implements P\Parser
             $matchLen = mb_strlen($match);
             $position = $position + $matchLen;
 
-            //applLog("RegexParser", $matches);
+            //Forecasta\Common\applLog("RegexParser", $matches);
 
 
             //$this->setName("Regex-0");
@@ -77,7 +77,7 @@ class RegexParser implements P\Parser
 
         preg_match("/\/(.+?)\//", $regex, $matches);
 
-        //applLog("RegexParser", $matches);
+        //Forecasta\Common\applLog("RegexParser", $matches);
 
         if (count($matches) > 1) {
             $reg = $matches[1];
@@ -85,7 +85,7 @@ class RegexParser implements P\Parser
             $prefix = mb_substr($reg, 0, 1);
             if ($prefix != '^') {
 
-                //applLog("RegexParser", '^'. $reg);
+                //Forecasta\Common\applLog("RegexParser", '^'. $reg);
                 return '/^(' . $reg . ')/m';
                 //return '/'. $reg. '/';
             } else {
@@ -119,7 +119,7 @@ class RegexParser implements P\Parser
     public function outputRecursive($searched)
     {
         $className = get_class($this);
-        applLog("outputRecursive", $searched);
+        Forecasta\Common\applLog("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

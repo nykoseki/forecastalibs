@@ -37,7 +37,7 @@ class CharParser implements P\Parser
 
         $target0 = mb_substr($context->currentTarget(), 0, 1);
 
-        //applLog("CharParser", $target0);
+        //Forecasta\Common\applLog("CharParser", $target0);
         if (array_key_exists($target0, $targetArray)) {
 
 
@@ -80,7 +80,7 @@ class CharParser implements P\Parser
     public function outputRecursive($searched)
     {
         $className = get_class($this);
-        applLog("outputRecursive", $searched);
+        Forecasta\Common\applLog("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

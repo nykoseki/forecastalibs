@@ -83,7 +83,7 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
         $className = get_class($this);
         $className = str_replace("\\", "/", $className);
 
-        applLog("outputRecursive", $searched);
+        Forecasta\Common\applLog("outputRecursive", $searched);
 
         $searched[] = $this->name;
 

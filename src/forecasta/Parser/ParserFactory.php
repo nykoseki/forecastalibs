@@ -274,7 +274,7 @@ class ParserFactory
             // ASTからリファレンス検索するクロージャ
             self::$referenceSearcher = Y(function ($callback) {
                 return function ($name, $definition) use (&$callback) {
-                    //applLog("reference-search", "start search at [$name]");
+                    //Forecasta\Common\applLog("reference-search", "start search at [$name]");
                     if (is_array($definition)) {
                         foreach ($definition as $child) {
                             if (is_object($child)) {
@@ -305,7 +305,7 @@ class ParserFactory
                         if (property_exists($definition, "name")) {
                             $aName = $definition->name;
                             if ($name === $aName) {
-                                //applLog("search-success:object", $name);
+                                //Forecasta\Common\applLog("search-success:object", $name);
                                 return $definition;
                             } else {
                                 if (property_exists($definition, "child") && is_array($definition->child) && count($definition->child) > 0) {
@@ -318,11 +318,11 @@ class ParserFactory
                                         }
                                     }
                                 }
-                                //applLog("reference-search:single[$name != $aName]", "unmatch");
+                                //Forecasta\Common\applLog("reference-search:single[$name != $aName]", "unmatch");
                                 return null;
                             }
                         } else {
-                            applLog("reference-search:single[$name]", "name property not exists");
+                            Forecasta\Common\applLog("reference-search:single[$name]", "name property not exists");
                             return null;
                         }
                     }
@@ -566,7 +566,7 @@ class ParserFactory
                 return function ($referenceName, $definition) use (&$cache, &$tryCache) {
                     if ($tryCache) {
                         if (array_key_exists($referenceName, $cache)) {
-                            applLog("SearchAST", "cache hit <$referenceName>");
+                            Forecasta\Common\applLog("SearchAST", "cache hit <$referenceName>");
                             return $cache[$referenceName];
                         } else {
                             $result = self::searchReferenceByAST($referenceName, $definition);
@@ -583,7 +583,7 @@ class ParserFactory
             $searchAst = $searchAstClosure->__invoke(false);
 
             //return;
-            applLog("ParserResolver", "== 処理開始 ============================================================");
+            Forecasta\Common\applLog("ParserResolver", "== 処理開始 ============================================================");
             $benchMark = \BMBench::newInstance()->start();
 
             // ROOTパーサ解決を行う
@@ -599,98 +599,98 @@ class ParserFactory
                     $branch = $searchAst->__invoke($referenceName, $definition);
 
                     if (is_null($branch)) {
-                        applLog("ParserResolver", "[$referenceName] をASTから探索できませんでした");
+                        Forecasta\Common\applLog("ParserResolver", "[$referenceName] をASTから探索できませんでした");
                         return self::T();
                     }
 
                     if (self::isAstResolved($branch)) {
-                        applLog("ParserResolver", "[$referenceName] を解決");
+                        Forecasta\Common\applLog("ParserResolver", "[$referenceName] を解決");
                         return $branch->parser;
                     } else {
                         // 未解決の場合
 
                         if (self::isAstForward($branch)) {
                             // forwardパーサであれば，解決済扱いとしてそのまま返す
-                            applLog("ParserResolver", "[$referenceName] を解決（Forward）");
+                            Forecasta\Common\applLog("ParserResolver", "[$referenceName] を解決（Forward）");
                             return $branch->parser;
                         } else {
                             if (self::hasAstReference($branch)) {
-                                //applLog("ParserResolver", "[$referenceName][Ref=$branch->ref] を解決します（AST再帰探索）");
+                                //Forecasta\Common\applLog("ParserResolver", "[$referenceName][Ref=$branch->ref] を解決します（AST再帰探索）");
                                 // refプロパティが存在すれば，refプロパティの内容を再帰的に
                                 // この関数に適用する
                                 if (array_key_exists($branch->ref, $realParsers)) {
-                                    applLog("ParserResolver", "[$referenceName][Ref=$branch->ref] を解決（正則リファレンス参照）");
+                                    Forecasta\Common\applLog("ParserResolver", "[$referenceName][Ref=$branch->ref] を解決（正則リファレンス参照）");
                                     return $realParsers[$branch->ref];
                                 } else {
-                                    applLog("ParserResolver", "[$referenceName][Ref=$branch->ref] を解決します（AST再帰探索）");
+                                    Forecasta\Common\applLog("ParserResolver", "[$referenceName][Ref=$branch->ref] を解決します（AST再帰探索）");
                                     return $callback($branch->ref);
                                 }
                             } else {
                                 if (self::hasAstType($branch)) {
-                                    applLog("ParserResolver", "[$referenceName][Type=$branch->type] を解決します");
+                                    Forecasta\Common\applLog("ParserResolver", "[$referenceName][Type=$branch->type] を解決します");
                                     $branchType = $branch->type;
 
                                     if (self::hasAstValidChild($branch)) {
-                                        applLog("ParserResolver", "[$referenceName][Type=$branch->type] を解決中（子探索）");
+                                        Forecasta\Common\applLog("ParserResolver", "[$referenceName][Type=$branch->type] を解決中（子探索）");
 
                                         foreach ($branch->child as $children) {
                                             $childrenName = $children->name;
 
                                             if (self::isAstResolved($children)) {
-                                                applLog("ParserResolver", "[$childrenName]->[$referenceName] を解決中（子を解決）");
+                                                Forecasta\Common\applLog("ParserResolver", "[$childrenName]->[$referenceName] を解決中（子を解決）");
                                                 $branch->parser->add($children->parser);
 
                                             } else if (self::isAstForward($children)) {
-                                                applLog("ParserResolver", "[$childrenName][Type=$children->type]->[$referenceName] を解決中（子がForward）");
+                                                Forecasta\Common\applLog("ParserResolver", "[$childrenName][Type=$children->type]->[$referenceName] を解決中（子がForward）");
                                                 $branch->parser->add($children->parser);
                                             } else {
                                                 // 未解決
 
                                                 if (self::hasAstReference($children)) {
-                                                    applLog("ParserResolver", "[$childrenName] を解決中（AST再帰探索）");
+                                                    Forecasta\Common\applLog("ParserResolver", "[$childrenName] を解決中（AST再帰探索）");
                                                     $searched = $callback($children->ref);
 
                                                     if (is_null($searched)) {
-                                                        applLog("ParserResolver", "[$childrenName] を解決できません(結果がnull");
+                                                        Forecasta\Common\applLog("ParserResolver", "[$childrenName] を解決できません(結果がnull");
                                                     } else {
                                                         if ($searched instanceof Psr) {
-                                                            applLog("ParserResolver", "[$childrenName]->[$referenceName][] を解決");
+                                                            Forecasta\Common\applLog("ParserResolver", "[$childrenName]->[$referenceName][] を解決");
 
                                                             $branch->parser->add($searched);
                                                         } else {
-                                                            applLog("ParserResolver", "[$childrenName] をできません(パーサが無い/リファレンスもない)");
-                                                            applLog("ParserResolver:Error", $searched);
+                                                            Forecasta\Common\applLog("ParserResolver", "[$childrenName] をできません(パーサが無い/リファレンスもない)");
+                                                            Forecasta\Common\applLog("ParserResolver:Error", $searched);
                                                         }
 
 
                                                     }
                                                 } else {
                                                     if ($children instanceof Psr) {
-                                                        applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決(直接参照)");
+                                                        Forecasta\Common\applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決(直接参照)");
                                                         $branch->parser->add($children);
                                                     } else {
 
                                                         if (self::hasAstValidChild($children)) {
 
                                                             if (self::hasAstParser($children)) {
-                                                                applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決中（子の解析の必要あり）");
+                                                                Forecasta\Common\applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決中（子の解析の必要あり）");
 
                                                                 foreach ($children->child as $children0) {
                                                                     $searched0 = $callback($children0->name);
                                                                     if (!is_null($searched0) && $searched0 instanceof Psr) {
-                                                                        //applLog("ParserResolver", "[$childrenName] を解決(直接参照)");
+                                                                        //Forecasta\Common\applLog("ParserResolver", "[$childrenName] を解決(直接参照)");
                                                                         $branch->parser->add($searched0);
-                                                                        //applLog("ParserResolver:Error", $searched);
+                                                                        //Forecasta\Common\applLog("ParserResolver:Error", $searched);
                                                                     } else {
-                                                                        applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決できません(子の解析結果=NULL)");
+                                                                        Forecasta\Common\applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決できません(子の解析結果=NULL)");
                                                                     }
                                                                 }
                                                             } else {
-                                                                applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決できません（子の解析の必要あり/パーサ作成の必要あり）");
+                                                                Forecasta\Common\applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決できません（子の解析の必要あり/パーサ作成の必要あり）");
                                                             }
 
                                                         } else {
-                                                            applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決できません（refが存在しない）");
+                                                            Forecasta\Common\applLog("ParserResolver", "[$childrenName][Type=$children->type] を解決できません（refが存在しない）");
                                                         }
 
                                                     }
@@ -702,14 +702,14 @@ class ParserFactory
                                         return $branch->parser;
                                     } else {
                                         // 子をもたない
-                                        applLog("ParserResolver", "[$referenceName][$branch->type] を解決できません(？？？)");
-                                        applLog("??????????", "?????");
+                                        Forecasta\Common\applLog("ParserResolver", "[$referenceName][$branch->type] を解決できません(？？？)");
+                                        Forecasta\Common\applLog("??????????", "?????");
                                         return self::T();
                                     }
                                 } else {
                                     // typeもrefも持っていない
-                                    applLog("ParserResolver", "[$referenceName] を解決できません(typeもrefもなし)");
-                                    applLog("??????????", "?????");
+                                    Forecasta\Common\applLog("ParserResolver", "[$referenceName] を解決できません(typeもrefもなし)");
+                                    Forecasta\Common\applLog("??????????", "?????");
                                     return self::T();
                                 }
                             }
@@ -721,10 +721,10 @@ class ParserFactory
             $profile = $benchMark->stop()->profile();
 
             $jsonDecoded = json_decode($resolvedParser . '', true);
-            //applLog("ParserResolver", $jsonDecoded);
-            //applLog("ParserResolver", $profile);
-            applLog("ParserResolver", "== 処理終了 ============================================================");
-            //applLog("ParserResolver:result", $resolvedParser);
+            //Forecasta\Common\applLog("ParserResolver", $jsonDecoded);
+            //Forecasta\Common\applLog("ParserResolver", $profile);
+            Forecasta\Common\applLog("ParserResolver", "== 処理終了 ============================================================");
+            //Forecasta\Common\applLog("ParserResolver:result", $resolvedParser);
 
             // ③遅延評価対象のパーサに関して，forwardメソッドを用いて
             //   パーサの遅延提供を設定する
@@ -749,11 +749,11 @@ class ParserFactory
             })/*->__invoke(6)*/
             ;
 
-//  			applLog("AstParser:after", $definition);
-//  			applLog("AstParser:after", self::searchReferenceByAST("root", $definition));
-//  			applLog("AstParser:after", self::searchReferenceByAST("expression", $definition));
-            //applLog("AstParser:after", $unResolves);
-            //applLog("AstParser:after", $realParsers);
+//  			Forecasta\Common\applLog("AstParser:after", $definition);
+//  			Forecasta\Common\applLog("AstParser:after", self::searchReferenceByAST("root", $definition));
+//  			Forecasta\Common\applLog("AstParser:after", self::searchReferenceByAST("expression", $definition));
+            //Forecasta\Common\applLog("AstParser:after", $unResolves);
+            //Forecasta\Common\applLog("AstParser:after", $realParsers);
             return;
 
             // ======================================================================================================
@@ -767,8 +767,8 @@ class ParserFactory
 // 							if($item instanceof Psr) {
 // 								continue;
 // 							}
-// // 							applLog("ParserResolver:multi", count($item));
-// // 							applLog("ParserResolver:multi", $item);
+// // 							Forecasta\Common\applLog("ParserResolver:multi", count($item));
+// // 							Forecasta\Common\applLog("ParserResolver:multi", $item);
 // 							if($item['resolved'] === 'no') {
 
 
@@ -800,12 +800,12 @@ class ParserFactory
 // 												} else {
 // 													$resolved = $callback($child);
 
-// 													applLog("ParserResolver", $resolved);
+// 													Forecasta\Common\applLog("ParserResolver", $resolved);
 
 // 													if($resolved["resolved"] === 'yes') {
 // 														array_push($parsers, $resolved['parser']);
 // 													} else {
-// 														//applLog("ParserBuilder:Error", $resolved);
+// 														//Forecasta\Common\applLog("ParserBuilder:Error", $resolved);
 // 														//throw new \Exception("Type<$parserType>::子パーサを解決できませんでした");
 // 													}
 // 												}
@@ -821,19 +821,19 @@ class ParserFactory
 // 												} else if($parserType === 'option' || $parserType === 'many') {
 // 													$item["parser"]->add($parsers[0]);
 // 												} else {
-// 													//applLog("ParserBuilder:Error", $item);
+// 													//Forecasta\Common\applLog("ParserBuilder:Error", $item);
 // 													//throw new \Exception("Type<$parserType>::未対応のパーサを検出いたしました");
 // 												}
 // 											} else {
-// 												//applLog("ParserBuilder:Error", $item);
+// 												//Forecasta\Common\applLog("ParserBuilder:Error", $item);
 // 												//throw new \Exception("Type<$parserType>::子パーサが存在しないため，親パーサを解決できません");
 // 											}
 // 										} else {
-// 											//applLog("ParserBuilder:Error", $item);
+// 											//Forecasta\Common\applLog("ParserBuilder:Error", $item);
 // 											//throw new \Exception("Type<$parserType>::このパーサには子パーサが必要です");
 // 										}
 // 									} else {
-// 										//applLog("ParserBuilder:Error", $item);
+// 										//Forecasta\Common\applLog("ParserBuilder:Error", $item);
 // 										// 未解決の子をもたないパーサ
 // 										//throw new \Exception("Type<$parserType>::未解決の単一パーサが存在します．リファレンス参照をチェックしてください");
 // 									}
@@ -843,7 +843,7 @@ class ParserFactory
 
 // 						return $target;
 // 					} else {
-// 						applLog("ParserResolver:single", $target["name"]);
+// 						Forecasta\Common\applLog("ParserResolver:single", $target["name"]);
 // 						if($target['resolved'] === 'no') {
 // 							if(array_key_exists("ref", $target)) {
 // 								$ref = $target["ref"];
@@ -856,16 +856,16 @@ class ParserFactory
 // 										unset($target["ref"]);
 // 									} else {
 // 										// リファレンス参照したパーサが不完全
-// 										//applLog("ParserBuilder:Error", $target);
+// 										//Forecasta\Common\applLog("ParserBuilder:Error", $target);
 // 										//throw new \Exception("Type<$parserType>::リファレンスで参照されたパーサが不完全なため，パーサを組み立てることができませんでした");
 // 									}
 
 // 								} else {
-// 									//applLog("ParserBuilder:Error", $target);
+// 									//Forecasta\Common\applLog("ParserBuilder:Error", $target);
 // 									//throw new \Exception("Type<$parserType>::名前解決済のパーサリポジトリに，該当するリファレンス参照が存在しません");
 // 								}
 // 							} else {
-// 								//applLog("ParserBuilder:Error", $target);
+// 								//Forecasta\Common\applLog("ParserBuilder:Error", $target);
 // 								//throw new \Exception("Type<$parserType>::未解決の単一パーサに対して，リファレンス参照が存在しないか，パラメータが不正です");
 // 							}
 // 						}
@@ -877,13 +877,13 @@ class ParserFactory
 // 			try {
 // 				$resolved = $referenceResolver->__invoke($definition);
 // 			} catch(Exception $e) {
-// 				applLog("ParserResolver:Error", $e);
-// 				applLog("ParserResolver:Error", $definition);
+// 				Forecasta\Common\applLog("ParserResolver:Error", $e);
+// 				Forecasta\Common\applLog("ParserResolver:Error", $definition);
 // 			}
 
 
-            //applLog("ParserBuilder", $definition);
-            //applLog("ParserBuilder:created", $realParsers);
+            //Forecasta\Common\applLog("ParserBuilder", $definition);
+            //Forecasta\Common\applLog("ParserBuilder:created", $realParsers);
             return;
 // 			// 内部ツリー構造->中間体１
 // 			$combinator = Y(function(callable $callback){
@@ -987,7 +987,7 @@ class ParserFactory
 // 				};
 // 			})->__invoke($definition);
 
-// 			applLog("ParserFactory:combinator", $combinator);
+// 			Forecasta\Common\applLog("ParserFactory:combinator", $combinator);
 
 // 			// 中間体１->生成体
 // 			$builder = Y(function($callback){
@@ -996,16 +996,16 @@ class ParserFactory
 // 						$definition = $item['definition'];
 
 // 						$parserName = $definition->name;
-// 						//applLog("ParserBuilder:operate", "Name:$parserName, Type:$definition->type, Ref:$definition->ref");
+// 						//Forecasta\Common\applLog("ParserBuilder:operate", "Name:$parserName, Type:$definition->type, Ref:$definition->ref");
 // 						if(!empty($definition->ref)) {
-// 							applLog("ParserBuilder:operate<Level=$level> of parent:$parent", "Name:$parserName, Type:$definition->type, Ref:$definition->ref -> create forwarder");
+// 							Forecasta\Common\applLog("ParserBuilder:operate<Level=$level> of parent:$parent", "Name:$parserName, Type:$definition->type, Ref:$definition->ref -> create forwarder");
 // 							$parser = new \stdClass();
 // 							$parser->ref = $definition->ref;
 // 							$parser->parser = self::Forward();
 
 // 							$parsers[$parserName] = $parser;
 // 						} else if($definition->type) {
-// 							applLog("ParserBuilder:operate<Level=$level> of parent:$parent", "Name:$parserName, Type:$definition->type, Ref:$definition->ref -> create realtype");
+// 							Forecasta\Common\applLog("ParserBuilder:operate<Level=$level> of parent:$parent", "Name:$parserName, Type:$definition->type, Ref:$definition->ref -> create realtype");
 // 							if(array_key_exists("child", $item) && count($item['child']) > 0) {
 // 								$children = $item['child'];
 // 								$children0 = array();
@@ -1044,9 +1044,9 @@ class ParserFactory
 // 									$parsers[$parserName] = $parser;
 // 								}
 // 							}
-// 							//applLog("ParserBuilder:type:$parserName:", $definition->type. "<Param:$definition->param>");
+// 							//Forecasta\Common\applLog("ParserBuilder:type:$parserName:", $definition->type. "<Param:$definition->param>");
 // 						} else {
-// 							applLog("ParserBuilder:type:$parserName:", "Illegal!");
+// 							Forecasta\Common\applLog("ParserBuilder:type:$parserName:", "Illegal!");
 // 						}
 
 
@@ -1074,18 +1074,18 @@ class ParserFactory
 
 // 							// リファレンスの存在確認
 // 							if(!empty($value->ref) && array_key_exists($value->ref, $parsers)) {
-// 								applLog("CreateParser:multi:ref:". $value->ref, 'real parser exists');
+// 								Forecasta\Common\applLog("CreateParser:multi:ref:". $value->ref, 'real parser exists');
 
 // 								if($value->parser instanceof Forward && $parsers[$value->ref] instanceof Psr) {
-// 									applLog("CreateParser:multi:ref:". $value->ref, "forward-parser");
+// 									Forecasta\Common\applLog("CreateParser:multi:ref:". $value->ref, "forward-parser");
 // 									$value->parser->forward($parsers[$value->ref]);
 // 								} else {
-// 									applLog("CreateParser:multi:ref:". $value->ref, "not-forward or ref is broken");
+// 									Forecasta\Common\applLog("CreateParser:multi:ref:". $value->ref, "not-forward or ref is broken");
 // 								}
-// 								//applLog("CreateParser:multi:ref:". $value->ref, $value->parser);
+// 								//Forecasta\Common\applLog("CreateParser:multi:ref:". $value->ref, $value->parser);
 // 								// forwardに実態を設定
 // 							} else {
-// 								applLog("CreateParser:multi:other:", "");
+// 								Forecasta\Common\applLog("CreateParser:multi:other:", "");
 // 							}
 // 						}
 
@@ -1093,7 +1093,7 @@ class ParserFactory
 // 					} else {
 // 						// stdclass
 // 						// リファレンスの存在確認
-// 						applLog("CreateParser:single:", $ctx);
+// 						Forecasta\Common\applLog("CreateParser:single:", $ctx);
 
 // 						$value = $ctx;
 // 						if(!empty($value->param) && is_array($value->param)) {
@@ -1102,10 +1102,10 @@ class ParserFactory
 
 // 						// リファレンスの存在確認
 // 						if(!empty($value->ref) && array_key_exists($value->ref, $parsers)) {
-// 							applLog("CreateParser:ref:". $value->ref, 'real parser exists');
+// 							Forecasta\Common\applLog("CreateParser:ref:". $value->ref, 'real parser exists');
 // 							// forwardに実態を設定
 // 						} else {
-// 							applLog("CreateParser:other:", "not reference");
+// 							Forecasta\Common\applLog("CreateParser:other:", "not reference");
 // 						}
 
 // 						return $parsers;
@@ -1115,11 +1115,11 @@ class ParserFactory
 // 				};
 // 			});
 
-// 			//applLog("ParserBuilder", $res);
+// 			//Forecasta\Common\applLog("ParserBuilder", $res);
 // 			$ctx99 = array();
 // 			$created = $createParser->__invoke($res, $res);
 
-            //applLog("CreateParser:created", $created);
+            //Forecasta\Common\applLog("CreateParser:created", $created);
 
             return $definition;
         }

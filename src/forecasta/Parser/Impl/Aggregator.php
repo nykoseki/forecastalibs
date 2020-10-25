@@ -62,7 +62,7 @@ trait Aggregator
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            applLog("Parser:onSuccess", "[Name:$this->name] of <$className>");
+            Forecasta\Common\applLog("Parser:onSuccess", "[Name:$this->name] of <$className>");
         }
 
     }
@@ -71,7 +71,7 @@ trait Aggregator
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            applLog("Parser:onError", "[Name:$this->name] of <$className>");
+            Forecasta\Common\applLog("Parser:onError", "[Name:$this->name] of <$className>");
         }
 
     }
@@ -80,7 +80,7 @@ trait Aggregator
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            applLog("Parser:onTry", "[Name:$this->name] of <$className>");
+            Forecasta\Common\applLog("Parser:onTry", "[Name:$this->name] of <$className>");
         }
 
     }
