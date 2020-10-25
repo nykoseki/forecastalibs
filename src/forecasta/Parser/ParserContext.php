@@ -304,7 +304,7 @@ class ParserContext
 
         $currentName = $this->getName();
 
-        $parsed = Forecasta\Common\Y(function ($callback) use (&$currentName) {
+        $parsed = Y(function ($callback) use (&$currentName) {
             return function ($x) use (&$callback, &$currentName) {
                 if (is_array($x)) {
                     if (count($x) == 0) {

@@ -82,7 +82,7 @@ class SequenceParser implements P\Parser, P\HasMoreChildren
     public function outputRecursive($searched)
     {
         $className = get_class($this);
-        Forecasta\Common\applLog("outputRecursive", $searched);
+        Forecasta\Common\applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

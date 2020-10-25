@@ -5,9 +5,9 @@
  * @param callable $F
  */
 
-namespace Forecasta\Common;
 
-if (!function_exists("Forecasta\Common\Y")) {
+
+if (!function_exists("Y")) {
     /**
      * Yコンビネータです
      * @param callable $F クロージャ
@@ -30,7 +30,7 @@ if (!function_exists("Forecasta\Common\Y")) {
 }
 
 
-if (!function_exists("Forecasta\Common\Forecasta\Common\applLog")) {
+if (!function_exists("applLog2")) {
     /**
      * ログ出力を行います
      * @description ログ出力を行います
@@ -40,7 +40,7 @@ if (!function_exists("Forecasta\Common\Forecasta\Common\applLog")) {
      *
      * @return a
      */
-    function applLog($category, $message, $debugFlg = false)
+    function applLog2($category, $message, $debugFlg = false)
     {
         if(is_array($message)) {
             return print_r("{$category}:". $message, true). "\n";

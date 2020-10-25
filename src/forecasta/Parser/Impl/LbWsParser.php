@@ -88,7 +88,7 @@ class LbWsParser implements P\Parser
     {
         /*
         $className = get_class($this);
-        applLog("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

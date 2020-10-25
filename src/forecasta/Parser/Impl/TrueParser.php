@@ -56,7 +56,7 @@ class TrueParser implements P\Parser
     {
         $className = get_class($this);
 
-        Forecasta\Common\applLog("outputRecursive", $searched);
+        Forecasta\Common\applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

@@ -29,7 +29,7 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
 
         $currentCtx = P\ParserContext::getBlank();
 
-        //Forecasta\Common\applLog("ChoiceParser", $this->parsers);
+        //Forecasta\Common\applLog2("ChoiceParser", $this->parsers);
 
         $currentParsed = $context;
 
@@ -83,7 +83,7 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
         $className = get_class($this);
 
         $className = str_replace("\\", "/", $className);
-        Forecasta\Common\applLog("outputRecursive", $searched);
+        Forecasta\Common\applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $childMessageAry = [];

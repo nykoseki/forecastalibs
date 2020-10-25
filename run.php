@@ -8,8 +8,8 @@ $tst = new Forecasta\ForecastaMain();
 if(function_exists('Y')) {
     echo "Exists: Function Y\n";
 }
-if(function_exists('applLog')) {
-    echo "Exists: Function applLog\n";
+if(function_exists('applLog2')) {
+    echo "Exists: Function applLog2\n";
 }
 
 $res = $tst->parse001(). "";
