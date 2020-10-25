@@ -4,6 +4,7 @@ namespace Forecasta\Parser;
 
 use Forecasta\Common\Composite;
 use Forecasta\Common\Named;
+//use Forecasta\Common\Y;
 
 /**
  * パーサの入力と出力を司るコンテキストクラスです
@@ -303,7 +304,7 @@ class ParserContext
 
         $currentName = $this->getName();
 
-        $parsed = Y(function ($callback) use (&$currentName) {
+        $parsed = Forecasta\Common\Y(function ($callback) use (&$currentName) {
             return function ($x) use (&$callback, &$currentName) {
                 if (is_array($x)) {
                     if (count($x) == 0) {
