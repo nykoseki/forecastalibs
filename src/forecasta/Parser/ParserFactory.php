@@ -720,6 +720,7 @@ class ParserFactory
 
             $profile = $benchMark->stop()->profile();
 
+
             $jsonDecoded = json_decode($resolvedParser . '', true);
             //Forecasta\Common\applLog("ParserResolver", $jsonDecoded);
             //Forecasta\Common\applLog("ParserResolver", $profile);
