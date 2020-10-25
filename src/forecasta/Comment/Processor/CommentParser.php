@@ -144,7 +144,10 @@ class CommentParser
             //echo $value. "\n";
         }
 
-        return join("\n", $newAry);
+        $output = join("\n", $newAry);
+        $output = trim($output);
+
+        return $output;
     }
 
     public function toArray($classInstance, $methodName)

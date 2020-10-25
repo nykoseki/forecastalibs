@@ -40,13 +40,13 @@ class CommentParserTestCase extends TestCase
      *            "iii" => "jjj",
      *            "kkk" => "lll",
      *          )
-     *      )
+     *      ),
+     *      "value" => 123, "aaa" => 12000, [123, 456, 7890, ("a" => "b")]
      * )
      * @return string
      */
 EOF;
         $test = <<<EOF
-
 @aaa "aaaaa"
 @Test(
     "aaa"=>"bbb",
@@ -62,7 +62,8 @@ EOF;
            "iii" => "jjj",
            "kkk" => "lll",
          )
-     )
+     ),
+     "value" => 123, "aaa" => 12000, [123, 456, 7890, ("a" => "b")]
 )
 @return string
 EOF;
@@ -148,6 +149,10 @@ EOF;
         $target = $parser->parse($this, __FUNCTION__);
 
         $parsed = $target->parsed();
+
+        $parsed = print_r($parsed, true);
+
+        //$this->assertEquals("", $parsed, "-----------------------------------\n". $parsed. "\n-----------------------------------");
 
         //$this->assertTrue(!$target->isFinish(), $target. '', $comment);
         $this->assertTrue($target->isFinished(), print_r($parsed, true));
