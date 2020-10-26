@@ -119,7 +119,7 @@ trait ParserTrait
      */
     public function invoke($target)
     {
-        $param = CTX::create($target);
+        $param = ParserContext::create($target);
 
         return $this->parse($param);
     }

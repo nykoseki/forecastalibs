@@ -187,6 +187,8 @@ class HistoryEntry
         $this->parserType = get_class($parser);
         $this->position = $context->current();
 
+        //echo $context->parsed()
+
         if(is_string($context->parsed())) {
             $this->len = mb_strlen($context->parsed());
         }

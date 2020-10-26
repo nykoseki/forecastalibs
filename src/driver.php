@@ -137,14 +137,14 @@ EOF;
     }
 
     function testParse03() {
-        $ctx = ParserContext::create("abcdefghijk");
+        $ctx = ParserContext::create("abcdefghiabcdefghi");
 
-        $parser1 = new TokenParser("abc");
-        $parser2 = new TokenParser("def");
-        $parser3 = new TokenParser("ghi");
-        $parser1->setName("TokenTest");
+        $parser1 = (new TokenParser("abc"))->setName("Token01");
+        $parser2 = (new TokenParser("def"))->setName("Token02");
+        $parser3 = (new TokenParser("ghi"))->setName("Token03");
+        //$parser1->setName("TokenTest");
 
-        $parser = ParserFactory::Many()->add(ParserFactory::Seq()->add($parser1)->add($parser2)->add($parser3));
+        $parser = ParserFactory::Many()->add(ParserFactory::Seq()->add($parser1)->add($parser2)->add($parser3)->setName("Container"));
 
         $history = HistoryEntry::createEntry("Token", $ctx, $parser);
 
@@ -154,7 +154,18 @@ EOF;
 
         $history->walk($walker);
 
-        echo print_r($result, true);
+        //echo print_r($result, true);
+    }
+
+    public function testParse04() {
+        $forward = ParserFactory::Forward()->setName("Container");
+
+        $lBlace = ParserFactory::Token("[")->setName("Left");
+
+        // Number
+
+
+        $rBlace = ParserFactory::Token("]")->setName("Right");
     }
 }
 

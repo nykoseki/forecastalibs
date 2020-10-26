@@ -8,6 +8,7 @@ class HistoryWalker implements HistoryWalkerBase {
     public function walk(HistoryEntry $entry) {
         //$childCount = $entry->
 
+        $isRoot = $entry->isRoot() ? 1 : 0;
         $name = $entry->getName();
         $depth = $entry->getDepth();
 
@@ -27,7 +28,7 @@ class HistoryWalker implements HistoryWalkerBase {
             } else {
 
             }
-            echo $indent. "<parse-entry name=${name} type=${parserType} length=${length} position=${position} state='${isSuccess}'>". "\n";
+            echo $indent. "<parse-entry name=${name} type=${parserType} length=${length} position=${position} state='${isSuccess}' root='${isRoot}'>". "\n";
 
             echo $indent. $indent. "<content><![CDATA[";
 
