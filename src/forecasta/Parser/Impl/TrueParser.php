@@ -2,34 +2,53 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\HistoryEntry;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+//use Forecasta\Parser\Impl\ParserTrait as PST;
 
 /**
  * 必ずパース成功となるパーサです
  * @author nkoseki
  *
  */
-class TrueParser implements P\Parser
+class TrueParser implements Parser
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     /**
      * パースメソッド
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        // 深度計算
         $depth = $depth + 1;
 
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
         $this->onTry();
-        $currentCtx = P\ParserContext::getBlank();
 
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
 
-        $ctx = new P\ParserContext($context->target(), $context->current(), null, true);
+        $currentCtx = ParserContext::getBlank();
+
+        $ctx = new ParserContext($context->target(), $context->current(), null, true);
 
         $this->onSuccess($ctx, $depth);
+
+        // 履歴leave処理
+        $currentEntry->leave($this, $ctx->copy(), true);
 
         return $ctx;
     }
@@ -43,7 +62,7 @@ class TrueParser implements P\Parser
     {
         //$this->name = 'Anonymous_' . md5(rand());
         $this->name = "True";
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        //$this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function __toString()
@@ -56,7 +75,7 @@ class TrueParser implements P\Parser
     {
         $className = get_class($this);
 
-        Forecasta\Common\applLog2("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

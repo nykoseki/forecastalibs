@@ -2,8 +2,10 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\HistoryEntry;
 use Forecasta\Parser\ParserFactory;
 
 /**
@@ -11,9 +13,10 @@ use Forecasta\Parser\ParserFactory;
  * @author nkoseki
  *
  */
-class BoolParser implements P\Parser
+class BoolParser implements Parser
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     private $parser = null;
 
@@ -22,19 +25,41 @@ class BoolParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        // 深度計算
         $depth = $depth + 1;
+
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
+        //$depth = $depth + 1;
         $this->onTry($depth);
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
 
-        $currentCtx = P\ParserContext::getBlank();
+        //$currentCtx = ParserContext::getBlank();
 
+        /*
+        $childHistory = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+        $childHistory->setParentEntry($this->getHistory());
+
+        $childHistory->enter($this, $context);
+        */
         $ctx = $this->parser->parse($context, $depth + 1);
+
 
         if($ctx->result()) {
             $this->onSuccess($ctx, $depth);
+            $currentEntry->leave($this, $ctx->copy(), true);
         } else {
             $this->onError($ctx, $depth);
+            $currentEntry->leave($this, $ctx->copy(), false);
         }
 
         return $ctx;
@@ -60,7 +85,7 @@ class BoolParser implements P\Parser
         $this->parser = $bool;
         $this->name = "Bool";
 
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        //$this->parserHistoryEntry = new HistoryEntry;
     }
 
     public function __toString()
@@ -73,7 +98,7 @@ class BoolParser implements P\Parser
     {
         /*
         $className = get_class($this);
-        Forecasta\Common\applLog2("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

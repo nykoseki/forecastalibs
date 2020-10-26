@@ -2,8 +2,8 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\ParserContext as CTX;
+//use Forecasta\Parser as P;
+use Forecasta\Parser\ParserContext;
 
 /**
  * パース結果集約用トレイトです
@@ -29,7 +29,7 @@ trait Aggregator
      */
     public function invoke($target)
     {
-        $param = CTX::create($target);
+        $param = ParserContext::create($target);
 
         return $this->parse($param);
     }
@@ -62,7 +62,7 @@ trait Aggregator
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            Forecasta\Common\applLog2("Parser:onSuccess", "[Name:$this->name] of <$className>");
+            applLog2("Parser:onSuccess", "[Name:$this->name] of <$className>");
         }
 
     }
@@ -71,7 +71,7 @@ trait Aggregator
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            Forecasta\Common\applLog2("Parser:onError", "[Name:$this->name] of <$className>");
+            applLog2("Parser:onError", "[Name:$this->name] of <$className>");
         }
 
     }
@@ -80,7 +80,7 @@ trait Aggregator
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            Forecasta\Common\applLog2("Parser:onTry", "[Name:$this->name] of <$className>");
+            applLog2("Parser:onTry", "[Name:$this->name] of <$className>");
         }
 
     }

@@ -4,13 +4,12 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\ParserContext;
 
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\Impl\ForwardParser;
+use Forecasta\Parser\Impl\SequenceParser;
+use Forecasta\Parser\Impl\TokenParser;
+use Forecasta\Parser\Impl\OptionParser;
 
 class ForwardParserTestCase extends TestCase
 {
@@ -20,15 +19,15 @@ class ForwardParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\ForwardParser();
+        $this->parser = new ForwardParser();
 
-        $inner = new Parser\Impl\SequenceParser();
-        $inner->add(new Parser\Impl\TokenParser("XXX"));
+        $inner = new SequenceParser();
+        $inner->add(new TokenParser("XXX"));
         $inner->add(
-            (new Parser\Impl\OptionParser())
+            (new OptionParser())
                 ->add($this->parser)
         );
-        $inner->add(new Parser\Impl\TokenParser("YYY"));
+        $inner->add(new TokenParser("YYY"));
 
         $this->parser->forward($inner);
     }
@@ -37,7 +36,7 @@ class ForwardParserTestCase extends TestCase
 
     public function testParsed()
     {
-        $ctx = CTX::create("XXXXXXYYYYYY");
+        $ctx = ParserContext::create("XXXXXXYYYYYY");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -71,7 +70,7 @@ class ForwardParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("XXXXXXYYYYYY");
+        $ctx = ParserContext::create("XXXXXXYYYYYY");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -80,7 +79,7 @@ class ForwardParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("XXXXXXYYYYYY");
+        $ctx = ParserContext::create("XXXXXXYYYYYY");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -89,7 +88,7 @@ class ForwardParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("XXXXXXYYYYYY");
+        $ctx = ParserContext::create("XXXXXXYYYYYY");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

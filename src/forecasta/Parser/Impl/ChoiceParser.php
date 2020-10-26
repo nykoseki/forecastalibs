@@ -2,17 +2,22 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\HasMoreChildren;
+use Forecasta\Parser\HistoryEntry;
+//use Forecasta\Parser\Impl\ParserTrait as PST;
 
 /**
  * 登録されたパーサのうち，いづれかのパーサがパース成功した場合にパースが成功するパーサコンビネータです
  * @author nkoseki
  *
  */
-class ChoiceParser implements P\Parser, P\HasMoreChildren
+class ChoiceParser implements Parser, HasMoreChildren
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     private $parsers = [];
 
@@ -21,34 +26,60 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        $depth = $depth + 1;
+
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
         $depth = $depth + 1;
         $this->onTry($depth);
         $result = [];
 
-        $currentCtx = P\ParserContext::getBlank();
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
 
-        //Forecasta\Common\applLog2("ChoiceParser", $this->parsers);
+        //$currentCtx = ParserContext::getBlank();
+
+        //applLog2("ChoiceParser", $this->parsers);
 
         $currentParsed = $context;
 
         for ($i = 0; $i < count($this->parsers); $i++) {
             $currentParser = $this->parsers[$i];
-            $currentParsed = $currentParser->parse($currentParsed, $depth);
+            // 履歴エントリ作成
+            $childHistory = HistoryEntry::createEntry($currentParser->getName(), $currentParsed->copy(), $currentParser);
+            //$childHistory->setParentEntry($currentEntry);
+            //$currentEntry->addEntry($childHistory);
+
+            $currentParsed = $currentParser->parse($currentParsed, $depth, $childHistory);
+
 
             if ($currentParsed->result() === true) {
+
                 $ctx = $currentParsed;
 
                 $this->onSuccess($ctx, $depth);
+
+                $currentEntry->leave($this, $currentParsed->copy(), true);
+
+                $currentEntry->addEntry($childHistory);
 
                 return $ctx;
             }
         }
 
-        $ctx = new P\ParserContext($context->target(), $currentParsed->current(), null, false);
+        $ctx = new ParserContext($context->target(), $currentParsed->current(), null, false);
 
         $this->onError($ctx, $depth);
+
+        $currentEntry->leave($this, $currentParsed->copy(), false);
 
         return $ctx;
     }
@@ -57,10 +88,10 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
     {
         //$this->name = 'Anonymous_' . md5(rand());
         $this->name = "Choice";
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        //$this->parserHistoryEntry = new HistoryEntry;
     }
 
-    public function add(P\Parser $parser)
+    public function add(Parser $parser)
     {
         array_push($this->parsers, $parser);
 
@@ -83,12 +114,12 @@ class ChoiceParser implements P\Parser, P\HasMoreChildren
         $className = get_class($this);
 
         $className = str_replace("\\", "/", $className);
-        Forecasta\Common\applLog2("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $childMessageAry = [];
         foreach ($this->parsers as $child) {
-            if ($child instanceof P\HasMoreChildren) {
+            if ($child instanceof HasMoreChildren) {
                 $childMessageAry[] = $child->outputRecursive($searched);
             } else {
                 $childMessageAry[] = $child->outputRecursive($searched);

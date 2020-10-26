@@ -4,13 +4,10 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\Impl\ChoiceParser;
+use Forecasta\Parser\Impl\TokenParser;
 
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
 
 class ChoiceParserTestCase extends TestCase
 {
@@ -20,16 +17,16 @@ class ChoiceParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\ChoiceParser();
-        $this->parser->add(new Parser\Impl\TokenParser("ABC"));
-        $this->parser->add(new Parser\Impl\TokenParser("XYZ"));
+        $this->parser = new ChoiceParser();
+        $this->parser->add(new TokenParser("ABC"));
+        $this->parser->add(new TokenParser("XYZ"));
     }
 
     // =================================================================================================================
 
     public function testParsed()
     {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -39,7 +36,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -48,7 +45,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -57,7 +54,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -69,7 +66,7 @@ class ChoiceParserTestCase extends TestCase
 
     public function testParsed2()
     {
-        $ctx = CTX::create("XYZ");
+        $ctx = ParserContext::create("XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -79,7 +76,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testFinished2() {
-        $ctx = CTX::create("XYZ");
+        $ctx = ParserContext::create("XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -88,7 +85,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testResult2() {
-        $ctx = CTX::create("XYZ");
+        $ctx = ParserContext::create("XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -97,7 +94,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testCurrent2() {
-        $ctx = CTX::create("XYZ");
+        $ctx = ParserContext::create("XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -109,7 +106,7 @@ class ChoiceParserTestCase extends TestCase
 
     public function testParsedInvalid()
     {
-        $ctx = CTX::create("abc");
+        $ctx = ParserContext::create("abc");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -119,7 +116,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testFinishedInvalid() {
-        $ctx = CTX::create("abc");
+        $ctx = ParserContext::create("abc");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -128,7 +125,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testResultInvalid() {
-        $ctx = CTX::create("abc");
+        $ctx = ParserContext::create("abc");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -137,7 +134,7 @@ class ChoiceParserTestCase extends TestCase
     }
 
     public function testCurrentInvalid() {
-        $ctx = CTX::create("abc");
+        $ctx = ParserContext::create("abc");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

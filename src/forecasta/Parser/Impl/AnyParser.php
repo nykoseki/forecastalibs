@@ -2,17 +2,21 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\HasMoreChildren;
+use Forecasta\Parser\HistoryEntry;
 
 /**
  * 登録されたパーサの1回以上の繰り返しを表すパーサコンビネータです
  * @author nkoseki
  *
  */
-class AnyParser implements P\Parser, P\HasMoreChildren
+class AnyParser implements Parser, HasMoreChildren
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     private $parser;
 
@@ -21,13 +25,25 @@ class AnyParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        // 深度計算
         $depth = $depth + 1;
+
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
         $this->onTry($depth);
         $result = [];
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
 
-        $currentCtx = P\ParserContext::getBlank();
+        //$currentCtx = ParserContext::getBlank();
 
         //$position = $context->current();
 
@@ -35,11 +51,20 @@ class AnyParser implements P\Parser, P\HasMoreChildren
 
         $isSuccess = false;
         for (; ;) {
-            $currentParsed = $this->parser->parse($currentParsed, $depth);
+            // 履歴エントリ作成
+            $childHistory = HistoryEntry::createEntry($this->parser->getName(), $currentParsed->copy(), $this->parser);
+            //$currentEntry->addEntry($childHistory);
+
+            //$childHistory->enter($this, $currentParsed->copy());
+            $currentParsed = $this->parser->parse($currentParsed->copy(), $depth, $childHistory);
+
             if ($currentParsed->result() === true) {
                 array_push($result, $currentParsed->parsed());
 
                 $isSuccess = $isSuccess || true;
+
+                $currentEntry->addEntry($childHistory);
+
                 //$position = $currentParsed->current();
             } else {
                 break;
@@ -48,16 +73,19 @@ class AnyParser implements P\Parser, P\HasMoreChildren
 
         if($isSuccess) {
 
-            $ctx = new P\ParserContext($context->target(), $currentParsed->current(), $result, true);
+            $ctx = new ParserContext($context->target(), $currentParsed->current(), $result, true);
 
             $this->onSuccess($ctx, $depth);
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), true);
 
             return $ctx;
         } else {
-
-            $ctx = new P\ParserContext($context->target(), $context->current(), null, false);
+            $ctx = new ParserContext($context->target(), $context->current(), null, false);
 
             $this->onError($ctx, $depth);
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), false);
 
             return $ctx;
         }
@@ -68,7 +96,7 @@ class AnyParser implements P\Parser, P\HasMoreChildren
         */
     }
 
-    public function add(P\Parser $parser)
+    public function add(Parser $parser)
     {
         $this->parser = $parser;
 
@@ -81,7 +109,7 @@ class AnyParser implements P\Parser, P\HasMoreChildren
         //$this->name = 'Anonymous_' . md5(rand());
         $this->name = "Any";
 
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        //$this->parserHistoryEntry = new HistoryEntry;
     }
 
     public function isResolved()
@@ -98,13 +126,13 @@ class AnyParser implements P\Parser, P\HasMoreChildren
     public function outputRecursive($searched)
     {
         $className = get_class($this);
-        Forecasta\Common\applLog2("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);
 
         $name = $this->name;
-        if ($this->parser instanceof P\HasMoreChildren) {
+        if ($this->parser instanceof HasMoreChildren) {
             $param = $this->parser->outputRecursive($searched);
         } else {
             $param = $this->parser->outputRecursive($searched);

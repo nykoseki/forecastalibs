@@ -2,7 +2,7 @@
 
 namespace Forecasta\Parser;
 
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\ParserContext;
 
 /**
  * パーサコンビネータインタフェースです
@@ -17,7 +17,7 @@ interface Parser extends RecursiveOut
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0);
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null);
 
     /**
      * 引数に指定された文字列をパースし，結果を返します
@@ -35,9 +35,9 @@ interface Parser extends RecursiveOut
 
     public function getDescription();
 
-    public function onSuccess(CTX $context);
+    public function onSuccess(ParserContext $context);
 
-    public function onError(CTX $context);
+    public function onError(ParserContext $context);
 
     public function onTry();
 

@@ -2,17 +2,21 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\HistoryEntry;
+
 
 /**
  * 指定された文字列のいづれかの文字にマッチした場合，パース成功とするパーサです
  * @author nkoseki
  *
  */
-class CharParser implements P\Parser
+class CharParser implements Parser
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     private $chars;
 
@@ -21,13 +25,26 @@ class CharParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
         $depth = $depth + 1;
+
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
         $this->onTry($depth);
+
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
+
         $targetArray = [];
 
-        $currentCtx = P\ParserContext::getBlank();
+        //$currentCtx = ParserContext::getBlank();
 
         $strArray = str_split($this->chars);
 
@@ -37,21 +54,26 @@ class CharParser implements P\Parser
 
         $target0 = mb_substr($context->currentTarget(), 0, 1);
 
-        //Forecasta\Common\applLog2("CharParser", $target0);
+        //applLog2("CharParser", $target0);
         if (array_key_exists($target0, $targetArray)) {
-
 
             //$target0 = $this->decolateParsed($target0);
 
-            $ctx = new P\ParserContext($context->target(), $context->current() + 1, $target0, true);
+            $ctx = new ParserContext($context->target(), $context->current() + 1, $target0, true);
 
             $this->onSuccess($ctx, $depth);
 
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), true);
+
             return $ctx;
         } else {
-            $ctx = (new P\Impl\FalseParser())->parse($context);
+            $ctx = (new FalseParser())->parse($context);
 
             $this->onError($ctx, $depth);
+
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), false);
 
             return $ctx;
         }
@@ -60,7 +82,8 @@ class CharParser implements P\Parser
     public function __construct($chars)
     {
         $this->chars = $chars;
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        //$this->parserHistoryEntry = new P\HistoryEntry;
+
         //$this->name = 'Anonymous_' . md5(rand());
 
         $this->name = "Char";
@@ -80,7 +103,7 @@ class CharParser implements P\Parser
     public function outputRecursive($searched)
     {
         $className = get_class($this);
-        Forecasta\Common\applLog2("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

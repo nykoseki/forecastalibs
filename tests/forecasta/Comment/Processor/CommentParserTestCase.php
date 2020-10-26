@@ -4,13 +4,13 @@ namespace ForecastaTest\Comment\Processor;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\ParserContext as CTX;
+//use Forecasta\Parser as P;
+use Forecasta\Parser\ParserContext;
 
-use Forecasta\Parser\ParserFactory;
+//use Forecasta\Parser\ParserFactory;
 use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+//use Forecasta\Parser\Impl\JsonParser;
+//use Forecasta\Parser\Impl\FalseParser;
 
 class CommentParserTestCase extends TestCase
 {
@@ -68,10 +68,10 @@ EOF;
 @return string
 EOF;
 
-        $parser = new CommentParser();
-        $target = $parser->normalizeComment($comment);
+        //$parser = new CommentParser();
+        $target = CommentParser::normalizeComment($comment);
 
-        $targetCtx = CTX::create($target);
+        $targetCtx = ParserContext::create($target);
         $message = "Expected:\n{$test}\nActual\n{$target}\nEnd";
 
         $this->assertEquals($test, $target, $message);
@@ -136,17 +136,21 @@ EOF;
      *
      */
     public function testParse() {
+        /*
         $rc = new \ReflectionClass(get_class($this));
         $m = $rc->getMethod(__FUNCTION__);
 
         $comment = $m->getDocComment();
-
+        */
 
         $parser = new CommentParser();
-        $comment = $parser->normalizeComment($comment);
+        //$comment = CommentParser::normalizeComment($comment);
+        $comment = CommentParser::createContext($this, __FUNCTION__);
 
+        $ctx = ParserContext::create($comment);
 
-        $target = $parser->parse($this, __FUNCTION__);
+        //$target = $parser->parse($this, __FUNCTION__);
+        $target = $parser->parse($ctx);
 
         $parsed = $target->parsed();
 

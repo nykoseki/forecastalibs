@@ -4,13 +4,9 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
-
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
+use Forecasta\Parser\ParserContext;
 use Forecasta\Parser\Impl\FalseParser;
+
 
 class FalseParserTestCase extends TestCase
 {
@@ -20,12 +16,12 @@ class FalseParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\FalseParser;
+        $this->parser = new FalseParser;
     }
 
     public function testParsed()
     {
-        $ctx = CTX::create("test");
+        $ctx = ParserContext::create("test");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -34,7 +30,7 @@ class FalseParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("test");
+        $ctx = ParserContext::create("test");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -43,7 +39,7 @@ class FalseParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("test");
+        $ctx = ParserContext::create("test");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -52,7 +48,7 @@ class FalseParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("test");
+        $ctx = ParserContext::create("test");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

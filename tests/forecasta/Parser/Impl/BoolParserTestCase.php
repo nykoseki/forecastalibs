@@ -4,14 +4,9 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Common\ArrayUtil;
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\Impl\BoolParser;
 
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
 
 class BoolParserTestCase extends TestCase
 {
@@ -21,14 +16,14 @@ class BoolParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\BoolParser();
+        $this->parser = new BoolParser();
     }
 
     // =================================================================================================================
 
     public function testParsed_true()
     {
-        $ctx = CTX::create("true");
+        $ctx = ParserContext::create("true");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -39,7 +34,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testFinished_true() {
-        $ctx = CTX::create("true");
+        $ctx = ParserContext::create("true");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -48,7 +43,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testResult_true() {
-        $ctx = CTX::create("true");
+        $ctx = ParserContext::create("true");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -57,7 +52,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testCurrent_true() {
-        $ctx = CTX::create("true");
+        $ctx = ParserContext::create("true");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -69,7 +64,7 @@ class BoolParserTestCase extends TestCase
 
     public function testParsed_false()
     {
-        $ctx = CTX::create("false");
+        $ctx = ParserContext::create("false");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -80,7 +75,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testFinished_false() {
-        $ctx = CTX::create("false");
+        $ctx = ParserContext::create("false");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -89,7 +84,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testResult_false() {
-        $ctx = CTX::create("false");
+        $ctx = ParserContext::create("false");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -98,7 +93,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testCurrent_false() {
-        $ctx = CTX::create("false");
+        $ctx = ParserContext::create("false");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -112,7 +107,7 @@ class BoolParserTestCase extends TestCase
 
     public function testParsed_TR()
     {
-        $ctx = CTX::create("TRUE");
+        $ctx = ParserContext::create("TRUE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -123,7 +118,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testFinished_TR() {
-        $ctx = CTX::create("TRUE");
+        $ctx = ParserContext::create("TRUE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -132,7 +127,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testResult_TR() {
-        $ctx = CTX::create("TRUE");
+        $ctx = ParserContext::create("TRUE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -141,7 +136,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testCurrent_TR() {
-        $ctx = CTX::create("TRUE");
+        $ctx = ParserContext::create("TRUE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -153,7 +148,7 @@ class BoolParserTestCase extends TestCase
 
     public function testParsed_FL()
     {
-        $ctx = CTX::create("FALSE");
+        $ctx = ParserContext::create("FALSE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -162,7 +157,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testFinished_FL() {
-        $ctx = CTX::create("FALSE");
+        $ctx = ParserContext::create("FALSE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -171,7 +166,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testResult_FL() {
-        $ctx = CTX::create("FALSE");
+        $ctx = ParserContext::create("FALSE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -180,7 +175,7 @@ class BoolParserTestCase extends TestCase
     }
 
     public function testCurrent_FL() {
-        $ctx = CTX::create("FALSE");
+        $ctx = ParserContext::create("FALSE");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

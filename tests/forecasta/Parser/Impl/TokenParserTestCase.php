@@ -4,13 +4,9 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\ParserContext;
 
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\Impl\TokenParser;
 
 class TokenParserTestCase extends TestCase
 {
@@ -20,14 +16,14 @@ class TokenParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\TokenParser("ABC");
+        $this->parser = new TokenParser("ABC");
     }
 
     // =================================================================================================================
 
     public function testParsed()
     {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -36,7 +32,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -45,7 +41,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -54,7 +50,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -65,7 +61,7 @@ class TokenParserTestCase extends TestCase
     // =================================================================================================================
     public function testParsed02()
     {
-        $ctx = CTX::create("ABCx");
+        $ctx = ParserContext::create("ABCx");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -74,7 +70,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testFinished02() {
-        $ctx = CTX::create("ABCx");
+        $ctx = ParserContext::create("ABCx");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -83,7 +79,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testResult02() {
-        $ctx = CTX::create("ABCx");
+        $ctx = ParserContext::create("ABCx");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -92,7 +88,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testCurrent02() {
-        $ctx = CTX::create("ABCx");
+        $ctx = ParserContext::create("ABCx");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -104,7 +100,7 @@ class TokenParserTestCase extends TestCase
 
     public function testParsedInvalid()
     {
-        $ctx = CTX::create("ABX");
+        $ctx = ParserContext::create("ABX");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -113,7 +109,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testFinishedInvalid() {
-        $ctx = CTX::create("ABX");
+        $ctx = ParserContext::create("ABX");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -122,7 +118,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testResultInvalid() {
-        $ctx = CTX::create("ABX");
+        $ctx = ParserContext::create("ABX");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -131,7 +127,7 @@ class TokenParserTestCase extends TestCase
     }
 
     public function testCurrentInvalid() {
-        $ctx = CTX::create("ABX");
+        $ctx = ParserContext::create("ABX");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

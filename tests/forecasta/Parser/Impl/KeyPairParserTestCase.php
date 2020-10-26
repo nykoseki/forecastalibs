@@ -10,13 +10,8 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
-
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\Impl\KeyPairParser;
 
 class KeyPairParserTestCase extends TestCase
 {
@@ -25,7 +20,7 @@ class KeyPairParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\KeyPairParser();
+        $this->parser = new KeyPairParser();
         //$this->parser->add(new Parser\Impl\TokenParser("ABC"));
     }
 
@@ -73,7 +68,7 @@ EOF;
 )
 EOF;
 
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         //$this->clsName = get_class($this->parser);

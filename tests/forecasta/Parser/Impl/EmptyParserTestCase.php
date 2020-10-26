@@ -5,13 +5,8 @@ namespace ForecastaTest\Parser\Impl;
 use Forecasta\Common\ArrayUtil;
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
-
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\Impl\EmptyParser;
 
 class EmptyParserTestCase extends TestCase
 {
@@ -24,7 +19,7 @@ class EmptyParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\EmptyParser;
+        $this->parser = new EmptyParser;
 
         $this->filter = function($value){
             if(empty($value) || $value === null || empty(preg_replace("/\s+/", "", $value)) || $value == "<LbWs>") {
@@ -37,7 +32,7 @@ class EmptyParserTestCase extends TestCase
 
     public function testParsed()
     {
-        $ctx = CTX::create("\"\"");
+        $ctx = ParserContext::create("\"\"");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -52,7 +47,7 @@ class EmptyParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("\"\"");
+        $ctx = ParserContext::create("\"\"");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -61,7 +56,7 @@ class EmptyParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("\"\"");
+        $ctx = ParserContext::create("\"\"");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -70,7 +65,7 @@ class EmptyParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("\"\"");
+        $ctx = ParserContext::create("\"\"");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

@@ -4,13 +4,10 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\ParserContext;
 
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\Impl\ManyParser;
+use Forecasta\Parser\Impl\TokenParser;
 
 class ManyParserTestCase extends TestCase
 {
@@ -20,15 +17,15 @@ class ManyParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\ManyParser();
-        $this->parser->add(new Parser\Impl\TokenParser("ABC"));
+        $this->parser = new ManyParser();
+        $this->parser->add(new TokenParser("ABC"));
     }
 
     // =================================================================================================================
 
     public function testParsed()
     {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -44,7 +41,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -53,7 +50,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -62,7 +59,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("ABC");
+        $ctx = ParserContext::create("ABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -75,7 +72,7 @@ class ManyParserTestCase extends TestCase
 
     public function testParsedInvalid()
     {
-        $ctx = CTX::create("AB");
+        $ctx = ParserContext::create("AB");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -86,7 +83,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testFinishedInvalid() {
-        $ctx = CTX::create("AB");
+        $ctx = ParserContext::create("AB");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -95,7 +92,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testResultInvalid() {
-        $ctx = CTX::create("AB");
+        $ctx = ParserContext::create("AB");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -104,7 +101,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testCurrentInvalid() {
-        $ctx = CTX::create("AB");
+        $ctx = ParserContext::create("AB");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -117,7 +114,7 @@ class ManyParserTestCase extends TestCase
 
     public function testParsedMany()
     {
-        $ctx = CTX::create("ABCABC");
+        $ctx = ParserContext::create("ABCABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -136,7 +133,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testFinishedMany() {
-        $ctx = CTX::create("ABCABC");
+        $ctx = ParserContext::create("ABCABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -145,7 +142,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testResultMany() {
-        $ctx = CTX::create("ABCABC");
+        $ctx = ParserContext::create("ABCABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -154,7 +151,7 @@ class ManyParserTestCase extends TestCase
     }
 
     public function testCurrentMany() {
-        $ctx = CTX::create("ABCABC");
+        $ctx = ParserContext::create("ABCABC");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

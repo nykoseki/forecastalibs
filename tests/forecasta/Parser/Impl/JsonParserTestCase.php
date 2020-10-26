@@ -4,15 +4,9 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-
 use Forecasta\Common\ArrayUtil;
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
-
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
+use Forecasta\Parser\ParserContext;
 use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
 
 class JsonParserTestCase extends TestCase
 {
@@ -25,7 +19,7 @@ class JsonParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\JsonParser();
+        $this->parser = new JsonParser();
 
         $this->filter = function($value){
             if(empty($value) || $value === null || empty(preg_replace("/\s+/", "", $value)) || $value == "<LbWs>") {
@@ -89,7 +83,7 @@ EOF;
 
     public function testParsedKeyString()
     {
-        $ctx = CTX::create('{"aaa":"bbb"}');
+        $ctx = ParserContext::create('{"aaa":"bbb"}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -104,7 +98,7 @@ EOF;
     }
 
     public function testFinishedKeyString() {
-        $ctx = CTX::create('{"aaa":"bbb"}');
+        $ctx = ParserContext::create('{"aaa":"bbb"}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -113,7 +107,7 @@ EOF;
     }
 
     public function testResultKeyString() {
-        $ctx = CTX::create('{"aaa":"bbb"}');
+        $ctx = ParserContext::create('{"aaa":"bbb"}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -123,7 +117,7 @@ EOF;
 
     public function testCurrentKeyString() {
         $target = '{"aaa":"bbb"}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -135,7 +129,7 @@ EOF;
 
     public function testParsedKeyNull()
     {
-        $ctx = CTX::create('{"aaa":null}');
+        $ctx = ParserContext::create('{"aaa":null}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -150,7 +144,7 @@ EOF;
     }
 
     public function testFinishedKeyNull() {
-        $ctx = CTX::create('{"aaa":null}');
+        $ctx = ParserContext::create('{"aaa":null}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -159,7 +153,7 @@ EOF;
     }
 
     public function testResultKeyNull() {
-        $ctx = CTX::create('{"aaa":null}');
+        $ctx = ParserContext::create('{"aaa":null}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -169,7 +163,7 @@ EOF;
 
     public function testCurrentKeyNull() {
         $target = '{"aaa":null}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -181,7 +175,7 @@ EOF;
 
     public function testParsedKeyNumber()
     {
-        $ctx = CTX::create('{"aaa":123}');
+        $ctx = ParserContext::create('{"aaa":123}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -196,7 +190,7 @@ EOF;
     }
 
     public function testFinishedKeyNumber() {
-        $ctx = CTX::create('{"aaa":123}');
+        $ctx = ParserContext::create('{"aaa":123}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -205,7 +199,7 @@ EOF;
     }
 
     public function testResultKeyNumber() {
-        $ctx = CTX::create('{"aaa":123}');
+        $ctx = ParserContext::create('{"aaa":123}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -215,7 +209,7 @@ EOF;
 
     public function testCurrentKeyNumber() {
         $target = '{"aaa":123}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -227,7 +221,7 @@ EOF;
 
     public function testParsedKey_True()
     {
-        $ctx = CTX::create('{"aaa":true}');
+        $ctx = ParserContext::create('{"aaa":true}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -242,7 +236,7 @@ EOF;
     }
 
     public function testFinishedKey_True() {
-        $ctx = CTX::create('{"aaa":true}');
+        $ctx = ParserContext::create('{"aaa":true}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -251,7 +245,7 @@ EOF;
     }
 
     public function testResultKey_True() {
-        $ctx = CTX::create('{"aaa":true}');
+        $ctx = ParserContext::create('{"aaa":true}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -261,7 +255,7 @@ EOF;
 
     public function testCurrentKey_True() {
         $target = '{"aaa":true}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -273,7 +267,7 @@ EOF;
 
     public function testParsedKey_False()
     {
-        $ctx = CTX::create('{"aaa":false}');
+        $ctx = ParserContext::create('{"aaa":false}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -288,7 +282,7 @@ EOF;
     }
 
     public function testFinishedKey_False() {
-        $ctx = CTX::create('{"aaa":false}');
+        $ctx = ParserContext::create('{"aaa":false}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -297,7 +291,7 @@ EOF;
     }
 
     public function testResultKey_False() {
-        $ctx = CTX::create('{"aaa":false}');
+        $ctx = ParserContext::create('{"aaa":false}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -307,7 +301,7 @@ EOF;
 
     public function testCurrentKey_False() {
         $target = '{"aaa":false}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -319,7 +313,7 @@ EOF;
 
     public function testParsedKey__True()
     {
-        $ctx = CTX::create('{"aaa":TRUE}');
+        $ctx = ParserContext::create('{"aaa":TRUE}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -334,7 +328,7 @@ EOF;
     }
 
     public function testFinishedKey__True() {
-        $ctx = CTX::create('{"aaa":TRUE}');
+        $ctx = ParserContext::create('{"aaa":TRUE}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -343,7 +337,7 @@ EOF;
     }
 
     public function testResultKey__True() {
-        $ctx = CTX::create('{"aaa":TRUE}');
+        $ctx = ParserContext::create('{"aaa":TRUE}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -353,7 +347,7 @@ EOF;
 
     public function testCurrentKey__True() {
         $target = '{"aaa":TRUE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -365,7 +359,7 @@ EOF;
 
     public function testParsedKey__False()
     {
-        $ctx = CTX::create('{"aaa":FALSE}');
+        $ctx = ParserContext::create('{"aaa":FALSE}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -380,7 +374,7 @@ EOF;
     }
 
     public function testFinishedKey__False() {
-        $ctx = CTX::create('{"aaa":FALSE}');
+        $ctx = ParserContext::create('{"aaa":FALSE}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -389,7 +383,7 @@ EOF;
     }
 
     public function testResultKey__False() {
-        $ctx = CTX::create('{"aaa":FALSE}');
+        $ctx = ParserContext::create('{"aaa":FALSE}');
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -399,7 +393,7 @@ EOF;
 
     public function testCurrentKey__False() {
         $target = '{"aaa":FALSE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -412,7 +406,7 @@ EOF;
     public function testParsedKeyStringMulti()
     {
         $target = '{"aaa":"bbb", "ccc":"ddd"}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -427,7 +421,7 @@ EOF;
 
     public function testFinishedKeyStringMulti() {
         $target = '{"aaa":"bbb", "ccc":"ddd"}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -437,7 +431,7 @@ EOF;
 
     public function testResultKeyStringMulti() {
         $target = '{"aaa":"bbb", "ccc":"ddd"}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -447,7 +441,7 @@ EOF;
 
     public function testCurrentKeyStringMulti() {
         $target = '{"aaa":"bbb", "ccc":"ddd"}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -460,7 +454,7 @@ EOF;
     public function testParsedKeyNumberMulti()
     {
         $target = '{"aaa":"bbb", "ccc":123}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -475,7 +469,7 @@ EOF;
 
     public function testFinishedKeyNumberMulti() {
         $target = '{"aaa":"bbb", "ccc":123}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -485,7 +479,7 @@ EOF;
 
     public function testResultKeyNumberMulti() {
         $target = '{"aaa":"bbb", "ccc":123}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -495,7 +489,7 @@ EOF;
 
     public function testCurrentKeyNumberMulti() {
         $target = '{"aaa":"bbb", "ccc":123}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -508,7 +502,7 @@ EOF;
     public function testParsedKey_TrueMulti()
     {
         $target = '{"aaa":"bbb", "ccc":true}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -523,7 +517,7 @@ EOF;
 
     public function testFinishedKey_TrueMulti() {
         $target = '{"aaa":"bbb", "ccc":true}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -533,7 +527,7 @@ EOF;
 
     public function testResultKey_TrueMulti() {
         $target = '{"aaa":"bbb", "ccc":true}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -543,7 +537,7 @@ EOF;
 
     public function testCurrentKey_TrueMulti() {
         $target = '{"aaa":"bbb", "ccc":true}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -556,7 +550,7 @@ EOF;
     public function testParsedKey_FalseMulti()
     {
         $target = '{"aaa":"bbb", "ccc":false}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -571,7 +565,7 @@ EOF;
 
     public function testFinishedKey_FalseMulti() {
         $target = '{"aaa":"bbb", "ccc":false}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -581,7 +575,7 @@ EOF;
 
     public function testResultKey_FalseMulti() {
         $target = '{"aaa":"bbb", "ccc":false}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -591,7 +585,7 @@ EOF;
 
     public function testCurrentKey_FalseMulti() {
         $target = '{"aaa":"bbb", "ccc":false}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -604,7 +598,7 @@ EOF;
     public function testParsedKey__TrueMulti()
     {
         $target = '{"aaa":"bbb", "ccc":TRUE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -619,7 +613,7 @@ EOF;
 
     public function testFinishedKey__TrueMulti() {
         $target = '{"aaa":"bbb", "ccc":TRUE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -629,7 +623,7 @@ EOF;
 
     public function testResultKey__TrueMulti() {
         $target = '{"aaa":"bbb", "ccc":TRUE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -639,7 +633,7 @@ EOF;
 
     public function testCurrentKey__TrueMulti() {
         $target = '{"aaa":"bbb", "ccc":TRUE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -652,7 +646,7 @@ EOF;
     public function testParsedKey__FalseMulti()
     {
         $target = '{"aaa":"bbb", "ccc":FALSE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -667,7 +661,7 @@ EOF;
 
     public function testFinishedKey__FalseMulti() {
         $target = '{"aaa":"bbb", "ccc":FALSE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -677,7 +671,7 @@ EOF;
 
     public function testResultKey__FalseMulti() {
         $target = '{"aaa":"bbb", "ccc":FALSE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -687,7 +681,7 @@ EOF;
 
     public function testCurrentKey__FalseMulti() {
         $target = '{"aaa":"bbb", "ccc":FALSE}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -700,7 +694,7 @@ EOF;
     public function testParsedKeyArrayStringSingle()
     {
         $target = '{"aaa":["bbb"]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -728,7 +722,7 @@ EOF;
 
     public function testFinishedKeyArrayStringSingle() {
         $target = '{"aaa":["bbb"]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -738,7 +732,7 @@ EOF;
 
     public function testResultKeyArrayStringSingle() {
         $target = '{"aaa":["bbb"]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -748,7 +742,7 @@ EOF;
 
     public function testCurrentKeyArrayStringSingle() {
         $target = '{"aaa":["bbb"]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -761,7 +755,7 @@ EOF;
     public function testParsedKeyArrayStringNumber()
     {
         $target = '{"aaa":[123]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -789,7 +783,7 @@ EOF;
 
     public function testFinishedKeyArrayStringNumber() {
         $target = '{"aaa":[123]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -799,7 +793,7 @@ EOF;
 
     public function testResultKeyArrayStringNumber() {
         $target = '{"aaa":[123]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -809,7 +803,7 @@ EOF;
 
     public function testCurrentKeyArrayStringNumber() {
         $target = '{"aaa":[123]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -822,7 +816,7 @@ EOF;
     public function testParsedKeyArrayString_True()
     {
         $target = '{"aaa":[true]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -850,7 +844,7 @@ EOF;
 
     public function testFinishedKeyArrayString_True() {
         $target = '{"aaa":[true]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -860,7 +854,7 @@ EOF;
 
     public function testResultKeyArrayString_True() {
         $target = '{"aaa":[true]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -870,7 +864,7 @@ EOF;
 
     public function testCurrentKeyArrayString_True() {
         $target = '{"aaa":[true]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -883,7 +877,7 @@ EOF;
     public function testParsedKeyArrayString_False()
     {
         $target = '{"aaa":[false]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -911,7 +905,7 @@ EOF;
 
     public function testFinishedKeyArrayString_False() {
         $target = '{"aaa":[false]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -921,7 +915,7 @@ EOF;
 
     public function testResultKeyArrayString_False() {
         $target = '{"aaa":[false]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -931,7 +925,7 @@ EOF;
 
     public function testCurrentKeyArrayString_False() {
         $target = '{"aaa":[false]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -944,7 +938,7 @@ EOF;
     public function testParsedKeyArrayString__True()
     {
         $target = '{"aaa":[TRUE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -972,7 +966,7 @@ EOF;
 
     public function testFinishedKeyArrayString__True() {
         $target = '{"aaa":[TRUE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -982,7 +976,7 @@ EOF;
 
     public function testResultKeyArrayString__True() {
         $target = '{"aaa":[TRUE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -992,7 +986,7 @@ EOF;
 
     public function testCurrentKeyArrayString__True() {
         $target = '{"aaa":[TRUE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1005,7 +999,7 @@ EOF;
     public function testParsedKeyArrayString__False()
     {
         $target = '{"aaa":[FALSE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1033,7 +1027,7 @@ EOF;
 
     public function testFinishedKeyArrayString__False() {
         $target = '{"aaa":[FALSE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1043,7 +1037,7 @@ EOF;
 
     public function testResultKeyArrayString__False() {
         $target = '{"aaa":[FALSE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1053,7 +1047,7 @@ EOF;
 
     public function testCurrentKeyArrayString__False() {
         $target = '{"aaa":[FALSE]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1066,7 +1060,7 @@ EOF;
     public function testParsedKeyArrayElement()
     {
         $target = '{"aaa":[{"bbb":"ccc"}]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1104,7 +1098,7 @@ EOF;
 
     public function testFinishedKeyArrayElement() {
         $target = '{"aaa":[{"bbb":"ccc"}]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1114,7 +1108,7 @@ EOF;
 
     public function testResultKeyArrayElement() {
         $target = '{"aaa":[{"bbb":"ccc"}]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1124,7 +1118,7 @@ EOF;
 
     public function testCurrentKeyArrayElement() {
         $target = '{"aaa":[{"bbb":"ccc"}]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1137,7 +1131,7 @@ EOF;
     public function testParsedKeyArrayArray()
     {
         $target = '{"aaa":[["bbb", "ccc"]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1178,7 +1172,7 @@ EOF;
 
     public function testFinishedKeyArrayArray() {
         $target = '{"aaa":[["bbb", "ccc"]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1188,7 +1182,7 @@ EOF;
 
     public function testResultKeyArrayArray() {
         $target = '{"aaa":[["bbb", "ccc"]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1198,7 +1192,7 @@ EOF;
 
     public function testCurrentKeyArrayArray() {
         $target = '{"aaa":[["bbb", "ccc"]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1212,7 +1206,7 @@ EOF;
     public function testParsedKeyArrayArrayMulti()
     {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1259,7 +1253,7 @@ EOF;
 
     public function testFinishedKeyArrayArrayMulti() {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1269,7 +1263,7 @@ EOF;
 
     public function testResultKeyArrayArrayMulti() {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1279,7 +1273,7 @@ EOF;
 
     public function testCurrentKeyArrayArrayMulti() {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]]}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1292,7 +1286,7 @@ EOF;
     public function testParsedKeyValueMulti()
     {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]], "eee":12345}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1350,7 +1344,7 @@ EOF;
 
     public function testFinishedKeyValueMulti() {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]], "eee":12345}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1360,7 +1354,7 @@ EOF;
 
     public function testResultKeyValueMulti() {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]], "eee":12345}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1370,7 +1364,7 @@ EOF;
 
     public function testCurrentKeyValueMulti() {
         $target = '{"aaa":[["bbb", {"ccc":"ddd"}]], "eee":12345}';
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1383,7 +1377,7 @@ EOF;
     public function testParsedComposite()
     {
         $target = $this->compositeTarget;
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1401,7 +1395,7 @@ EOF;
 
     public function testFinishedComposite() {
         $target = $this->compositeTarget;
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1411,7 +1405,7 @@ EOF;
 
     public function testResultComposite() {
         $target = $this->compositeTarget;
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -1421,7 +1415,7 @@ EOF;
 
     public function testCurrentComposite() {
         $target = $this->compositeTarget;
-        $ctx = CTX::create($target);
+        $ctx = ParserContext::create($target);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

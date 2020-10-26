@@ -2,17 +2,21 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\HistoryEntry;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+//use Forecasta\Parser\Impl\ParserTrait as PST;
 
 /**
  * 指定した正規表現文字列にマッチする場合に成功するパーサです
  * @author nkoseki
  *
  */
-class RegexParser implements P\Parser
+class RegexParser implements Parser
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     private $regexStr;
 
@@ -21,25 +25,39 @@ class RegexParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        // 深度計算
         $depth = $depth + 1;
+
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
         $this->onTry($depth);
+
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
+
         $target0 = $context->target();
         $position = $context->current();
         $len = mb_strlen($target0);
 
-        $currentCtx = P\ParserContext::getBlank();
+        $currentCtx = ParserContext::getBlank();
 
         $tmpTarget = mb_substr($target0, $position, $len - $position);
 
         //$tmpRegexp = $this->normalize($this->regexStr);
         $tmpRegexp = $this->regexStr;
 
-        //Forecasta\Common\applLog2("RegexParser:target", $tmpTarget);
+        //applLog2("RegexParser:target", $tmpTarget);
         preg_match($tmpRegexp, $tmpTarget, $matches);
 
-        //Forecasta\Common\applLog2("RegexParser:match", $matches);
+        //applLog2("RegexParser:match", $matches);
 
         if (count($matches) > 0) {
             $match = $matches[0];
@@ -47,26 +65,32 @@ class RegexParser implements P\Parser
             $matchLen = mb_strlen($match);
             $position = $position + $matchLen;
 
-            //Forecasta\Common\applLog2("RegexParser", $matches);
+            //applLog2("RegexParser", $matches);
 
 
             //$this->setName("Regex-0");
 
             //$match = $this->decolateParsed($match);
 
-            $ctx = new P\ParserContext($context->target(), $position, $match, true);
+            $ctx = new ParserContext($context->target(), $position, $match, true);
 
 
             $this->onSuccess($ctx, $depth);
+
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), true);
 
             //return new P\ParserContext($context->target(), $position, $match, true);
             return $ctx;
         } else {
 
 
-            $ctx = (new P\Impl\FalseParser())->parse($context, $depth);
+            $ctx = (new FalseParser())->parse($context, $depth);
 
             $this->onError($ctx, $depth);
+
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), false);
 
             return $ctx;
         }
@@ -77,7 +101,7 @@ class RegexParser implements P\Parser
 
         preg_match("/\/(.+?)\//", $regex, $matches);
 
-        //Forecasta\Common\applLog2("RegexParser", $matches);
+        //applLog2("RegexParser", $matches);
 
         if (count($matches) > 1) {
             $reg = $matches[1];
@@ -85,7 +109,7 @@ class RegexParser implements P\Parser
             $prefix = mb_substr($reg, 0, 1);
             if ($prefix != '^') {
 
-                //Forecasta\Common\applLog2("RegexParser", '^'. $reg);
+                //applLog2("RegexParser", '^'. $reg);
                 return '/^(' . $reg . ')/m';
                 //return '/'. $reg. '/';
             } else {
@@ -101,7 +125,7 @@ class RegexParser implements P\Parser
     {
         $this->regexStr = $regex;
         //$this->name = 'Anonymous_' . md5(rand());
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        //$this->parserHistoryEntry = new P\HistoryEntry;
         $this->name = "Regex";
     }
 
@@ -119,7 +143,7 @@ class RegexParser implements P\Parser
     public function outputRecursive($searched)
     {
         $className = get_class($this);
-        Forecasta\Common\applLog2("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
         $searched[] = $this->name;
 
         $className = str_replace("\\", "/", $className);

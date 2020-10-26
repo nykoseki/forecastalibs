@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Parser xmlns="https://github.com/nykoseki/forecastalibs">
     <!--
-        * <LBrace> := "{"
-        * <RBrace> := "}"
+        * <LBrace> := "("
+        * <RBrace> := ")"
         * <LBracket> := "["
         * <RBracket> := "]"
+        * <WS> := "/^\s+/"
         * <Primitive> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
-        * <Null> := null
-        * <Camma> := ,
+        * <Null> := null | NULL
+        * <LB> := LineBreak
+        * <Comma> := ,
         * <Empty> := ""
         * <Number> := /^[0-9]+/
         * <Value> := <Primitive> | <Element> | <Array> | <Null> | <Number>
         * <Joint> := "=>"
         * <Key> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         * <Entry> := <Key> + <Joint> + <Value>
-        * <Entries> := <Entry> | (<Entry> + <Camma> ) + <Entry>
+        * <Entries> := <Entry> | ( <Entry> + <Empty> ) + <Entry>
         * <Element> := <LBrace> + <Entries> + <RBrace>
-        * <Array> := <LBracket> + (<Value> | (<Value> + <Camma> ) + <Value>) + <RBracket>
+        * <Array> := <LBracket> + ( <Value> | ( <Value> + <Empty> ) + <Value> ) + <RBracket>
+        * ==============================================================================================================
+        * <SubjectMarker> := "@"
+        * <Subject> := <SubjectMarker> + <Key>
+        * <SubjectEntry> := <Subject>
+        * <SubjectEntry> := <Subject> + <WS> + <Number>
+        * <SubjectEntry> := <Subject> + <WS> + <Primitive>
+        * <SubjectEntry> := <Subject> + <WS> + <Element>
+        * <SubjectEntries> := <SubjectEntry> | ( <SubjectEntry> + <LB> ) + <SubjectEntries>
     -->
 
     <Definitions>
@@ -32,12 +42,12 @@
 
         <!-- [ -->
         <Token id="LBracket">
-            <Param><![CDATA[[]]></Param>
+            <Param><![CDATA[[[]]></Param>
         </Token>
 
         <!-- ] -->
         <Token id="RBracket">
-            <Param><![CDATA[[]]></Param>
+            <Param><![CDATA[[]]]></Param>
         </Token>
 
         <!-- プリミティブ値(英数文字列) -->
@@ -47,7 +57,7 @@
 
         <!-- NULL値 -->
         <Null id="Null"></Null>
-        <Token id="Camma">
+        <Token id="Comma">
             <Param><![CDATA[,]]></Param>
         </Token>
 
@@ -72,7 +82,7 @@
         <!-- ホワイトスペース(空白の連続＋改行＋空白の連続) -->
         <Whitespace id="Ws"></Whitespace>
 
-        <!-- 結合子の第二オペランドになりえる値 -->
+        <!-- 結合子の第二オペランドになりえる値/配列の値になりえる値 -->
         <Deffered id="Value"></Deffered>
 
         <!-- キー：値　のペア -->

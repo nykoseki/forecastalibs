@@ -4,13 +4,13 @@ namespace ForecastaTest\Parser;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\ParserContext as CTX;
+//use Forecasta\Parser as P;
+use Forecasta\Parser\ParserContext;
 
 use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
+//use Forecasta\Comment\Processor\CommentParser;
 use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+//use Forecasta\Parser\Impl\FalseParser;
 
 class ParserTestCase extends TestCase
 {
@@ -21,7 +21,7 @@ class ParserTestCase extends TestCase
         // 数値
         $parser = ParserFactory::True()->setName("W");
 
-        $ctx = CTX::create("{{tu{v}}abc{ijk{op}lmn}def{qr{wx{y}z}s}gh}");
+        $ctx = ParserContext::create("{{tu{v}}abc{ijk{op}lmn}def{qr{wx{y}z}s}gh}");
 
         $result = $parser->parse($ctx);
 
@@ -34,7 +34,7 @@ class ParserTestCase extends TestCase
         // 数値
         $parser = ParserFactory::False()->setName("W");
 
-        $ctx = CTX::create("");
+        $ctx = ParserContext::create("");
 
         $result = $parser->parse($ctx);
 
@@ -47,7 +47,7 @@ class ParserTestCase extends TestCase
         // 数値
         $parser = ParserFactory::Char("X")->setName("W");
 
-        $ctx = CTX::create("X");
+        $ctx = ParserContext::create("X");
 
         $result = $parser->parse($ctx);
 
@@ -60,7 +60,7 @@ class ParserTestCase extends TestCase
         // 数値
         $parser = ParserFactory::Token("123ABC")->setName("W");
 
-        $ctx = CTX::create("123ABC");
+        $ctx = ParserContext::create("123ABC");
 
         $result = $parser->parse($ctx);
 
@@ -73,7 +73,7 @@ class ParserTestCase extends TestCase
         // 数値
         $parser = ParserFactory::Regex("/^[A-Za-z0-9]+/")->setName("W");
 
-        $ctx = CTX::create("123ABCaadfdsafsaefagEfaef9");
+        $ctx = ParserContext::create("123ABCaadfdsafsaefagEfaef9");
 
         $result = $parser->parse($ctx);
 
@@ -81,7 +81,7 @@ class ParserTestCase extends TestCase
 
         $parser = ParserFactory::Regex("/^[A-Za-z0-9]+/")->setName("W");
 
-        $ctx2 = CTX::create("123ABCaadfdsafsaefagEfaef9+_");
+        $ctx2 = ParserContext::create("123ABCaadfdsafsaefagEfaef9+_");
 
         $result = $parser->parse($ctx2);
 
@@ -90,7 +90,7 @@ class ParserTestCase extends TestCase
 
         $parser = ParserFactory::Regex("/^[A-Za-z0-9]+$/")->setName("W");
 
-        $ctx2 = CTX::create("123ABCaadfdsafsaefagEfaef9@");
+        $ctx2 = ParserContext::create("123ABCaadfdsafsaefagEfaef9@");
 
         $result = $parser->parse($ctx2);
 
@@ -106,20 +106,20 @@ class ParserTestCase extends TestCase
         $parser->add(ParserFactory::Token("BB"));
         $parser->add(ParserFactory::Token("CCC"));
 
-        $ctx = CTX::create("AABBCCC");
+        $ctx = ParserContext::create("AABBCCC");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testSeqParser is Fail!(1)");
 
-        $ctx = CTX::create("AABBCCCz");
+        $ctx = ParserContext::create("AABBCCCz");
 
         $result = $parser->parse($ctx);
 
         $resStr = join("", $result->parsed());
         $this->assertTrue($result->result(), "testSeqParser is Fail!(2):{$resStr}");
 
-        $ctx = CTX::create("AABBzCCCz");
+        $ctx = ParserContext::create("AABBzCCCz");
 
         $result = $parser->parse($ctx);
 
@@ -134,19 +134,19 @@ class ParserTestCase extends TestCase
         $parser = ParserFactory::Many()->setName("W");
         $parser->add(ParserFactory::Token("AAA"));
 
-        $ctx = CTX::create("AAA");
+        $ctx = ParserContext::create("AAA");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testManyParser is Fail!(1)");
 
-        $ctx = CTX::create("AA");
+        $ctx = ParserContext::create("AA");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testManyParser is Fail!(2)");
 
-        $ctx = CTX::create("");
+        $ctx = ParserContext::create("");
 
         $result = $parser->parse($ctx);
 
@@ -163,26 +163,26 @@ class ParserTestCase extends TestCase
         $parser = ParserFactory::Any()->setName("W");
         $parser->add(ParserFactory::Token("AAA"));
 
-        $ctx = CTX::create("AAA");
+        $ctx = ParserContext::create("AAA");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testAnyParser is Fail!(1)");
 
-        $ctx = CTX::create("AAAAAA");
+        $ctx = ParserContext::create("AAAAAA");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testAnyParser is Fail!(2)");
 
-        $ctx = CTX::create("AAAAAAB");
+        $ctx = ParserContext::create("AAAAAAB");
 
         $result = $parser->parse($ctx);
         $parsed = $result->parsed();
         $parsed = join("", $parsed);
         $this->assertTrue($parsed !== $ctx->target(), "testAnyParser is Fail!(3):{$parsed}");
 
-        $ctx = CTX::create("");
+        $ctx = ParserContext::create("");
 
         $result = $parser->parse($ctx);
 
@@ -198,19 +198,19 @@ class ParserTestCase extends TestCase
         $parser->add(ParserFactory::Token("XX"));
         $parser->add(ParserFactory::Token("YY"));
 
-        $ctx = CTX::create("XX");
+        $ctx = ParserContext::create("XX");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testChoiceParser is Fail!(1)");
 
-        $ctx = CTX::create("YY");
+        $ctx = ParserContext::create("YY");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testChoiceParser is Fail!(2)");
 
-        $ctx = CTX::create("ZZ");
+        $ctx = ParserContext::create("ZZ");
 
         $result = $parser->parse($ctx);
 
@@ -225,19 +225,19 @@ class ParserTestCase extends TestCase
         $parser->add(ParserFactory::Token("XX"));
 
 
-        $ctx = CTX::create("XX");
+        $ctx = ParserContext::create("XX");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->result(), "testOptionParser is Fail!(1):{$result->parsed()}");
 
-        $ctx = CTX::create("XXXX");
+        $ctx = ParserContext::create("XXXX");
 
         $result = $parser->parse($ctx);
 
         $this->assertTrue($result->parsed() === "XX", "testOptionParser is Fail!(2):{$result->parsed()}");
 
-        $ctx = CTX::create("YY");
+        $ctx = ParserContext::create("YY");
 
         $result = $parser->parse($ctx);
 
@@ -301,7 +301,7 @@ class ParserTestCase extends TestCase
                 }
 EOF;
 
-        $ctx = CTX::create($tgt);
+        $ctx = ParserContext::create($tgt);
         $result = $element->parse($ctx);
 
         $this->assertTrue($result->result(), "JsonParser is Fail!");
@@ -346,7 +346,7 @@ EOF;
         );
 
 
-        $ctx = CTX::create("{{tu{v}}abc{ijk{op}lmn}def{qr{wx{y}z}s}gh}");
+        $ctx = ParserContext::create("{{tu{v}}abc{ijk{op}lmn}def{qr{wx{y}z}s}gh}");
 
         $result = $expression->parse($ctx);
 

@@ -2,17 +2,23 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\HasMoreChildren;
+use Forecasta\Parser\HistoryEntry;
+//use Forecasta\Parser as P;
+//use Forecasta\Parser\Impl\ParserTrait as PST;
 
 /**
  * 登録されたパーサを遅延処理で提供するパーサコンビネータです
  * @author nkoseki
  *
  */
-class ForwardParser implements P\Parser, P\HasMoreChildren
+class ForwardParser implements Parser, HasMoreChildren
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     private $forwarder;
 
@@ -21,21 +27,46 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        // 深度計算
         $depth = $depth + 1;
+
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
         $this->onTry($depth);
 
-        $currentCtx = P\ParserContext::getBlank();
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
+
+        $currentCtx = ParserContext::getBlank();
 
         //$parser = $this->forwarder->__invoke();
 
-        $ctx = $this->forwarder->parse($context, $depth);
+        // 履歴エントリ作成
+        $childHistory = HistoryEntry::createEntry($this->forwarder->getName(), $context->copy(), $this->forwarder);
+        //$currentEntry->addEntry($childHistory);
+
+        $ctx = $this->forwarder->parse($context, $depth, $childHistory);
 
         if($ctx->result()) {
             $this->onSuccess($ctx, $depth);
+
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), true);
+
+            $currentEntry->addEntry($childHistory);
         } else {
             $this->onError($ctx, $depth);
+
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), false);
         }
 
         //return $parser->parse($context);
@@ -47,7 +78,7 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
      * @param P\Parser $parser
      * @return $this
      */
-    public function forward(P\Parser $parser)
+    public function forward(Parser $parser)
     {
         /*
         $this->forwarder = function () use (&$parser) {
@@ -64,7 +95,7 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
     {
         $this->name = 'Anonymous_' . md5(rand());
         $this->name = "Forward";
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        $this->parserHistoryEntry = new HistoryEntry;
     }
 
     public function isResolved()
@@ -83,13 +114,13 @@ class ForwardParser implements P\Parser, P\HasMoreChildren
         $className = get_class($this);
         $className = str_replace("\\", "/", $className);
 
-        Forecasta\Common\applLog2("outputRecursive", $searched);
+        applLog2("outputRecursive", $searched);
 
         $searched[] = $this->name;
 
         $name = $this->name;
         $param = '';
-        if (!is_null($this->forwarder) && $this->forwarder/*->__invoke()*/ instanceof P\Parser) {
+        if (!is_null($this->forwarder) && $this->forwarder/*->__invoke()*/ instanceof Parser) {
             $forwardedFor = $this->forwarder/*->__invoke()*/;
 
             $cls = get_class($forwardedFor);

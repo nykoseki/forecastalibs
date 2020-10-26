@@ -37,7 +37,7 @@ trait Composite
      */
     public function setParent($context)
     {
-        return $this->parent;
+        //return $this->parent;
     }
 
     /**
@@ -47,6 +47,7 @@ trait Composite
     public function add($context)
     {
         array_push($this->children, $context);
+        return $this;
     }
 
     /**

@@ -2,8 +2,11 @@
 
 namespace Forecasta\Parser\Impl;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\HasMoreChildren;
+use Forecasta\Parser\ParserContextFactory;
+
 use Forecasta\Parser\Impl\Util\Cacheable;
 
 /**
@@ -163,15 +166,15 @@ trait ParserTrait
 
     /**
      *
-     * @param CTX $context
+     * @param ParserContext $context
      * @param int $depth
      * @param string $alias
      */
-    public function onSuccess(CTX $context, $depth = 0, $alias = "")
+    public function onSuccess(ParserContext $context, $depth = 0, $alias = "")
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            Forecasta\Common\applLog2("Parser:onSuccess", "[Name:$this->name] of <$className>");
+            applLog2("Parser:onSuccess", "[Name:$this->name] of <$className>");
         }
 
         $pad = str_repeat("    ", $depth);
@@ -200,15 +203,15 @@ trait ParserTrait
 
     /**
      *
-     * @param CTX $context
+     * @param ParserContext $context
      * @param int $depth
      * @param string $alias
      */
-    public function onError(CTX $context, $depth = 0, $alias = "")
+    public function onError(ParserContext $context, $depth = 0, $alias = "")
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            Forecasta\Common\applLog2("Parser:onError", "[Name:$this->name] of <$className>");
+            applLog2("Parser:onError", "[Name:$this->name] of <$className>");
         }
 
         $pad = str_repeat("    ", $depth);
@@ -246,7 +249,7 @@ trait ParserTrait
     {
         if ($this->debugMode) {
             $className = get_class($this);
-            Forecasta\Common\applLog2("Parser:onTry", "[Name:$this->name] of <$className>");
+            applLog2("Parser:onTry", "[Name:$this->name] of <$className>");
         }
 
         $pad = str_repeat("    ", $depth);
@@ -305,24 +308,24 @@ trait ParserTrait
      * @param P\Parser $parser
      * @return $this
      */
-    public function addAt(P\Parser $parser)
+    public function addAt(Parser $parser)
     {
-        if ($parser instanceof P\HasMoreChildren) {
+        if ($parser instanceof HasMoreChildren) {
             $parser->add($this);
         }
         return $this;
     }
 
-    public function includedOn(P\Parser $pre, P\Parser $post) {
+    public function includedOn(Parser $pre, Parser $post) {
         if($pre == null) {
-            $pre = P\ParserFactory::True();
+            $pre = ParserFactory::True();
         }
 
         if($post == null) {
-            $post = P\ParserFactory::True();
+            $post = ParserFactory::True();
         }
 
-        $parser = P\ParserFactory::Seq()
+        $parser = ParserFactory::Seq()
             ->add($pre)
             ->add($this)
             ->add($post);

@@ -4,13 +4,8 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
-
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\Impl\LbWsParser;
 
 class LbWsParserTestCase extends TestCase
 {
@@ -20,7 +15,7 @@ class LbWsParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\LbWsParser();
+        $this->parser = new LbWsParser();
         //$this->parser->add(new Parser\Impl\TokenParser("ABC"));
     }
 
@@ -31,7 +26,7 @@ class LbWsParserTestCase extends TestCase
      */
     public function testParsed01()
     {
-        $ctx = CTX::create("     ");
+        $ctx = ParserContext::create("     ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -45,7 +40,7 @@ class LbWsParserTestCase extends TestCase
      */
     public function testParsed02()
     {
-        $ctx = CTX::create(" \n  \n \n\n\n ");
+        $ctx = ParserContext::create(" \n  \n \n\n\n ");
 
         $result = $this->parser->parse($ctx);
 
@@ -66,7 +61,7 @@ class LbWsParserTestCase extends TestCase
 
 
 EOF;
-        $ctx = CTX::create($tgt);
+        $ctx = ParserContext::create($tgt);
 
         $result = $this->parser->parse($ctx);
 
@@ -78,7 +73,7 @@ EOF;
     public function testParsed04()
     {
         $tgt = "\n\n\n\n\n\t\t\n\n\n\n\n";
-        $ctx = CTX::create($tgt);
+        $ctx = ParserContext::create($tgt);
 
         $result = $this->parser->parse($ctx);
 
@@ -88,7 +83,7 @@ EOF;
     }
 
     public function testFinished() {
-        $ctx = CTX::create("     ");
+        $ctx = ParserContext::create("     ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -97,7 +92,7 @@ EOF;
     }
 
     public function testResult() {
-        $ctx = CTX::create("     ");
+        $ctx = ParserContext::create("     ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -106,7 +101,7 @@ EOF;
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("     ");
+        $ctx = ParserContext::create("     ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -127,7 +122,7 @@ EOF;
       
 EOF;
 
-        $ctx = CTX::create($taregt);
+        $ctx = ParserContext::create($taregt);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -146,7 +141,7 @@ EOF;
       
 EOF;
 
-        $ctx = CTX::create($taregt);
+        $ctx = ParserContext::create($taregt);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -165,7 +160,7 @@ EOF;
       
 EOF;
 
-        $ctx = CTX::create($taregt);
+        $ctx = ParserContext::create($taregt);
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

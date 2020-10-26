@@ -5,12 +5,9 @@ namespace ForecastaTest\Parser\Impl;
 use PHPUnit\Framework\TestCase;
 
 use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
+use Forecasta\Parser\ParserContext;
 
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\Impl\TokenParser;
 
 class SequenceParserTestCase extends TestCase
 {
@@ -22,16 +19,16 @@ class SequenceParserTestCase extends TestCase
     {
         $this->parser = new Parser\Impl\SequenceParser();
 
-        $this->parser->add(new Parser\Impl\TokenParser("ABC"));
-        $this->parser->add(new Parser\Impl\TokenParser("-"));
-        $this->parser->add(new Parser\Impl\TokenParser("XYZ"));
+        $this->parser->add(new TokenParser("ABC"));
+        $this->parser->add(new TokenParser("-"));
+        $this->parser->add(new TokenParser("XYZ"));
     }
 
     // =================================================================================================================
 
     public function testParsed()
     {
-        $ctx = CTX::create("ABC-XYZ");
+        $ctx = ParserContext::create("ABC-XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -53,7 +50,7 @@ class SequenceParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("ABC-XYZ");
+        $ctx = ParserContext::create("ABC-XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -62,7 +59,7 @@ class SequenceParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("ABC-XYZ");
+        $ctx = ParserContext::create("ABC-XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -71,7 +68,7 @@ class SequenceParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("ABC-XYZ");
+        $ctx = ParserContext::create("ABC-XYZ");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);

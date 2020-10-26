@@ -2,65 +2,118 @@
 
 namespace Forecasta\Comment\Processor;
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\ParserContext as CTX;
-use Forecasta\Parser\Impl as PImpl;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\Impl\ParserTrait;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\Impl\EmptyParser;
 use Forecasta\Parser\ParserFactory;
+use Forecasta\Parser\HistoryEntry;
 
-class CommentParser
+class CommentParser implements Parser
 {
-    public function parse($classInstance, $methodName)
+    use ParserTrait;
+    use Historical;
+
+    private $classInstance;
+    private $methodName;
+
+    private $parser = null;
+
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        /*
         $rc = new \ReflectionClass(get_class($classInstance));
         $m = $rc->getMethod($methodName);
 
         $comment = $m->getDocComment();
-        $comment = $this->normalizeComment($comment);
+        $comment = self::normalizeComment($comment);
+        */
+        // 深度計算
+        $depth = $depth + 1;
 
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
+        $this->onTry($depth);
+
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
+
+        // 履歴エントリ作成
+        $childHistory = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+        $currentEntry->addEntry($childHistory);
+
+        $result = $this->parser->parse($context, $depth, $childHistory);
+
+        if($result->result()) {
+            $this->onSuccess($result, $depth);
+
+            // 履歴leave処理
+            $currentEntry->enter($this, $result->copy(), true);
+        } else {
+            $this->onError($result, $depth);
+
+            // 履歴leave処理
+            $currentEntry->enter($this, $result->copy(), false);
+        }
+
+        return $result;
+    }
+
+    public function __construct()
+    {
         //サブジェクト := "@" + (文字列 | 数値 | アンダースコア) + (文字列 | 数値 | アンダースコア | ハイフン)*
         $subject = ParserFactory::Seq()
-            ->add(ParserFactory::Token("@"))
+            ->add(ParserFactory::Token("@")->setName("SubjectToken"))
             ->add(ParserFactory::Regex("/^[A-Za-z0-9_][A-Za-z0-9_\-]+/")->setName("Subject"));
 
         // プリミティブ := ダブルクォート + (ダブルクォート以外)+ + ダブルクォート
-        $premitive = ParserFactory::Seq()
-            ->add(ParserFactory::Token("\""))
+        $primitive = ParserFactory::Seq()
+            ->add(ParserFactory::Token("\"")->setName("TokenLeft"))
             ->add(
                 ParserFactory::Choice()
-                    ->add(ParserFactory::Regex("/^[1-9]|([0-9][1-9]+)/"))// 数値
-                    ->add(ParserFactory::Bool())// Bool値
-                    ->add(ParserFactory::Regex("/^[^\"]+/"))// 文字列(ダブルクォート以外)
+                    ->add(ParserFactory::Regex("/^[1-9]|([0-9][1-9]+)/")->setName("Number"))// 数値
+                    ->add(ParserFactory::Bool()->setName("Bool"))// Bool値
+                    ->add(ParserFactory::Regex("/^[^\"]+/")->setName("Character"))// 文字列(ダブルクォート以外)
             )
-            ->add(ParserFactory::Token("\""));
+            ->add(ParserFactory::Token("\"")->setName("TokenRight"))
+            ->setName("Primitive");
 
         $keyPairs = ParserFactory::Seq()
             ->add(
                 ParserFactory::Many()
                     ->add(
                         ParserFactory::Seq()
-                            ->add(ParserFactory::KeyPair())
+                            ->add(ParserFactory::KeyPair()->setName("KeyPair"))
                             ->add(ParserFactory::LbWs()->skip(true))
-                            ->add(ParserFactory::Token(","))
+                            ->add(ParserFactory::Token(",")->setName("Comma"))
                     )
             )
-            ->add(ParserFactory::KeyPair());
+            ->add(ParserFactory::KeyPair()->setName("KeyPair"))
+            ->setName("KeyPairs");
 
 
         // 設定値 := プリミティブ | 設定値配列
         $confValue = ParserFactory::Choice()
-            ->add($premitive)
+            ->add($primitive)
             ->add(
                 ParserFactory::Seq()
                     ->add(ParserFactory::Regex("/^\s*/")->skip(true))
-                    ->add(ParserFactory::Token("("))
+                    ->add(ParserFactory::Token("(")->setName("Bra"))
                     ->add(ParserFactory::LbWs()->skip(true))
                     ->add($keyPairs)
                     ->add(ParserFactory::LbWs()->skip(true))
-                    ->add(ParserFactory::Token(")"))
+                    ->add(ParserFactory::Token(")")->setName("Ket"))
             )->setName("ConfValue");
 
         // 設定エントリ
-        $difinition = ParserFactory::Choice()
+        $definition = ParserFactory::Choice()
 
             ->add(
                 ParserFactory::Seq()
@@ -69,43 +122,45 @@ class CommentParser
                     ->add(ParserFactory::LbWs()->skip(true))
                     ->add($confValue)
                     ->add(ParserFactory::LbWs()->skip(true))
-            )
+            )->setName("Definition")
 
             ->add(
                 ParserFactory::Seq()
                     ->add($subject)
                     ->add(ParserFactory::LbWs()->skip(true))
-                    ->add(ParserFactory::Regex("/^[A-Za-z0-9_\-]+/"))// 文字列
+                    ->add(ParserFactory::Regex("/^[A-Za-z0-9_\-]+/")->setName("Character"))// 文字列
                     ->add(ParserFactory::LbWs()->skip(true))
             )
             ->add(
                 ParserFactory::Seq()
-                ->add($subject)
-                ->add(
-                    ParserFactory::Option()
-                        ->add(ParserFactory::Regex("/^\r|\n|\r\n/"))
-                )
+                    ->add($subject)
+                    ->add(
+                        ParserFactory::Option()
+                            ->add(ParserFactory::Regex("/^\r|\n|\r\n/"))
+                    )
 
             )
-
             ->add(
                 ParserFactory::Any()
                     ->add(ParserFactory::Regex("/^[^@].+/"))
-
-
             )
-
             ->setName("Definition");
 
         // 設定エントリ群
-        $difinitions = ParserFactory::Any()
-            ->add($difinition);
+        $definitions = ParserFactory::Any()
+            ->add($definition)->setName("Definitions");
 
-        $result = $difinitions->parse(CTX::create($comment));
-        //$result2 = $difinitions->parse(CTX::create($comment));
+        $this->parser = $definitions;
+    }
 
-        //echo print_r(join("\n", $difinitions), true). "\n";
-        return $result;
+    public static function createContext($classInstance, $methodName) : ParserContext {
+        $rc = new \ReflectionClass(get_class($classInstance));
+        $m = $rc->getMethod($methodName);
+
+        $comment = $m->getDocComment();
+        $comment = self::normalizeComment($comment);
+
+        return ParserContext::create($comment);
     }
 
     /**
@@ -113,7 +168,7 @@ class CommentParser
      * @param $comment
      * @return string
      */
-    public function normalizeComment($comment)
+    public static function normalizeComment($comment)
     {
         $ary = explode("\n", $comment);
 
@@ -236,7 +291,7 @@ class CommentParser
         $chr = $this->getCompositeMultiLineParser($chr);
 
         // 単一行
-        //$chr = $this->getCompositeSingleLineParser($chr);
+        $chr = $this->getCompositeSingleLineParser($chr);
 
 
         // シングルクオートでクオートされた単一値
@@ -367,12 +422,13 @@ class CommentParser
     public static function getEmptyParser()
     {
         if (self::$EMPTY === null) {
-            self::$EMPTY = new PImpl\EmptyParser;
+            self::$EMPTY = new EmptyParser;
         }
         return self::$EMPTY;
     }
 
     private static $CAMMA = null;
+
     public static function getCammaParser()
     {
 
@@ -380,5 +436,25 @@ class CommentParser
             self::$CAMMA = ParserFactory::Token(",");
         }
         return self::$CAMMA;
+    }
+
+    public function isResolved()
+    {
+        return true;
+    }
+
+    public function outputRecursive($searched)
+    {
+        $className = get_class($this);
+        applLog2("outputRecursive", $searched);
+        $searched[] = $this->name;
+
+        $className = str_replace("\\", "/", $className);
+
+        $name = $this->name;
+        $param = $this->str;
+        $message = "{\"Type\":\"$className\", \"Name\":\"$name\", \"Param\":\"$param\"}";
+
+        return $message;
     }
 }

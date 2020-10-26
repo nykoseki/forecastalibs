@@ -52,20 +52,48 @@ class ParserContext
      */
     private $parser = null;
 
+    private $history = null;
+
     /**
      * 解析対象文字列、解析開始位置、解析後文字列、解析結果を指定してパーサコンテキストを生成します
      * ParserContext constructor.
      * @param $target 解析対象文字列
      * @param $position 解析開始位置
      * @param $parsed 解析後文字列
-     * @param $ctx 解析結果(true / false)
+     * @param $result 解析結果(true / false)
      */
-    public function __construct($target, $position, $parsed, $ctx)
+    public function __construct($target, $position, $parsed, $result)
     {
         $this->target = $target;
         $this->currentPosition = $position;
         $this->parsed = $parsed;
-        $this->result = $ctx;
+        $this->result = $result;
+    }
+
+    /**
+     * @return ParserContext
+     */
+    public function copy() : ParserContext {
+        $newCtx = new ParserContext($this->target, $this->currentPosition, $this->parsed, $this->result);
+
+        $newCtx->setName($this->getName());
+        //$newCtx->setParser($this->getParser());
+
+        return $newCtx;
+    }
+
+    /**
+     * @param Parser $parser
+     */
+    public function setParser(/*Parser */$parser) {
+        $this->parser = $parser;
+    }
+
+    /**
+     * @return Parser
+     */
+    public function getParser()/* : Parser*/ {
+        return $this->parser;
     }
 
     public function setSkip($skipFlg)
@@ -77,8 +105,6 @@ class ParserContext
     {
         return $this->skipFlg;
     }
-
-
 
     public static function create($target)
     {
@@ -105,6 +131,11 @@ class ParserContext
         return $this->currentPosition;
     }
 
+    public function len()
+    {
+        return mb_strlen($this->target);
+    }
+
     public function updateCurrent($currentPosition)
     {
         $this->currentPosition = $currentPosition;
@@ -113,8 +144,6 @@ class ParserContext
     public function parsed($formatFlg=false)
     {
         $parsed = $this->parsed;
-
-
 
         return $parsed;
     }

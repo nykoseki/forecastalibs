@@ -11,19 +11,24 @@ namespace Forecasta\Parser\Impl;
 
 //require_once "../../../../vendor/autoload.php";
 
-use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
+use Forecasta\Common\Historical;
+use Forecasta\Parser\HistoryEntry;
+use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserContext;
+//use Forecasta\Parser as P;
+//use Forecasta\Parser\Impl\ParserTrait as PST;
 use Forecasta\Parser\ParserFactory;
-use Forecasta\Parser\ParserContext as CTX;
+//use Forecasta\Parser\ParserContext as CTX;
 
 /**
  * キーペア(Any => Any 形式)パーサです
  * @author nkoseki
  *
  */
-class KeyPairParser implements P\Parser
+class KeyPairParser implements Parser
 {
-    use PST;
+    use ParserTrait;
+    use Historical;
 
     private $parser = null;
 
@@ -32,10 +37,45 @@ class KeyPairParser implements P\Parser
      * @param ParserContext $ctx
      * @return ParserContext コンテキスト
      */
-    public function parse($context, $depth=0)
+    public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
+        // 深度計算
+        $depth = $depth + 1;
 
-        return $this->parser->parse($context, $depth);
+        // 履歴登録
+        $context->setParser($this);
+        $context->setName($this->getName());
+        if($currentEntry == null) {
+            $currentEntry = HistoryEntry::createEntry($this->getName(), $context->copy(), $this);
+            $currentEntry->setDepth($depth);
+        }
+
+        $this->onTry($depth);
+
+        // 履歴enter処理
+        $currentEntry->enter($this, $context->copy());
+
+        // 履歴エントリ作成
+        $childHistory = HistoryEntry::createEntry($this->parser->getName(), $context->copy(), $this->parser);
+        //$currentEntry->addEntry($childHistory);
+
+        $ctx = $this->parser->parse($context, $depth);
+
+        if($ctx->result()) {
+            $this->onSuccess($ctx, $depth);
+
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), true);
+
+            $currentEntry->addEntry($childHistory);
+        } else {
+            $this->onError($ctx, $depth);
+
+            // 履歴leave処理
+            $currentEntry->leave($this, $ctx->copy(), false);
+        }
+
+        return $ctx;
     }
 
     public function isResolved()
@@ -107,7 +147,7 @@ class KeyPairParser implements P\Parser
         $this->parser = $parser;
         $this->name = "KeyPair";
 
-        $this->parserHistoryEntry = new P\HistoryEntry;
+        //$this->parserHistoryEntry = new P\HistoryEntry;
     }
 
     public function __toString()

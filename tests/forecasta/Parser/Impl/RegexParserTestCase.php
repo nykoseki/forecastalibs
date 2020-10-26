@@ -4,13 +4,8 @@ namespace ForecastaTest\Parser\Impl;
 
 use PHPUnit\Framework\TestCase;
 
-use Forecasta\Parser;
-use Forecasta\Parser\ParserContext as CTX;
-
-use Forecasta\Parser\ParserFactory;
-use Forecasta\Comment\Processor\CommentParser;
-use Forecasta\Parser\Impl\JsonParser;
-use Forecasta\Parser\Impl\FalseParser;
+use Forecasta\Parser\ParserContext;
+use Forecasta\Parser\Impl\RegexParser;
 
 class RegexParserTestCase extends TestCase
 {
@@ -20,14 +15,14 @@ class RegexParserTestCase extends TestCase
 
     public function setUp(): void
     {
-        $this->parser = new Parser\Impl\RegexParser("/^[0-9]+/");
+        $this->parser = new RegexParser("/^[0-9]+/");
     }
 
     // =================================================================================================================
 
     public function testParsed()
     {
-        $ctx = CTX::create("12312387435");
+        $ctx = ParserContext::create("12312387435");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -36,7 +31,7 @@ class RegexParserTestCase extends TestCase
     }
 
     public function testFinished() {
-        $ctx = CTX::create("12312387435");
+        $ctx = ParserContext::create("12312387435");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -45,7 +40,7 @@ class RegexParserTestCase extends TestCase
     }
 
     public function testResult() {
-        $ctx = CTX::create("12312387435");
+        $ctx = ParserContext::create("12312387435");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
@@ -54,7 +49,7 @@ class RegexParserTestCase extends TestCase
     }
 
     public function testCurrent() {
-        $ctx = CTX::create("12312387435");
+        $ctx = ParserContext::create("12312387435");
 
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
