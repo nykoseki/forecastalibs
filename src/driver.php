@@ -4,6 +4,7 @@ require_once "../vendor/autoload.php";
 
 use Forecasta\Comment\Processor\CommentParser;
 use Forecasta\Parser\Parser;
+use Forecasta\Parser\ParserFactory;
 use Forecasta\Parser\Impl\JsonParser;
 use Forecasta\Parser\Impl\TokenParser;
 use Forecasta\Parser\ParserContext;
@@ -136,10 +137,14 @@ EOF;
     }
 
     function testParse03() {
-        $ctx = ParserContext::create("abcabcd");
+        $ctx = ParserContext::create("abcdefghijk");
 
-        $parser = new TokenParser("abc");
-        $parser->setName("TokenTest");
+        $parser1 = new TokenParser("abc");
+        $parser2 = new TokenParser("def");
+        $parser3 = new TokenParser("ghi");
+        $parser1->setName("TokenTest");
+
+        $parser = ParserFactory::Many()->add(ParserFactory::Seq()->add($parser1)->add($parser2)->add($parser3));
 
         $history = HistoryEntry::createEntry("Token", $ctx, $parser);
 
@@ -149,9 +154,10 @@ EOF;
 
         $history->walk($walker);
 
-        //echo print_r($history, true);
+        echo print_r($result, true);
     }
 }
+
 
 class CommentContext {
     private $contextName = "";

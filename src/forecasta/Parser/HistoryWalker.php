@@ -22,8 +22,12 @@ class HistoryWalker implements HistoryWalkerBase {
         $indent = str_repeat("  ", $depth);
 
         if($entry->isSuccess()) {
-            echo $indent. "<parse-entry name=${name} type=${parserType} length=${length} position=${position} state='${isSuccess}'>". "\n";
+            if(is_string($parsed)) {
+                //echo $indent. "<parse-entry name=${name} type=${parserType} length=${length} position=${position} state='${isSuccess}'>". "\n";
+            } else {
 
+            }
+            echo $indent. "<parse-entry name=${name} type=${parserType} length=${length} position=${position} state='${isSuccess}'>". "\n";
 
             echo $indent. $indent. "<content><![CDATA[";
 
@@ -40,7 +44,7 @@ class HistoryWalker implements HistoryWalkerBase {
                     $output = $output . $line;
                 }
             } else {
-                echo print_r($parsed, true);
+                //echo print_r($parsed, true);
                 //$output = implode("", $parsed);
             }
 
@@ -53,8 +57,11 @@ class HistoryWalker implements HistoryWalkerBase {
                     $child->walk($this);
                 }
             }
-
+            if(is_string($parsed)) {
+                //echo $indent. "</parse-entry>". "\n";
+            }
             echo $indent. "</parse-entry>". "\n";
+
         } else {
             if($entry->hasMoreChildren()) {
                 $children = $entry->children();
