@@ -46,6 +46,7 @@ if (!function_exists("applLog2")) {
             $message = print_r($message, true);
             return print_r("{$category}:". $message, true). "\n";
         } else if(is_object($message)) {
+            $message = print_r($message, true);
             return print_r("{$category}:". $message, true). "\n";
         } else {
             return $message. "\n";
