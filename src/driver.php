@@ -158,7 +158,6 @@ EOF;
     }
 }
 
-
 class CommentContext {
     private $contextName = "";
 
