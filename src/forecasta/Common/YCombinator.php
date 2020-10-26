@@ -43,6 +43,7 @@ if (!function_exists("applLog2")) {
     function applLog2($category, $message, $debugFlg = false)
     {
         if(is_array($message)) {
+            $message = print_r($message, true);
             return print_r("{$category}:". $message, true). "\n";
         } else if(is_object($message)) {
             return print_r("{$category}:". $message, true). "\n";
