@@ -43,4 +43,75 @@ class ArrayUtil
 
         return $flat_arr;
     }
+
+    /**
+     * 引数に指定された多次元配列について縮約を行います
+     * ・サイズ0の配列を除去します
+     * ・サイズ1の配列に関して、対象の配列の0番目の値を取り出します
+     *
+     * 上記処理を、再帰的に行います
+     * @param $array
+     * @return mixed
+     */
+    public static function reduction($array) {
+        $yF = Y(function($callback){
+            return function($item) use(&$callback){
+                if(is_array($item)) {
+
+                    if(count($item) > 0) {
+                        if(count($item) == 1) {
+                            //echo "eeee\n";
+                            $result = $callback($item[0]);
+
+                            return $result;
+                        } else {
+                            $intermediate = [];
+
+                            // 再帰
+                            foreach($item as $key => $value) {
+
+                                $result = null;
+                                if(is_array($value)) {
+                                    if(count($value) == 0) {
+                                        //echo "dddd\n";
+                                    } else {
+                                        if(count($value) == 1) {
+                                            //echo "cccc\n";
+                                            $result = $callback($value[0]);
+                                        } else {
+                                            //echo "bbbb\n";
+                                            $result = $callback($value);
+                                        }
+                                    }
+                                } else {
+                                    //echo "aaaa\n";
+                                    $result = $value;
+                                }
+
+                                if($result != null) {
+
+                                    array_push($intermediate, $result);
+                                    //$intermediate[] = $result;
+                                }
+                            }
+
+                            return $intermediate;
+                        }
+                    } else {
+                        // サイズ0
+                        return null;
+                    }
+                } else {
+                    return $item;
+                }
+            };
+        });
+
+
+
+        return $yF($array);
+    }
+
+
+
 }

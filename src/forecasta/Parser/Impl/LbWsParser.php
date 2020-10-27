@@ -78,16 +78,16 @@ class LbWsParser implements Parser
 
     public function __construct()
     {
-        $whiteSpace = ParserFactory::Regex("/^\s+/");
-        $lineBreak1 = ParserFactory::Token("\n");
-        $lineBreak2 = ParserFactory::Token("\r");
-        $lineBreak3 = ParserFactory::Token("\r\n");
-        $tab = ParserFactory::Token("\t");
+        $whiteSpace = ParserFactory::Regex("/^\s+/")->skip(true);
+        $lineBreak1 = ParserFactory::Token("\n")->skip(true);
+        $lineBreak2 = ParserFactory::Token("\r")->skip(true);
+        $lineBreak3 = ParserFactory::Token("\r\n")->skip(true);
+        $tab = ParserFactory::Token("\t")->skip(true);
 
         $lbws = ParserFactory::Option()->add(
-            ParserFactory::Many()
+            ParserFactory::Many()->skip(true)
                 ->add(
-                    ParserFactory::Choice()
+                    ParserFactory::Choice()->skip(true)
                         ->add($tab)
                         ->add($whiteSpace)
                         ->add(
@@ -102,6 +102,7 @@ class LbWsParser implements Parser
 
         //$whiteSpace = ParserFactory::Seq()->add($whiteSpace)->add($lineBreak)->add($whiteSpace);
         $this->parser = $lbws;
+        $this->parser->skip(true);
 
         //$this->parserHistoryEntry = new P\HistoryEntry;
 

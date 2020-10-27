@@ -92,7 +92,11 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
-        $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', '}'], true);
+        //$expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', '}'], true);
+        //$expected = print_r(['{', 'aaa', '<Joint>', 'bbb', '}'], true);
+        //$expected = print_r(['{', 'aaa', ':', 'bbb', '}'], true);
+
+        $expected = print_r(['{', "\"", 'aaa', "\"", ':', "\"", 'bbb',"\"",  '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKeyString: {$parsed0} : Fail");
     }
@@ -138,7 +142,11 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
-        $expected = print_r(['{', '"', 'aaa', '"', ':', 'null', '}'], true);
+        //$expected = print_r(['{', '"', 'aaa', '"', ':', 'null', '}'], true);
+        //$expected = print_r(['{', 'aaa', ':', 'null', '}'], true);
+        $expected = print_r(['{', "\"",'aaa', "\"",':', 'null', '}'], true);
+
+
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKeyNull: {$parsed0} : Fail");
     }
@@ -184,6 +192,7 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
+        //$expected = print_r(['{', 'aaa', ':', '123', '}'], true);
         $expected = print_r(['{', '"', 'aaa', '"', ':', '123', '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKeyNumber: {$parsed0} : Fail");
@@ -230,6 +239,7 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
+        //$expected = print_r(['{', 'aaa', ':', 'true', '}'], true);
         $expected = print_r(['{', '"', 'aaa', '"', ':', 'true', '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey_True: {$parsed0} : Fail");
@@ -276,6 +286,7 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
+        //$expected = print_r(['{', 'aaa', ':', 'false', '}'], true);
         $expected = print_r(['{', '"', 'aaa', '"', ':', 'false', '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey_True: {$parsed0} : Fail");
@@ -322,7 +333,8 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
-        $expected = print_r(['{', '"', 'aaa', '"', ':', 'TRUE', '}'], true);
+        //$expected = print_r(['{', 'aaa', ':', 'TRUE', '}'], true);
+        $expected = print_r(['{', '"', 'aaa', '"', ':', 'true', '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey__True: {$parsed0} : Fail");
     }
@@ -368,7 +380,8 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
-        $expected = print_r(['{', '"', 'aaa', '"', ':', 'FALSE', '}'], true);
+        //$expected = print_r(['{', 'aaa', ':', 'FALSE', '}'], true);
+        $expected = print_r(['{', '"', 'aaa', '"', ':', 'false', '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey__False: {$parsed0} : Fail");
     }
@@ -414,6 +427,7 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
+        //$expected = print_r(['{', 'aaa', ':', 'bbb', "," , 'ccc', ':', 'ddd', '}'], true);
         $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', '"', 'ddd', '"', '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKeyStringMulti: {$parsed0} : Fail");
@@ -462,6 +476,7 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
+        //$expected = print_r(['{', 'aaa', ':', 'bbb', "," , 'ccc', ':', 123, '}'], true);
         $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', 123, '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKeyNumberMulti: {$parsed0} : Fail");
@@ -510,6 +525,7 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
+        //$expected = print_r(['{', 'aaa', ':', 'bbb', "," , 'ccc', ':', "true", '}'], true);
         $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', "true", '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey_TrueMulti: {$parsed0} : Fail");
@@ -558,6 +574,7 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
+        //$expected = print_r(['{', 'aaa', ':', 'bbb', "," , 'ccc', ':', "false", '}'], true);
         $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', "false", '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey_FalseMulti: {$parsed0} : Fail");
@@ -606,7 +623,8 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
-        $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', "TRUE", '}'], true);
+        //$expected = print_r(['{', 'aaa', ':', 'bbb', "," , 'ccc', ':', "TRUE", '}'], true);
+        $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', "true", '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey_FalseMulti: {$parsed0} : Fail");
     }
@@ -654,7 +672,8 @@ EOF;
         $parsed0 = ArrayUtil::flatten($result->parsed(), null, $this->filter);
         $parsed0 = print_r($parsed0, true);
 
-        $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', "FALSE", '}'], true);
+        //$expected = print_r(['{', 'aaa', ':', 'bbb', "," , 'ccc', ':', "FALSE", '}'], true);
+        $expected = print_r(['{', '"', 'aaa', '"', ':', '"', 'bbb', '"', "," , '"', 'ccc', '"', ':', "false", '}'], true);
 
         $this->assertEquals($expected, $parsed0, "{$this->clsName}#testParsedKey_FalseMulti: {$parsed0} : Fail");
     }
@@ -954,7 +973,7 @@ EOF;
         $ary[] = ':';
         $ary[] = '[';
         //$ary[] = '"';
-        $ary[] = 'TRUE';
+        $ary[] = 'true';
         //$ary[] = '"';
         $ary[] = ']';
         $ary[] = '}';
@@ -1015,7 +1034,7 @@ EOF;
         $ary[] = ':';
         $ary[] = '[';
         //$ary[] = '"';
-        $ary[] = 'FALSE';
+        $ary[] = 'false';
         //$ary[] = '"';
         $ary[] = ']';
         $ary[] = '}';

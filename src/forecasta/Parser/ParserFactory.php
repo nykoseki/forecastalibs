@@ -17,6 +17,13 @@ use Forecasta\Parser\Impl\TrueParser;
 use Forecasta\Parser\Impl\EmptyParser;
 use Forecasta\Parser\Impl\BoolParser;
 use Forecasta\Parser\Impl\KeyPairParser;
+use Forecasta\Parser\Impl\NumberParser;
+use Forecasta\Parser\Impl\QuoteParser;
+use Forecasta\Parser\Impl\JointParser;
+use Forecasta\Parser\Impl\CommaParser;
+use Forecasta\Parser\Impl\LeftBraceParser;
+use Forecasta\Parser\Impl\RightBraceParser;
+use Forecasta\Parser\Impl\JsonParser;
 
 
 /**
@@ -196,6 +203,73 @@ class ParserFactory
     }
 
     /**
+     * NumberParserを生成します
+     * @return Parser
+     */
+    public static function Number()
+    {
+        return new NumberParser;
+    }
+
+    /**
+     * QuoteParserを生成します
+     * @return Parser
+     */
+    public static function Quote()
+    {
+        return new QuoteParser;
+    }
+
+    /**
+     * JointParserを生成します
+     * @param string $joint 結合子
+     * @return JointParser
+     */
+    public static function Joint($joint = ":")
+    {
+        return new JointParser($joint);
+    }
+
+    /**
+     * CommaParserを生成します
+     * @return Parser
+     */
+    public static function Comma()
+    {
+        return new CommaParser;
+    }
+
+    /**
+     * LeftBraceParserを生成します
+     * @return Parser
+     */
+    public static function Lbr()
+    {
+        return new LeftBraceParser();
+    }
+
+    /**
+     * RightBraceParserを生成します
+     * @return Parser
+     */
+    public static function Rbr()
+    {
+        return new RightBraceParser();
+    }
+
+    /**
+     * JSONParserを生成します
+     * @param string $objLeftChar 左括弧(デフォルト"{")
+     * @param string $objRightChar 右括弧(デフォルト"}")
+     * @param string $joint オブジェクト結合子(デフォルト":")
+     *
+     * @return JsonParser
+     */
+    public static function JSON($objLeftChar = "{", $objRightChar = "}", $joint = ":") {
+        return new JsonParser($objLeftChar, $objRightChar, $joint);
+    }
+
+    /**
      * 引数に指定されたパーサタイプと生成パラメータを用いて，パーサを生成します
      * @param string $type パーサタイプ
      * @param mixed $param 生成パラメータ
@@ -236,6 +310,18 @@ class ParserFactory
             return self::Bool();
         } else if ($type === 'keyPair') {
             return self::KeyPair();
+        } else if ($type === 'number') {
+            return self::Number();
+        } else if ($type === 'quote') {
+            return self::Quote();
+        } else if ($type === 'joint') {
+            return self::Joint();
+        } else if ($type === 'comma') {
+            return self::Joint();
+        } else if ($type === 'lbr') {
+            return self::Lbr();
+        } else if ($type === 'rbr') {
+            return self::Rbr();
         }
     }
 

@@ -56,6 +56,15 @@ class BoolParser implements Parser
 
         if($ctx->result()) {
             $this->onSuccess($ctx, $depth);
+
+            $psd = $ctx->parsed();
+            $psd = str_replace("TRUE", "true", $psd);
+            $psd = str_replace("FALSE", "false", $psd);
+
+            $ctx->updateParsed($psd);
+
+            //echo $ctx->parsed(). "\n";
+
             $currentEntry->leave($this, $ctx->copy(), true);
         } else {
             $this->onError($ctx, $depth);

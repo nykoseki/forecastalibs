@@ -31,6 +31,7 @@ class ManyParserTestCase extends TestCase
         $this->clsName = get_class($this->parser);
 
         $parsed = $result->parsed();
+        $parsed = [$parsed];
 
         $this->assertEquals(1, count($parsed), "{$this->clsName}#testParsed(Len) : Fail");
 
@@ -78,6 +79,9 @@ class ManyParserTestCase extends TestCase
         $this->clsName = get_class($this->parser);
 
         $current = $result->parsed();
+        if($current == null) {
+            $current = array();
+        }
 
         $this->assertEquals(0, count($current), "{$this->clsName}#testParsedInvalid : Fail");
     }

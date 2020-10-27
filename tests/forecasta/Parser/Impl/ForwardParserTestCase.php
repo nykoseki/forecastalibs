@@ -50,16 +50,21 @@ class ForwardParserTestCase extends TestCase
 
             $this->assertEquals("XXX", $parsed0, "{$this->clsName}#testParsed(1) : Fail");
 
-            if(count($parsed1) === 3) {
+            if(count($parsed1) === /*3*/2) {
+                //$parsed10 = $parsed1[0];
+                //$parsed11 = $parsed1[1];
+                //$parsed12 = $parsed1[2];
+
                 $parsed10 = $parsed1[0];
                 $parsed11 = $parsed1[1];
-                $parsed12 = $parsed1[2];
+
 
                 $this->assertEquals("XXX", $parsed10, "{$this->clsName}#testParsed(2-1) : Fail");
-                $this->assertEquals(null, $parsed11, "{$this->clsName}#testParsed(2-2) : Fail");
-                $this->assertEquals("YYY", $parsed12, "{$this->clsName}#testParsed(2-3) : Fail");
+                //$this->assertEquals(null, $parsed11, "{$this->clsName}#testParsed(2-2) : Fail");
+                //$this->assertEquals("YYY", $parsed12, "{$this->clsName}#testParsed(2-3) : Fail");
+                $this->assertEquals("YYY", $parsed11, "{$this->clsName}#testParsed(2-3) : Fail");
             } else {
-                $this->assertTrue(false, "{$this->clsName}#testParsed(2) : Fail");
+                $this->assertTrue(false, "{$this->clsName}#testParsed(2) : Fail". print_r($parsed, true));
             }
 
 

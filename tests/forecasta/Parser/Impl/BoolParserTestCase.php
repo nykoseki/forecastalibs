@@ -112,7 +112,8 @@ class BoolParserTestCase extends TestCase
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
 
-        $this->assertEquals("TRUE", $result->parsed(), "{$this->clsName}#testParsed_TR : Fail");
+        //$this->assertEquals("TRUE", $result->parsed(), "{$this->clsName}#testParsed_TR : Fail");
+        $this->assertEquals("true", $result->parsed(), "{$this->clsName}#testParsed_TR : Fail");
 
 
     }
@@ -153,7 +154,8 @@ class BoolParserTestCase extends TestCase
         $result = $this->parser->parse($ctx);
         $this->clsName = get_class($this->parser);
 
-        $this->assertEquals("FALSE", $result->parsed(), "{$this->clsName}#testParsed_FL : Fail");
+        //$this->assertEquals("FALSE", $result->parsed(), "{$this->clsName}#testParsed_FL : Fail");
+        $this->assertEquals("false", $result->parsed(), "{$this->clsName}#testParsed_FL : Fail");
     }
 
     public function testFinished_FL() {

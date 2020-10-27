@@ -152,6 +152,9 @@ class ParserTestCase extends TestCase
 
         $this->assertTrue($result->result(), "testManyParser is Fail!(3)");
         $parsed = $result->parsed();
+
+        $parsed = [$parsed];
+
         $parsed = join("", $parsed);
         $this->assertTrue($parsed === "", "testManyParser is Fail!(4): '{$parsed}'");
     }

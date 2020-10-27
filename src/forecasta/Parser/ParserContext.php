@@ -2,6 +2,7 @@
 
 namespace Forecasta\Parser;
 
+use Forecasta\Common\ArrayUtil;
 use Forecasta\Common\Composite;
 use Forecasta\Common\Named;
 //use Forecasta\Common\Y;
@@ -144,6 +145,9 @@ class ParserContext
     public function parsed($formatFlg=false)
     {
         $parsed = $this->parsed;
+
+        $parsed = ArrayUtil::reduction($parsed);
+
 
         return $parsed;
     }
@@ -347,7 +351,7 @@ class ParserContext
                                 //return $item;
                                 $tmpItem = $item;
                                 if ($tmpItem === "\"") {
-                                    //$tmpItem = "<Dq>";
+                                    $tmpItem = "<Dq>";
                                     //$tmpItem = "";
                                 } else if ($tmpItem === " ") {
                                     //$tmpItem = "<Sp>";
@@ -359,8 +363,8 @@ class ParserContext
                                 } else if ($tmpItem === "'") {
                                     $tmpItem = "<Sq>";
                                 } else if ($tmpItem === ",") {
-                                    //$tmpItem = "<Camma>";
-                                    $tmpItem = "";
+                                    $tmpItem = "<Camma>";
+                                    //$tmpItem = "";
                                 } else if (preg_match('/^\s+$/', $tmpItem) > 0) {
                                     //$tmpItem = "<Ws>";
                                     $tmpItem = "";

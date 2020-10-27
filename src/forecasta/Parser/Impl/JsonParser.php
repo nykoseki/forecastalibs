@@ -6,13 +6,11 @@ use Forecasta\Common\Historical;
 use Forecasta\Parser\HistoryEntry;
 use Forecasta\Parser\Parser;
 use Forecasta\Parser\ParserContext;
-use Forecasta\Parser\HasMoreChildren;
-//use Forecasta\Parser as P;
-use Forecasta\Parser\Impl\ParserTrait as PST;
 use Forecasta\Parser\ParserFactory;
 
 /**
- * JSONパーサです
+ * Alt-JSONパーサです
+ *
  * [Overview]
  * ======================================================
  * <LBrace> := "{"
@@ -21,12 +19,12 @@ use Forecasta\Parser\ParserFactory;
  * <RBracket> := "]"
  * <Primitive> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
  * <Null> := null
- * <Camma> := ,
+ * <Comma> := ,
  * <Empty> := ""
  * <Number> := /^[0-9]+/
  * <Boolean> := /^true|^false|^TRUE|^FALSE/
  * <Value> := <Primitive> | <Element> | <Array> | <Null> | <Number>
- * <Joint> := "=>"
+ * <Joint> := ":"
  * <Key> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
  * <Entry> := <Key> + <Joint> + <Value>
  * <Entries> := <Entry> | (<Entry> + <Camma> ) + <Entry>
@@ -42,14 +40,14 @@ class JsonParser implements Parser
     use ParserTrait;
     use Historical;
 
-    //private $chars;
-
     private $parser = null;
 
     /**
      * パースメソッド
-     * @param ParserContext $ctx
-     * @return ParserContext コンテキスト
+     * @param $context 解析コンテキスト
+     * @param int $depth 解析深度
+     * @param HistoryEntry|null $currentEntry 履歴エントリ
+     * @return ParserContext 解析コンテキスト
      */
     public function parse($context, $depth=0, HistoryEntry $currentEntry = null)
     {
@@ -92,7 +90,14 @@ class JsonParser implements Parser
         return $ctx;
     }
 
-    public function __construct()
+    /**
+     * JSONParserを生成します
+     * @param string $objLeftChar 左括弧(デフォルト"{")
+     * @param string $objRightChar 右括弧(デフォルト"}")
+     * @param string $joint オブジェクト結合子(デフォルト":")
+     *
+     */
+    public function __construct($objLeftChar = "{", $objRightChar = "}", $joint = ":")
     {
 
         /*
@@ -103,42 +108,64 @@ class JsonParser implements Parser
          * <RBracket> := "]"
          * <Primitive> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
          * <Null> := null
-         * <Camma> := ,
+         * <Comma> := ,
          * <Empty> := ""
          * <Number> := /^[0-9]+/
          * <Value> := <Primitive> | <Element> | <Array> | <Null> | <Number>
          * <Joint> := "=>"
          * <Key> := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
          * <Entry> := <Key> + <Joint> + <Value>
-         * <Entries> := <Entry> | (<Entry> + <Camma> ) + <Entry>
+         * <Entries> := <Entry> | (<Entry> + <Comma> ) + <Entry>
          * <Element> := <LBrace> + <Entries> + <RBrace>
-         * <Array> := <LBracket> + (<Value> | (<Value> + <Camma> ) + <Value>) + <RBracket>
+         * <Array> := <LBracket> + (<Value> | (<Value> + <Comma> ) + <Value>) + <RBracket>
          *
          */
 
         // 改行・ホワイトスペース
         $whiteSpace = new LbWsParser;
+        $whiteSpace->skip(true);
 
         // Bool値(true, false, TRUE, FALSE)
         $boolean = new BoolParser;
 
         // Joint := "=>"
-        $joint = ParserFactory::Token(":")->setName("Joint");
-        ;
+        $joint = ParserFactory::Joint($joint)->setName("Joint");
+        //$joint = ParserFactory::Token(":")->setName("Joint");
 
         // ダブルクォート
-        $quote = ParserFactory::Token("\"")->setName("Quote");
+        //$quote = ParserFactory::Token("\"")->setName("Quote");
+        $quote = ParserFactory::Quote()->setName("Quote");
+        //$quote->skip(true);
+
+
+        // LeftBrace("[")
+        $leftBrace = ParserFactory::Lbr();
+
+        // RightBrace("]")
+        $rightBrace = ParserFactory::Rbr();
+
+        // カンマ
+        $comma0 = ParserFactory::Comma();
+
+        // カンマ１(Option)
+        $commaOption = ParserFactory::Option()->add($comma0/*->setName("Comma")*/);
+
+        // カンマ２(None-Option)
+        $commaNoneOption = $comma0;
 
         // Primitive := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$primitive = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Pr");
-        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:     '';\/\+\*=]+/")->setName("Primitive"))->add($quote);
+        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:. #@\`';\/\+\*=]+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:     '';\/\+\*=]+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/")->setName("Primitive"))->add($quote);
 
         // Number
-        $number = ParserFactory::Regex("/^[0-9]+/")->setName("Number");
+        //$number = ParserFactory::Regex("/^[0-9]+/")->setName("Number");
+        $number = ParserFactory::Number()->setName("Number");
 
         // Key := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$key = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Key");
-        $key = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z_][A-Za-z_0-9\-]*/")->setName("Key"))->add($quote);
+        $key = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z_0-9][A-Za-z_0-9\-]*/")->setName("Key"))->add($quote);
 
         // Value
         $value = ParserFactory::Forward()->setName("Value");
@@ -159,13 +186,14 @@ class JsonParser implements Parser
 
         // Entry := Key + Joint + Value
         $entry = ParserFactory::Seq()/*->setName("Entry")*/
-            ->add($whiteSpace)
+            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
             ->add($key)
-            ->add($whiteSpace)
+            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
             ->add($joint)
-            ->add($whiteSpace)
+            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
             ->add($value)
-            ->add($whiteSpace)->setName("Entry");
+            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+            ->setName("Entry");
 
         // Entries := (Entry , ) + Entry | Entry
         $entries = ParserFactory::Choice()/*->setName("Entries")*/
@@ -173,15 +201,15 @@ class JsonParser implements Parser
                 ParserFactory::Seq()->add(
                     ParserFactory::Any()->add(
                         ParserFactory::Seq()
+                            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                             ->add($entry)
                             //->add(ParserFactory::Option()->add($whiteSpace))
-                            ->add($whiteSpace)
-                            ->add(ParserFactory::Token(",")/*->setName("Comma")*/)
+                            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                            ->add($commaNoneOption)
                             //->add(ParserFactory::Option()->add($whiteSpace))
-                            ->add($whiteSpace)
-                            ->add(
-                                ParserFactory::Option()->add(ParserFactory::Token(",")/*->setName("Comma")*/)
-                            )
+                            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                            ->add($commaOption)
+                            ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                     )
                 )->add(
                     $entry
@@ -191,33 +219,49 @@ class JsonParser implements Parser
         // Array := "[" + (Value | (Value , ) + Value) + "]"
         $array->forward(
             ParserFactory::Seq()
-                ->add($whiteSpace)
-                ->add(ParserFactory::Token("[")->setName("ArOpen"))
-                ->add($whiteSpace)
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                //->add(ParserFactory::Token("[")->setName("ArOpen"))
+                ->add($leftBrace->setName("ArOpen"))
+
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                 ->add(
                     ParserFactory::Choice()
                         ->add(
                             ParserFactory::Seq()->add(
                                 ParserFactory::Any()->add(
                                     ParserFactory::Seq()
+                                        ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                                         ->add($value)
                                         //->add(ParserFactory::Option()->add($whiteSpace))
-                                        ->add($whiteSpace)
-                                        ->add(ParserFactory::Token(",")->setName("Comma"))
+                                        ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                                        ->add($commaNoneOption)
                                         //->add(ParserFactory::Option()->add($whiteSpace))
-                                        ->add($whiteSpace)
+                                        ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                                 )
                             )->add(
-                                $value
+                                ParserFactory::Seq()
+                                ->add($whiteSpace)
+                                ->add($value)
+                                ->add($whiteSpace)
+
                             )
-                        )->add($value)
+                        )->add(
+                            ParserFactory::Seq()
+                                ->add($whiteSpace)
+                                ->add($value)
+                                ->add($whiteSpace)
+                        )
+
                 )
-                ->add($whiteSpace)
-                ->add(ParserFactory::Token("]")->setName("ArClose"))
-                ->add($whiteSpace)
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                ->add($rightBrace->setName("ArClose"))
+                //->add(ParserFactory::Token("]")->setName("ArClose"))
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+
         )->setName("Array");
 
-        // Value := Primitive | Element | Array | Null | Empty | Bool
+        // JSONと異なり、ValueにEntry({Key : Value})を許可する
+        // Value := Primitive | Element | Array | Null | Empty | Bool | Entry
         $value->forward(
             ParserFactory::Choice()/*->setName("ValueInner")*/
                 ->add($null)
@@ -227,6 +271,18 @@ class JsonParser implements Parser
                 ->add($empty)
                 ->add($number)
                 ->add($boolean)
+
+                // 拡張JSONとしてValueにもEntry(KeyPair)を許可する
+                ->add(
+                    ParserFactory::Seq()
+                        ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                        ->add(ParserFactory::Token($objLeftChar)->setName("ElOpen"))
+                        ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                        ->add($entry)
+                        ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                        ->add(ParserFactory::Token($objRightChar)->setName("ElClose"))
+                        ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                )
         )->setName("Value");
 
 
@@ -234,13 +290,13 @@ class JsonParser implements Parser
         // Element := "{" + Entries + "}"
         $element->forward(
             ParserFactory::Seq()
-                ->add($whiteSpace)
-                ->add(ParserFactory::Token("{")->setName("ElOpen"))
-                ->add($whiteSpace)
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                ->add(ParserFactory::Token($objLeftChar)->setName("ElOpen"))
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                 ->add($entries)
-                ->add($whiteSpace)
-                ->add(ParserFactory::Token("}")->setName("ElClose"))
-                ->add($whiteSpace)
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
+                ->add(ParserFactory::Token($objRightChar)->setName("ElClose"))
+                ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
         )->setName("Element");
 
         $this->parser = $element;

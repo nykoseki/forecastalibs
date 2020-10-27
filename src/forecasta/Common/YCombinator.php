@@ -29,7 +29,6 @@ if (!function_exists("Y")) {
     }
 }
 
-
 if (!function_exists("applLog2")) {
     /**
      * ログ出力を行います
