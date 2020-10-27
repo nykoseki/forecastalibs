@@ -43,6 +43,8 @@ class RegexParser implements Parser
         // 履歴enter処理
         $currentEntry->enter($this, $context->copy());
 
+        //echo $this->getName(). "\n";
+
         $target0 = $context->target();
         $position = $context->current();
         $len = mb_strlen($target0);

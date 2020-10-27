@@ -1,88 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1bd213c9-31ba-49db-84e1-16b5ffafb048" name="Default Changelist" comment="aaaaaa">
-      <change afterPath="$PROJECT_DIR$/.idea/deployment.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/forecastalibs.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/webServers.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/composer.phar" afterDir="false" />
+    <list default="true" id="1bd213c9-31ba-49db-84e1-16b5ffafb048" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/forecasta/Parser/sample/content.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/forecasta/dirver2.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/forecastalibs.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/forecastalibs.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.phpunit.result.cache" beforeDir="false" afterPath="$PROJECT_DIR$/.phpunit.result.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/driver.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/driver.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/HistoryEntry.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/HistoryEntry.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/HistoryWalker.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/HistoryWalker.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/HistoryWalkerBase.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/HistoryWalkerBase.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ChoiceParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ChoiceParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ForwardParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/ForwardParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/JsonParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/JsonParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/KeyPairParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/KeyPairParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/OptionParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/OptionParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/RegexParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/RegexParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/Impl/SequenceParser.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/Impl/SequenceParser.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/forecasta/Parser/ParserContext.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/forecasta/Parser/ParserContext.php" afterDir="false" />
     </list>
-    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ComposerSettings" doNotAsk="true" executionDataType="PHAR" phpInterpreterId="c583cfad-1e7c-4ea8-b95b-aa502df4de96" synchronizationState="SYNCHRONIZE">
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
-    <pharPath>$PROJECT_DIR$/composer.phar</pharPath>
-  </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-118543702">
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="6" />
-          <entry key="project.open.time.0" value="1" />
-          <entry key="project.open.time.1" value="1" />
-          <entry key="project.open.time.3" value="1" />
-          <entry key="project.open.time.6" value="1" />
-          <entry key="project.open.time.8" value="1" />
-          <entry key="project.open.time.9" value="1" />
-          <entry key="project.opened" value="6" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="json" value="1" />
-          <entry key="md" value="1" />
-          <entry key="php" value="7" />
-          <entry key="sh" value="2" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="JSON" value="1" />
-          <entry key="Markdown" value="1" />
-          <entry key="PHP" value="7" />
-          <entry key="PLAIN_TEXT" value="2" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="php" value="3" />
-          <entry key="txt" value="6" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="PHP" value="3" />
-          <entry key="PLAIN_TEXT" value="6" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.php.composer.actions">
-        <counts>
-          <entry key="install_from_ProjectViewPopup" value="1" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/forecasta/ForecastaMain.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="23" selection-start-line="23" selection-end-line="23" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <execution>
+      <phar pharPath="$PROJECT_DIR$/composer.phar" interpreterId="c583cfad-1e7c-4ea8-b95b-aa502df4de96" />
+    </execution>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -99,6 +54,9 @@
   <component name="JsGulpfileManager">
     <detection-done>true</detection-done>
     <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP7.4">
     <include_path>
@@ -153,6 +111,8 @@
       <path value="$PROJECT_DIR$/vendor/doctrine/annotations" />
       <path value="$PROJECT_DIR$/vendor/doctrine/lexer" />
       <path value="$PROJECT_DIR$/vendor/ray/aop" />
+      <path value="$PROJECT_DIR$/vendor/symfony/deprecation-contracts" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-php80" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -161,6 +121,7 @@
     <option name="width" value="1400" />
     <option name="height" value="913" />
   </component>
+  <component name="ProjectId" id="27OZmtQQy4thHeo3LkJIfzrSWfz" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
@@ -198,6 +159,10 @@
       <pane id="Scope" />
     </panes>
   </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="WebServerToolWindowPanel.toolwindow.highlight.mappings" value="true" />
@@ -208,19 +173,9 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="reference.webide.settings.project.settings.php" />
-  </component>
-  <component name="RunDashboard">
-    <option name="ruleStates">
-      <list>
-        <RuleState>
-          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
-        </RuleState>
-        <RuleState>
-          <option name="name" value="StatusDashboardGroupingRule" />
-        </RuleState>
-      </list>
-    </option>
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager" selected="PHPUnit.phpunit.xml">
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
@@ -234,18 +189,17 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="PHP Script.bootstrap.php" />
-      <item itemvalue="PHP Script.ForecastaMain.php" />
+      <item itemvalue="PHP スクリプト.ForecastaMain.php" />
+      <item itemvalue="PHP スクリプト.bootstrap.php" />
       <item itemvalue="PHPUnit.phpunit.xml" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="PHPUnit.phpunit.xml" />
-        <item itemvalue="PHP Script.ForecastaMain.php" />
-        <item itemvalue="PHP Script.bootstrap.php" />
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="アプリケーションレベル" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -262,6 +216,7 @@
       <workItem from="1600996251132" duration="1345000" />
       <workItem from="1601005914439" duration="122000" />
       <workItem from="1601149487450" duration="31000" />
+      <workItem from="1649193256603" duration="712000" />
     </task>
     <task id="LOCAL-00001" summary="aaaaaa">
       <created>1600992852931</created>
@@ -310,7 +265,7 @@
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
@@ -327,29 +282,11 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
-            </State>
+            <State />
           </value>
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="aaaaaa" />

@@ -53,6 +53,8 @@ class ForwardParser implements Parser, HasMoreChildren
         $childHistory = HistoryEntry::createEntry($this->forwarder->getName(), $context->copy(), $this->forwarder);
         //$currentEntry->addEntry($childHistory);
 
+        //echo $this->getName(). " => ". $this->forwarder->getName(). "\n";
+
         $ctx = $this->forwarder->parse($context, $depth, $childHistory);
 
         if($ctx->result()) {

@@ -287,7 +287,8 @@ class ParserFactory
      *
      * @return JsonParser
      */
-    public static function JSON($objLeftChar = "{", $objRightChar = "}", $joint = ":") {
+    public static function JSON($objLeftChar = "{", $objRightChar = "}", $joint = ":")
+    {
         return new JsonParser($objLeftChar, $objRightChar, $joint);
     }
 

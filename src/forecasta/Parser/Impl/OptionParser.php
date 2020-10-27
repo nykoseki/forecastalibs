@@ -48,6 +48,8 @@ class OptionParser implements Parser, HasMoreChildren
 
         $currentCtx = ParserContext::getBlank();
 
+        //echo $this->getName(). " => ". $this->parser->getName(). "\n";
+
         // 履歴エントリ作成
         $childHistory = HistoryEntry::createEntry($this->parser->getName(), $context->copy(), $this->parser);
         //$currentEntry->addEntry($childHistory);

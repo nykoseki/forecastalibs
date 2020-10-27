@@ -9,7 +9,7 @@ use Forecasta\Common\Named;
  * Class History
  * @package Forecasta\Parser
  */
-class HistoryEntry implements \ArrayAccess, \IteratorAggregate
+class HistoryEntry implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     use Named;
 
@@ -33,6 +33,12 @@ class HistoryEntry implements \ArrayAccess, \IteratorAggregate
     // == IteratorAggregate ============================================================================================
     public function getIterator() {
         return new \ArrayIterator($this->child);
+    }
+    // =================================================================================================================
+
+    // == Countable ====================================================================================================
+    public function count() {
+        return count($this->child);
     }
     // =================================================================================================================
 
@@ -247,9 +253,9 @@ class HistoryEntry implements \ArrayAccess, \IteratorAggregate
         $this->depth = $depth;
     }
 
-    public function walk(HistoryWalkerBase $walker) {
+    public function walk(HistoryWalkerBase $walker, $depth = 0) {
         if($walker != null) {
-            $walker->walk($this);
+            $walker->walk($this, $depth);
         }
     }
 

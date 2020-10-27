@@ -12,7 +12,7 @@ use Forecasta\Common\Named;
  * @author nkoseki
  *
  */
-class ParserContext implements \ArrayAccess, \IteratorAggregate
+class ParserContext implements \ArrayAccess, \IteratorAggregate, \Countable
 {
     use Composite;
     use Named;
@@ -37,6 +37,12 @@ class ParserContext implements \ArrayAccess, \IteratorAggregate
     // == IteratorAggregate ============================================================================================
     public function getIterator() {
         return new \ArrayIterator($this->children);
+    }
+    // =================================================================================================================
+
+    // == Countable ====================================================================================================
+    public function count() {
+        return count($this->children);
     }
     // =================================================================================================================
 

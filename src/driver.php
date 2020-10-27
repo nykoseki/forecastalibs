@@ -9,7 +9,8 @@ use Forecasta\Parser\Impl\JsonParser;
 use Forecasta\Parser\Impl\TokenParser;
 use Forecasta\Parser\ParserContext;
 use Forecasta\Parser\HistoryEntry;
-
+use Forecasta\Parser\HistoryWalker;
+use Forecasta\Common\ArrayUtil;
 
 class TestClass_001
 {
@@ -21,6 +22,7 @@ class TestClass_001
     public $compositeTarget3 = "";
     public $compositeTarget4 = "";
 
+    public $history = null;
 
     public function __construct()
     {
@@ -180,7 +182,7 @@ EOF;
     
     
     
-    "処理開始"), "JSONパーサを修正(AltJSON対応)・・・Valueに日本語を"],
+    "処理開始"), "JSONパーサを修正(AltJSON対応)・・・><|~[]{}!Valueに日本^%\$語をｱｲｳｴｵ"],
     "key" => "仕訳明細トラン同期処理。"
 )
 EOF;
@@ -256,9 +258,9 @@ EOF;
         //$parser = new JsonParser();
         $parser = ParserFactory::JSON("(", ")", "=>");
 
-        $history = HistoryEntry::createEntry("JSON", $ctx, $parser);
+        $this->history = HistoryEntry::createEntry("JSON", $ctx, $parser);
 
-        $result = $parser->parse($ctx, 0, $history);
+        $result = $parser->parse($ctx, 0, $this->history);
 
         $walker = new \Forecasta\Parser\HistoryWalker();
 
@@ -334,7 +336,7 @@ EOF;
         */
         //$parsed = $filterFunc($result->parsed());
 
-        $parsed = \Forecasta\Common\ArrayUtil::flatten($result->parsed());
+        $parsed = ArrayUtil::flatten($result->parsed());
 
         $parsed = implode($parsed);
 
@@ -434,8 +436,9 @@ class CommentSubject
     }
 }
 
+$instance = new TestClass_001();
 
-$result = (new TestClass_001())->testParse02();
+$result = ($instance)->testParse02();
 
 $result2 = $result->parsed();
 
@@ -492,7 +495,7 @@ print_r($val);
 //print_r($val);
 
 echo "======================================================\n";
-$val = \Forecasta\Common\ArrayUtil::flatten($val);
+$val = ArrayUtil::flatten($val);
 $val = implode("", $val);
 $val = str_replace("<Empty>", "\"\"", $val);
 $val = str_replace("/", "\\/", $val);
@@ -502,10 +505,29 @@ echo print_r(json_decode($val, true), true). "\n";
 echo (json_decode($val))->key. "\n";
 echo "↑↑↑\n";
 
-echo print_r(ParserFactory::JSON()->contextToObject($result));
+echo print_r(ParserFactory::JSON()->contextToObject($result), true). "\n";
 
 echo "======================================================\n";
-echo json_encode((new TestClass_001())->compositeTarget2);
+echo json_encode((new TestClass_001())->compositeTarget2). "\n";
+
+echo "======================================================\n";
+
+$converted = ArrayUtil::reduction($result);
+
+$history = $instance->history;
+
+$converted = ArrayUtil::reduction($history);
+
+//$walker = new HistoryWalker();
+
+//echo print_r(get_class($converted), true). "\n";
+
+//$converted->walk($walker);
+
+echo "======================================================\n";
+
+
+
 exit();
 
 $val = [[[

@@ -96,7 +96,7 @@ class KeyPairParser implements Parser
             ->setName("ConfKey");
 
         // キーペア := キー "=>" 値
-        $keyPair = ParserFactory::Seq()
+        $keyPair = ParserFactory::Seq()->setName("KeyPair")
             ->add($confKey)
             ->add(ParserFactory::LbWs()->skip(true))
             ->add(ParserFactory::Token("=>"))
@@ -105,7 +105,7 @@ class KeyPairParser implements Parser
 
         // 値 := プリミティブ | 配列
         // プリミティブ
-        $premitive = ParserFactory::Seq()
+        $premitive = ParserFactory::Seq()->setName("Primitive")
             ->add(ParserFactory::LbWs()->skip(true))
             ->add(ParserFactory::Token("\""))
             ->add(
@@ -117,7 +117,7 @@ class KeyPairParser implements Parser
             ->add(ParserFactory::Token("\""));
 
         // 配列 := (キーペア + ",")* + キーペア
-        $array = ParserFactory::Seq()
+        $array = ParserFactory::Seq()->setName("Array")
             ->add(ParserFactory::Token("("))
             ->add(ParserFactory::LbWs()->skip(true))
             ->add(

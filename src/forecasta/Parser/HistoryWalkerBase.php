@@ -9,5 +9,5 @@
 namespace Forecasta\Parser;
 
 interface HistoryWalkerBase {
-    public function walk(HistoryEntry $entry);
+    public function walk(HistoryEntry $entry, $depth=0);
 }

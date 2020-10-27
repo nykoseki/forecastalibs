@@ -51,6 +51,8 @@ class SequenceParser implements Parser, HasMoreChildren
         for ($i = 0; $i < count($this->parsers); $i++) {
             $currentParser = $this->parsers[$i];
 
+            //echo $this->getName(). " => ". $currentParser->getName(). "\n";
+
             // 履歴エントリ作成
             $childHistory = HistoryEntry::createEntry($currentParser->getName(), $currentParsed->copy(), $currentParser);
             //$currentEntry->addEntry($childHistory);
