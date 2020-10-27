@@ -159,7 +159,13 @@ class JsonParser implements Parser
         // Primitive := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$primitive = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Pr");
         //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:. #@\`';\/\+\*=]+/")->setName("Primitive"))->add($quote);
-        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|([\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]|[\uD840-\uD87F][\uDC00-\uDFFF]|[ぁ-んァ-ヶ]|[^\x01-\x7E]))+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\-,:. #@\`';\/\+\*=]|[\u3400-\u4DBF])+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|([\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]|[\uD840-\uD87F][\uDC00-\uDFFF]|[ぁ-んァ-ヶ]|[^\x{01}-\x{7E}]))+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|([\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]|[\uD840-\uD87F][\uDC00-\uDFFF]|[ぁ-んァ-ヶ]|[^\x{01}-\x{7E}]))+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|[^\x{01}-\x{7E}])+/")->setName("Primitive"))->add($quote);
+        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|[^\x{01}-\x{7E}])+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|([\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]|[\uD840-\uD87F][\uDC00-\uDFFF]|[ぁ-んァ-ヶ]))+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|([\x{3400}-\x{4DBF}\x{4E00}-\x{9FFF}\x{F900}-\x{FAFF}]|[\x{D840}-\x{D87F}][\x{DC00}-\x{DFFF}]|[ぁ-んァ-ヶ]|[^\x01-\x7E]))+/")->setName("Primitive"))->add($quote);
         //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:     '';\/\+\*=]+/")->setName("Primitive"))->add($quote);
         //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/")->setName("Primitive"))->add($quote);
 
