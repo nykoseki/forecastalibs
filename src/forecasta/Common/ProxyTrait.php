@@ -22,7 +22,7 @@ trait ProxyTrait
 
                 return $reflMethod->invokeArgs($this->_Forecasta_Proxy_ProxyTrait_Proxy, $arguments);
 
-                return call_user_func_array($this->_Forecasta_Proxy_ProxyTrait_Proxy->$name, $arguments);
+                //return call_user_func_array($this->_Forecasta_Proxy_ProxyTrait_Proxy->$name, $arguments);
             }
         };
     }

@@ -2,7 +2,9 @@
 
 namespace Forecasta\Common;
 
-trait Curry {
+trait Functor {
+    private $reflector;
+
     public function __get($param) {
 
         if($this->reflector->hasMethod($param)) {

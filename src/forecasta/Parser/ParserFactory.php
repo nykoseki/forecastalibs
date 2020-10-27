@@ -24,6 +24,8 @@ use Forecasta\Parser\Impl\CommaParser;
 use Forecasta\Parser\Impl\LeftBraceParser;
 use Forecasta\Parser\Impl\RightBraceParser;
 use Forecasta\Parser\Impl\JsonParser;
+use Forecasta\Parser\Impl\ObjectLeftParser;
+use Forecasta\Parser\Impl\ObjectRightParser;
 
 
 /**
@@ -258,6 +260,26 @@ class ParserFactory
     }
 
     /**
+     * ObjectLeftParserを生成します
+     * @param string $objectLeft
+     * @return ObjectLeftParser
+     */
+    public static function ObjLeft($objectLeft = "{")
+    {
+        return new ObjectLeftParser($objectLeft);
+    }
+
+    /**
+     * ObjectRightParserを生成します
+     * @param string $objectRight
+     * @return ObjectRightParser
+     */
+    public static function ObjRight($objectRight = "}")
+    {
+        return new ObjectRightParser($objectRight);
+    }
+
+    /**
      * JSONParserを生成します
      * @param string $objLeftChar 左括弧(デフォルト"{")
      * @param string $objRightChar 右括弧(デフォルト"}")
@@ -322,6 +344,10 @@ class ParserFactory
             return self::Lbr();
         } else if ($type === 'rbr') {
             return self::Rbr();
+        } else if ($type === 'objLeft') {
+            return self::ObjLeft();
+        } else if ($type === 'objRight') {
+            return self::ObjRight();
         }
     }
 

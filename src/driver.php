@@ -19,6 +19,7 @@ class TestClass_001
     public $compositeTarget2 = [];
 
     public $compositeTarget3 = "";
+    public $compositeTarget4 = "";
 
 
     public function __construct()
@@ -169,6 +170,21 @@ EOF;
         }
 EOF;
 
+        $this->compositeTarget4 = <<<EOF
+(
+    "a" => "b",
+    "xxx" => ["a", "b", "c", ("aaa" => 123, "_" 
+    
+    
+    =>
+    
+    
+    
+    "処理開始"), "JSONパーサを修正(AltJSON対応)・・・Valueに日本語を"],
+    "key" => "仕訳明細トラン同期処理。"
+)
+EOF;
+
     }
 
     /**
@@ -230,14 +246,15 @@ EOF;
     function testParse02()
     {
         //$target = $this->compositeTarget;
-        $target = $this->compositeTarget3;
+        //$target = $this->compositeTarget3;
+        $target = $this->compositeTarget4;
         //$target = $this->compositeTarget2;
         //$target = json_encode($target);
 
         $ctx = ParserContext::create($target);
 
         //$parser = new JsonParser();
-        $parser = ParserFactory::JSON("{", "}", ":");
+        $parser = ParserFactory::JSON("(", ")", "=>");
 
         $history = HistoryEntry::createEntry("JSON", $ctx, $parser);
 
@@ -479,7 +496,9 @@ $val = str_replace("<Empty>", "\"\"", $val);
 $val = str_replace("/", "\\/", $val);
 echo($val). "\n";
 echo "======================================================\n";
-echo print_r(json_decode($val), true). "\n";
+echo print_r(json_decode($val, true), true). "\n";
+echo (json_decode($val))->key. "\n";
+echo "↑↑↑\n";
 echo "======================================================\n";
 echo json_encode((new TestClass_001())->compositeTarget2);
 exit();

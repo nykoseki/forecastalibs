@@ -4,7 +4,7 @@ namespace Forecasta\Common;
 
 class DynamicProxy
 {
-    private static $_Forecasta_Proxy_ProxyTrait_Proxy;
+    private $_Forecasta_Proxy_ProxyTrait_Proxy;
 
     public function __construct($obj) {
         $this->_Forecasta_Proxy_ProxyTrait_Proxy = $obj;

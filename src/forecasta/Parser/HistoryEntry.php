@@ -9,9 +9,32 @@ use Forecasta\Common\Named;
  * Class History
  * @package Forecasta\Parser
  */
-class HistoryEntry
+class HistoryEntry implements \ArrayAccess, \IteratorAggregate
 {
     use Named;
+
+    // == ArrayAccess ==================================================================================================
+    public function offsetGet($index) {
+        return isset($this->child[$index]) ? $this->child[$index] : null;
+    }
+    public function offsetExists($index) {
+        return isset($this->child[$index]);
+    }
+    public function offsetSet($index, $value) {
+        if(is_null($index)) {
+            $this->child[] = value;
+        } else {
+            $this->child[$index] = $value;
+        }
+    }
+    public function offsetUnset($index) {
+        unset($this->child[$index]);
+    }
+    // == IteratorAggregate ============================================================================================
+    public function getIterator() {
+        return new \ArrayIterator($this->child);
+    }
+    // =================================================================================================================
 
     /**
      * 子エントリ

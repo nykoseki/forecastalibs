@@ -101,5 +101,3 @@ class TokenParser implements Parser
         return $message;
     }
 }
-
-?>

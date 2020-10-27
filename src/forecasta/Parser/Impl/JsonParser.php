@@ -132,6 +132,9 @@ class JsonParser implements Parser
         $joint = ParserFactory::Joint($joint)->setName("Joint");
         //$joint = ParserFactory::Token(":")->setName("Joint");
 
+        $objectLeft = ParserFactory::ObjLeft($objLeftChar);
+        $objectRight = ParserFactory::ObjRight($objRightChar);
+
         // ダブルクォート
         //$quote = ParserFactory::Token("\"")->setName("Quote");
         $quote = ParserFactory::Quote()->setName("Quote");
@@ -155,7 +158,8 @@ class JsonParser implements Parser
 
         // Primitive := /^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/
         //$primitive = ParserFactory::Regex("/^[A-Za-z]+/")->setName("Pr");
-        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:. #@\`';\/\+\*=]+/")->setName("Primitive"))->add($quote);
+        //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:. #@\`';\/\+\*=]+/")->setName("Primitive"))->add($quote);
+        $primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^([A-Za-z0-9_\(\)\-,:. #@\`';\/\+\*=]|([\u3400-\u4DBF\u4E00-\u9FFF\uF900-\uFAFF]|[\uD840-\uD87F][\uDC00-\uDFFF]|[ぁ-んァ-ヶ]|[^\x01-\x7E]))+/")->setName("Primitive"))->add($quote);
         //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z0-9_\-,:     '';\/\+\*=]+/")->setName("Primitive"))->add($quote);
         //$primitive = ParserFactory::Seq()->add($quote)->add(ParserFactory::Regex("/^[A-Za-z]|^[A-Za-z_][A-Za-z0-9]+/")->setName("Primitive"))->add($quote);
 
@@ -276,11 +280,11 @@ class JsonParser implements Parser
                 ->add(
                     ParserFactory::Seq()
                         ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
-                        ->add(ParserFactory::Token($objLeftChar)->setName("ElOpen"))
+                        ->add($objectLeft->setName("ElOpen"))
                         ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                         ->add($entry)
                         ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
-                        ->add(ParserFactory::Token($objRightChar)->setName("ElClose"))
+                        ->add($objectRight->setName("ElClose"))
                         ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                 )
         )->setName("Value");
@@ -291,11 +295,11 @@ class JsonParser implements Parser
         $element->forward(
             ParserFactory::Seq()
                 ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
-                ->add(ParserFactory::Token($objLeftChar)->setName("ElOpen"))
+                ->add($objectLeft->setName("ElOpen"))
                 ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
                 ->add($entries)
                 ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
-                ->add(ParserFactory::Token($objRightChar)->setName("ElClose"))
+                ->add($objectRight->setName("ElClose"))
                 ->add(/*ParserFactory::Option()->add($whiteSpace)*/$whiteSpace)
         )->setName("Element");
 

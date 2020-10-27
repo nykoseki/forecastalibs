@@ -12,10 +12,33 @@ use Forecasta\Common\Named;
  * @author nkoseki
  *
  */
-class ParserContext
+class ParserContext implements \ArrayAccess, \IteratorAggregate
 {
     use Composite;
     use Named;
+
+    // == ArrayAccess ==================================================================================================
+    public function offsetGet($index) {
+        return isset($this->children[$index]) ? $this->children[$index] : null;
+    }
+    public function offsetExists($index) {
+        return isset($this->children[$index]);
+    }
+    public function offsetSet($index, $value) {
+        if(is_null($index)) {
+            $this->children[] = value;
+        } else {
+            $this->children[$index] = $value;
+        }
+    }
+    public function offsetUnset($index) {
+        unset($this->children[$index]);
+    }
+    // == IteratorAggregate ============================================================================================
+    public function getIterator() {
+        return new \ArrayIterator($this->children);
+    }
+    // =================================================================================================================
 
     /**
      * 解析対象文字列です
