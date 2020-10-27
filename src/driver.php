@@ -354,7 +354,7 @@ EOF;
         //echo "======================================================\n";
         //print_r($val);
 
-        return $result->parsed();
+        return $result;
         //echo print_r($result->parsed(), true) . "\n";
         //print_r(json_encode($this->compositeTarget2));
     }
@@ -437,6 +437,8 @@ class CommentSubject
 
 $result = (new TestClass_001())->testParse02();
 
+$result2 = $result->parsed();
+
 $f = Y(function($callback){
     return function($item) use(&$callback){
         if(is_array($item)) {
@@ -477,7 +479,7 @@ $f = Y(function($callback){
     };
 });
 
-$val = $result;
+$val = $result2;
 //$val = $f($result);
 
 $val = \Forecasta\Common\ArrayUtil::reduction($val);
@@ -499,6 +501,9 @@ echo "======================================================\n";
 echo print_r(json_decode($val, true), true). "\n";
 echo (json_decode($val))->key. "\n";
 echo "↑↑↑\n";
+
+echo print_r(ParserFactory::JSON()->contextToObject($result));
+
 echo "======================================================\n";
 echo json_encode((new TestClass_001())->compositeTarget2);
 exit();

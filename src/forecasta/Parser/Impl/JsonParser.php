@@ -308,6 +308,39 @@ class JsonParser implements Parser
         $this->name = "Json";
     }
 
+    /**
+     * 解析済みのコンテキストからPHPで参照可能な形式に変換します
+     * @param ParserContext $context 解析コンテキスト(解析済み)
+     * @param bool $ASSOC　配列形式で返す場合はtrue/それ以外はstdClass形式で返却される
+     */
+
+    /**
+     * 解析済みのコンテキストからPHPで参照可能な形式に変換します
+     * @param ParserContext $context 解析コンテキスト(解析済み)
+     * @param bool $ASSOC 配列形式で返す場合はtrue/それ以外はstdClass形式で返却される
+     * @return array|mixed|string PHP-JSON形式
+     */
+    public function contextToObject(ParserContext $context, $ASSOC=true) {
+        $parsed = $context->parsed();
+
+        // 縮約処理
+        $result = \Forecasta\Common\ArrayUtil::reduction($parsed);
+
+        // フラット化処理
+        $result = \Forecasta\Common\ArrayUtil::flatten($result);
+
+        $result = implode("", $result);
+        $result = str_replace("<Empty>", "\"\"", $result);
+        $result = str_replace("/", "\\/", $result);
+
+        // JSONデコード処理
+        $result = json_decode($result, $ASSOC);
+
+        //echo "処理終了\n";
+
+        return $result;
+    }
+
     public function isResolved()
     {
         return true;
