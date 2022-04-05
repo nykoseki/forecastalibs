@@ -1,0 +1,15 @@
+version: '3.8'
+services :
+  php :
+    image: nkoseki2006/forecastalibs
+    container_name: forecastalibs_php
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - "./../src:/opt/product/src"
+      - "./../composer.json:/opt/product/composer.json"
+      - "./../phpunit.xml:/opt/product/phpunit.xml"
+      - "./../tests:/opt/product/tests"
+      #- "./../composer.lock:/opt/product/composer.lock"
+

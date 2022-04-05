@@ -4,11 +4,11 @@
   "type": "library",
   "minimum-stability": "dev",
   "require": {
-    "php": ">=7.2.5",
+    "php": "^8.0",
 
     "vlucas/phpdotenv": "^2.2",
     "monolog/monolog": "^1.19",
-    "illuminate/support": "~5.0",
+    "illuminate/support": "~9.7.0",
     "ray/aop": "2.7.*"
   },
   "require-dev": {
