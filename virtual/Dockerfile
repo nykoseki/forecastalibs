@@ -5,6 +5,7 @@ WORKDIR /opt/product
 
 RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini
 COPY php.ini /usr/local/etc/php/conf.d/php.ini
+COPY composer.json /opt/product/composer.json
 
 # library install
 RUN apt-get update \
@@ -23,18 +24,17 @@ RUN apt-get update \
   && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
   && docker-php-ext-install -j$(nproc) gd \
   && curl -sL https://deb.nodesource.com/setup_12.x | bash - \
-  && apt-get install -y nodejs
-
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php -r "if (hash_file('SHA384', 'composer-setup.php') === '$(wget -q -O - https://composer.github.io/installer.sig)') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" && \
-    php composer-setup.php && \
-    php -r "unlink('composer-setup.php');" && \
-    mv composer.phar /usr/local/bin/composer
+  && apt-get install -y nodejs \
+  && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+  && php -r "if (hash_file('SHA384', 'composer-setup.php') === '$(wget -q -O - https://composer.github.io/installer.sig)') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;" \
+  && php composer-setup.php \
+  && php -r "unlink('composer-setup.php');" \
+  && mv composer.phar /usr/local/bin/composer \
+  && composer install
 
 ENV COMPOSER_ALLOW_SUPERUSER 1
 ENV COMPOSER_HOME /composer
 ENV PATH $PATH:/composer/vendor/bin
-
-ENTRYPOINT composer install && vendor/bin/phpunit --help
+ENV PATH $PATH:/opt/product/vendor/bin
 
 

@@ -8,12 +8,19 @@ use PHPUnit\Framework\TestCase;
 use Forecasta\Parser\ParserContext;
 
 use Forecasta\Parser\ParserFactory;
+
 //use Forecasta\Comment\Processor\CommentParser;
 use Forecasta\Parser\Impl\JsonParser;
+
 //use Forecasta\Parser\Impl\FalseParser;
 
 class ParserTestCase extends TestCase
 {
+
+    public function testDemo()
+    {
+        $this->fail("Demo Mode...");
+    }
 
     public function testTrueParser()
     {
